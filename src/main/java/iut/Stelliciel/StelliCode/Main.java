@@ -1,12 +1,13 @@
 package iut.Stelliciel.StelliCode;
 
+import iut.Stelliciel.StelliCode.CUI.CUI;
 import iut.Stelliciel.StelliCode.metier.Interpreteur;
 
 import java.util.ArrayList;
 
 public class Main {
     private Interpreteur metier;
-    private CUI          ihm;
+    private CUI ihm;
 
     public Main() {
         metier = new Interpreteur(this, "Code.algo");
@@ -17,8 +18,15 @@ public class Main {
         return metier.getFicher();
     }
 
-
     public static void main(String[] args) {
         new Main();
+    }
+
+    public ArrayList<String> getCode() {
+        return  null;
+    }
+
+    public int getNbChiffre() {
+        return 0;
     }
 }
