@@ -38,7 +38,6 @@ public class AfficheTab {
             //sRep.append(listeVar.get(nom).toString()).append('\n');
             sRep+= "\n";
         }
-        sRep+= "+-----------+----------+\n";
         //sRep.append("+-----------+----------+\n");
         return sRep;
     }

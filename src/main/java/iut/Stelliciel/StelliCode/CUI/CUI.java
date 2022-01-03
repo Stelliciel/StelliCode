@@ -48,6 +48,6 @@ public class CUI {
     }
 
     private void affLig(int numLig){
-        System.out.println(this.affTabVar.affLig(numLig) +" |"+this.affCode.affLig(numLig));
+        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + String.format("-20%s",this.affCode.affLig(numLig)) +"|");
     }
 }
