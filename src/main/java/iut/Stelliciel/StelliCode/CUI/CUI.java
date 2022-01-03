@@ -13,15 +13,22 @@ public class CUI {
     private final AfficheConsole affConsole;
     private final AfficheCode affCode;
 
+    int numLig1;
+
     public CUI(Main controlleur){
         this.controlleur = controlleur;
-        this.affTabVar = new AfficheTab();
-        this.affConsole = new AfficheConsole();
-        this.affCode = new AfficheCode();
+        this.affTabVar   = new AfficheTab();
+        this.affConsole  = new AfficheConsole();
+        this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
+        this.numLig1     = 1;
     }
 
-    public void afficher(int val,int nbLig){
-        for (int i = 0; i < nbLig; i++) {
+    public void scroll(int num){
+        this.numLig1 += num;
+    }
+
+    public void afficher(int val){
+        for (int i = this.numLig1; i < this.numLig1+40; i++) {
             this.affLig(i);
         }
         System.out.println("________________________________________________________________________________\n\nconsole\n________________________________________________________________________________\n");

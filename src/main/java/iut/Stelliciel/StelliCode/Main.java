@@ -18,8 +18,15 @@ public class Main {
         return metier.getFicher();
     }
 
-
     public static void main(String[] args) {
         new Main();
+    }
+
+    public ArrayList<String> getCode() {
+        return  null;
+    }
+
+    public int getNbChiffre() {
+        return 0;
     }
 }
