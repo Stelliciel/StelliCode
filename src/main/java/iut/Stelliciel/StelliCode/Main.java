@@ -10,8 +10,10 @@ public class Main {
     private final CUI ihm;
 
     public Main() {
-        metier = new Interpreteur(this, "Code.algo");
+        metier = new Interpreteur(this, "C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo");
         ihm    = new CUI(this);
+
+        ihm.afficher();
     }
 
     public ArrayList<String> getCode(){

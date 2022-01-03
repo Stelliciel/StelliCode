@@ -30,12 +30,17 @@ public class AfficheTab {
     /**@return le string du tableau affichTab
      */
     public String toString(){
-        StringBuilder sRep = new StringBuilder("+-----------+----------+\n|    nom    |  valeur  |\n+-----------+----------+\n");
+        String sRep= "+-----------+----------+\n"+
+                     "|    nom    |  valeur  |\n"+
+                     "+-----------+----------+\n";
+        //StringBuilder sRep = new StringBuilder("+-----------+----------+\n|    nom    |  valeur  |\n+-----------+----------+\n");
         for(String nom : listeVar.keySet()){
-            sRep.append(listeVar.get(nom).toString()).append('\n');
+            //sRep.append(listeVar.get(nom).toString()).append('\n');
+            sRep+= "\n";
         }
-        sRep.append("+-----------+-----------+\n");
-        return sRep.toString();
+        sRep+= "+-----------+----------+\n";
+        //sRep.append("+-----------+----------+\n");
+        return sRep;
     }
 
     public static void main(String[] args) {
@@ -49,13 +54,13 @@ public class AfficheTab {
         int ind = 0;
         String toutesLig = this.toString();
         for (char c:toutesLig.toCharArray()){
-            if(c != '\n'){arrString.add(arrString.remove(ind) + 'c');}
+            if(c != '\n'){arrString.add(arrString.remove(ind) + c);}
             else{
                 ind++;
-                arrString.add(" ");
+                arrString.add("");
             }
         }
-        if(num > ind ){return "                       ";}
-        return arrString.get(num-1);
+        if(num >= ind ){return "                        ";}
+        return arrString.get(num);
     }
 }
