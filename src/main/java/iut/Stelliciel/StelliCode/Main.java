@@ -20,11 +20,11 @@ public class Main {
         return metier.getCode();
     }
 
-    public static void main(String[] args) {
-        new Main();
-    }
-
     public int getNbChiffre() {
         return  metier.getNbChiffre();
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 }
