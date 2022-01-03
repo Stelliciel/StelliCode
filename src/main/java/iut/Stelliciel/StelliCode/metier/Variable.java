@@ -1,4 +1,4 @@
-package iut.Stelliciel.StelliCode.CUI.tabVariable;
+package iut.Stelliciel.StelliCode.metier;
 /**
  * @author Gaspard Gordien , Benjamin Cléon
  * @version 2
@@ -11,7 +11,7 @@ public class Variable<E>
 
     /**constructeur d'une variable
      * @param nom le nom est un string
-     * @param valeur valeur de n'importe quel type primitif (int,double,booléen,charctere,chaine de caractere)
+     * @param valeur valeur de n'importe quel type primitif (int,double,booléen,charactere,chaine de caractere)
      */
     Variable( String nom, E valeur )
     {
@@ -24,8 +24,8 @@ public class Variable<E>
     public String toString()
     {
         String sRep = "";
-        sRep += "|" +String.format("%-11s",this.nom + "")+"|";
-        sRep += " " + String.format("%-27s", this.valeur + "") + "|";
+
+        sRep = nom + ": " + valeur;
 
         return sRep;
     }
