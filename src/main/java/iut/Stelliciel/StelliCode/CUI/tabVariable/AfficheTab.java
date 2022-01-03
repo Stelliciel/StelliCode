@@ -30,11 +30,11 @@ public class AfficheTab {
     /**@return le string du tableau affichTab
      */
     public String toString(){
-        StringBuilder sRep = new StringBuilder("+-----------+----------------------------+\n|    nom    |           valeur           |\n+-----------+----------------------------+\n");
+        StringBuilder sRep = new StringBuilder("+-----------+----------+\n|    nom    |  valeur  |\n+-----------+----------+\n");
         for(String nom : listeVar.keySet()){
             sRep.append(listeVar.get(nom).toString()).append('\n');
         }
-        sRep.append("+-----------+----------------------------+\n");
+        sRep.append("+-----------+-----------+\n");
         return sRep.toString();
     }
 
