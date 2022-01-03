@@ -45,6 +45,7 @@ public class AfficheTab {
 
     public String affLig(int num){
         ArrayList<String> arrString = new ArrayList<>();
+        arrString.add("");
         int ind = 0;
         String toutesLig = this.toString();
         for (char c:toutesLig.toCharArray()){
