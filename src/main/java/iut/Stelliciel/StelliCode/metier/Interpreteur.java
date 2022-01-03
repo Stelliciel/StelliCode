@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 public class Interpreteur {
 
     private ArrayList<String> fichier;
-    private Main ctrl;
+    private final Main ctrl;
 
     public Interpreteur(Main ctrl, String adresseFichier) {
         this.ctrl    = ctrl;
@@ -18,7 +18,7 @@ public class Interpreteur {
 
 
     public static ArrayList<String> lireFichier(String adresse) {
-        ArrayList<String> fichier = new ArrayList<String>();
+        ArrayList<String> fichier = new ArrayList<>();
 
         try
         {
@@ -37,7 +37,11 @@ public class Interpreteur {
         return fichier;
     }
 
-    public ArrayList<String> getFicher() {
+    public ArrayList<String> getCode() {
         return this.fichier;
+    }
+
+    public int getNbChiffre() {
+        return (this.fichier.size()+"").length();
     }
 }

@@ -6,24 +6,20 @@ import iut.Stelliciel.StelliCode.metier.Interpreteur;
 import java.util.ArrayList;
 
 public class Main {
-    private Interpreteur metier;
-    private CUI ihm;
+    private final Interpreteur metier;
+    private final CUI ihm;
 
     public Main() {
         metier = new Interpreteur(this, "Code.algo");
         ihm    = new CUI(this);
     }
 
-    public ArrayList<String> getFichier(){
-        return metier.getFicher();
+    public ArrayList<String> getCode(){
+        return metier.getCode();
     }
 
     public static void main(String[] args) {
         new Main();
-    }
-
-    public ArrayList<String> getCode() {
-        return  metier.getCode();
     }
 
     public int getNbChiffre() {
