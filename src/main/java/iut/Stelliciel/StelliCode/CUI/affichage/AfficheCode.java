@@ -12,6 +12,6 @@ private final ArrayList<String> arrString;
     }
 
     public String affLig(int num){
-        return String.format(nbChiffreSign + "%d",num) + " " + this.arrString.get(num-1);
+        return String.format("-" +nbChiffreSign + "%d",num) + " " + this.arrString.get(num-1);
     }
 }

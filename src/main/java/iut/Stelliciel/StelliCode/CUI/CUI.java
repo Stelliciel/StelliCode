@@ -27,7 +27,7 @@ public class CUI {
         this.numLig1 += num;
     }
 
-    public void afficher(int val){
+    public void afficher(){
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             this.affLig(i);
         }
