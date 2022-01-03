@@ -23,10 +23,10 @@ public class Main {
     }
 
     public ArrayList<String> getCode() {
-        return  null;
+        return  metier.getCode();
     }
 
     public int getNbChiffre() {
-        return 0;
+        return  metier.getNbChiffre();
     }
 }
