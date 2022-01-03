@@ -35,6 +35,6 @@ public class Interpreteur {
     }
 
     public static void main(String[] args) {
-        new Interpreteur("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo");
+        new Interpreteur("Code.algo");
     }
 }
