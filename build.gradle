@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'iut.Stelliciel.StelliCode'
@@ -10,8 +11,17 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+application {
+    getMainClass().set('iut.Stelliciel.StelliCode.Main.java')
+}
+
+compileJava {
+    options.encoding = "UTF-8"
 }
 
 test {
