@@ -1,0 +1,14 @@
+Algorithme ExempleIndentation
+variable:
+    age: entier
+    message: chaine de caractères
+DEBUT
+    lire (age)
+
+    si age < 18 alors
+     message  " mineur"
+    sinon
+     message  " majeur"
+    fsi
+    écrire ( "vous êtes ", message )
+FIN
