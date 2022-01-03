@@ -9,7 +9,7 @@ public class Main {
     private CUI          ihm;
 
     public Main() {
-        metier = new Interpreteur(this, "");
+        metier = new Interpreteur(this, "Code.algo");
         ihm    = new CUI(this);
     }
 

@@ -37,10 +37,6 @@ public class Interpreteur {
         return fichier;
     }
 
-    public static void main(String[] args) {
-        new Interpreteur("Code.algo");
-    }
-
     public ArrayList<String> getFicher() {
         return this.fichier;
     }
