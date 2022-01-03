@@ -2,6 +2,7 @@ package iut.Stelliciel.StelliCode.CUI.tabVariable;
 
 import iut.Stelliciel.StelliCode.metier.Variable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 /**
  * @author Gaspard Gordien
@@ -40,5 +41,20 @@ public class AfficheTab {
     public static void main(String[] args) {
         AfficheTab tab = new AfficheTab();
         System.out.println(tab);
+    }
+
+    public String affLig(int num){
+        ArrayList<String> arrString = new ArrayList<>();
+        int ind = 0;
+        String toutesLig = this.toString();
+        for (char c:toutesLig.toCharArray()){
+            if(c != '\n'){arrString.add(arrString.remove(ind) + 'c');}
+            else{
+                ind++;
+                arrString.add(" ");
+            }
+        }
+        if(num > ind ){return "                       ";}
+        return arrString.get(num-1);
     }
 }
