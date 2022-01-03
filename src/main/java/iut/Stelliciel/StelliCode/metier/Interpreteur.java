@@ -1,5 +1,7 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import iut.Stelliciel.StelliCode.Main;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileInputStream;
@@ -7,9 +9,10 @@ import java.io.FileInputStream;
 public class Interpreteur {
 
     private ArrayList<String> fichier;
+    private Main ctrl;
 
-    public Interpreteur(String adresseFichier) {
-
+    public Interpreteur(Main ctrl, String adresseFichier) {
+        this.ctrl    = ctrl;
         this.fichier = Interpreteur.lireFichier(adresseFichier);
     }
 

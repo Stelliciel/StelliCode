@@ -9,8 +9,8 @@ public class Main {
     private CUI          ihm;
 
     public Main() {
-        metier = new Interpreteur("");
-        ihm    = new CUI();
+        metier = new Interpreteur(this, "");
+        ihm    = new CUI(this);
     }
 
     public ArrayList<String> getFichier(){
