@@ -1,6 +1,7 @@
 package iut.Stelliciel.StelliCode.CUI.tabVariable;
 
-import java.util.ArrayList;
+import iut.Stelliciel.StelliCode.metier.Variable;
+
 import java.util.HashMap;
 /**
  * @author Gaspard Gordien
@@ -25,29 +26,19 @@ public class AfficheTab {
         this.listeVar.put(var.getNom(), var);
     }
 
-    public String affLig(int num){
-        ArrayList<String> arrString = new ArrayList<>();
-        int ind = 0;
-        String toutesLig = this.toString();
-        for (char c:toutesLig.toCharArray()){
-            if(c != '\n'){arrString.add(arrString.remove(ind) + 'c');}
-            else{
-                ind++;
-                arrString.add(" ");
-            }
-        }
-        if(num > ind ){return "                       ";}
-        return arrString.get(num-1);
-    }
-
     /**@return le string du tableau affichTab
      */
     public String toString(){
-        StringBuilder sRep = new StringBuilder("+----------+----------+\n|    nom   |  valeur  |\n+----------+----------+\n");
+        StringBuilder sRep = new StringBuilder("+-----------+----------------------------+\n|    nom    |           valeur           |\n+-----------+----------------------------+\n");
         for(String nom : listeVar.keySet()){
             sRep.append(listeVar.get(nom).toString()).append('\n');
         }
-        sRep.append("+----------+----------+\n");
+        sRep.append("+-----------+----------------------------+\n");
         return sRep.toString();
+    }
+
+    public static void main(String[] args) {
+        AfficheTab tab = new AfficheTab();
+        System.out.println(tab);
     }
 }
