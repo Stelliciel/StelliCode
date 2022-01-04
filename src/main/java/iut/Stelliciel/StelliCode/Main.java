@@ -2,11 +2,13 @@ package iut.Stelliciel.StelliCode;
 
 import iut.Stelliciel.StelliCode.CUI.CUI;
 import iut.Stelliciel.StelliCode.metier.Interpreteur;
+import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -23,7 +25,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        metier = new Interpreteur(this, "../resources/main/Code.algo");
+        metier = new Interpreteur(this, "src/main/resources/Code.algo");
         ihm    = new CUI(this);
 
         ihm.afficher();
@@ -32,6 +34,8 @@ public class Main {
     public ArrayList<String> getCode(){
         return metier.getCode();
     }
+    public HashMap<String, Variable<Object>> getConstantes() { return metier.getLstConstantes(); }
+    public HashMap<String, Variable<Object>> getVariables()  { return metier.getLstVariables(); }
 
     public int getNbChiffre() {
         return  metier.getNbChiffre();
