@@ -47,23 +47,18 @@ public class CUI {
     }
 
     private void affLig(int numLig){
-        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(String.format(Locale.US,"%-50s ",this.affCode.affLig(numLig)))+"|");
+        System.out.println("| ←"+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(String.format(Locale.US,"%-50s ",this.affCode.affLig(numLig)))+"|");
     }
 
     private static String corrigeCharSpe(String in){
-        String add = "";
-        int cptA, cptF;
-        cptA  = cptF = 0;
+        StringBuilder add = new StringBuilder();
+        int cpt;
+        cpt = 0;
         for (char c:in.toCharArray()){
-            if(c == '\uF0DF'){
-                cptF++;
-                if (cptF % 3 == 0) {
-                    add += "  ";}
-                }
-            else if (c != '\uF0DF' && (int) c > 127) {
-                cptA++;
-                if (cptA % 2 == 0) {
-                    add += " ";
+            if ((int) c > 127) {
+                cpt++;
+                if (cpt % 2 == 0) {
+                    add.append(" ");
                 }
             }
         }
