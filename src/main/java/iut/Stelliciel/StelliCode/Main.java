@@ -24,6 +24,7 @@ public class Main {
             e.printStackTrace();
         }
         metier = new Interpreteur(this, "../resources/main/Code.algo");
+        //metier = new Interpreteur(this, "src/main/resources/Code.algo");
         ihm    = new CUI(this);
 
         ihm.afficher();

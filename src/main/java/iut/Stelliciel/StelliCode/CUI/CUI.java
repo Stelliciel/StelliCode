@@ -15,6 +15,7 @@ public class CUI {
     private final AfficheCode affCode;
 
     int numLig1;
+    private int ligEnCour;
 
     public CUI(Main controlleur){
         this.controlleur = controlleur;
@@ -22,6 +23,11 @@ public class CUI {
         this.affConsole  = new AfficheConsole();
         this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
         this.numLig1     = 0;
+        this.ligEnCour  = 0;
+    }
+
+    public void nextLigne(){
+        this.ligEnCour++;
     }
 
     public void scroll(int num){
@@ -32,7 +38,7 @@ public class CUI {
         System.out.println("________________________________________________________________________________");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             if ( i < controlleur.getCode().size() )
-                this.affLig(i);
+                this.affLig(i,this.ligEnCour);
         }
         System.out.println("________________________________________________________________________________\n\nconsole\n________________________________________________________________________________\n");
         System.out.println(this.affConsole);
@@ -46,8 +52,10 @@ public class CUI {
         }
     }
 
-    private void affLig(int numLig){
-        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(String.format(Locale.US,"%-70s |",this.affCode.affLig(numLig))));
+    private void affLig(int numLig,int ligEncour){
+        String espace = " ";
+        System.out.print(("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(this.affCode.affLig(numLig,ligEncour))));
+        System.out.println(espace.repeat(80-this.affCode.getTaille(numLig))+"|");
     }
 
     private static String corrigeCharSpe(String in){
@@ -64,4 +72,21 @@ public class CUI {
         }
         return in + add;
     }
+
+    private static String corrigeCouleur(String in){
+        String add ="";
+        int nbCouleur = (in.length() - in.replace("\u001B","").length());
+        System.out.println(nbCouleur);
+        if(nbCouleur == 1){nbCouleur--;}
+        else {nbCouleur = nbCouleur/2;}
+
+        int i =0;
+        while(i < nbCouleur){
+            add += "";
+            i++;
+        }
+        return in + add;
+    }
+    /*add += "                 ";
+    add += "                    ";*/
 }
