@@ -49,10 +49,12 @@ public class Variable<E>
 
         if ( estTableau() ){
             sRep += "[";
+
             StringBuilder sRepBuilder = new StringBuilder(sRep);
             for(Object o : tabValeur) sRepBuilder.append(o).append(",");
             sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
             sRep = sRepBuilder.toString();
+
             sRep += "]";
         }
         else
@@ -85,7 +87,7 @@ public class Variable<E>
      * @return Return si la variable est un tableau
      */
     private boolean estTableau() {
-        return type.startsWith("tab");
+        return this.tabValeur != null;
     }
 
     /**

@@ -26,10 +26,10 @@ public class Interpreteur {
 
         System.out.println("Signature : " + signature);
         lstConstantes.forEach((k,v) -> {
-            System.out.println("Nom de la constante : "+k+"\t ||" + v);
+            System.out.println("Nom de la constante : "+k+"\t || " + v);
         });
         lstVariables.forEach((k,v) -> {
-            System.out.println("Nom de la variable : "+k+"\t ||" + v);
+            System.out.println("Nom de la variable : "+k+"\t || " + v);
         });
     }
 
@@ -68,13 +68,37 @@ public class Interpreteur {
         String ligne = fichier.get(++cpt);
 
         while ( !ligne.equals("DEBUT") ){
-            String[] mots = ligne.replaceAll(" ", "").split(":");
+            String[] mots = ligne.split(":");
             String[] variables = mots[0].replaceAll(" ", "").split(",");
             String type = mots[1];
 
+            if ( type.contains("tableau") ){
+                System.out.println("Nous avons un tableau ! ");
+                System.out.println("Le type : " + type);
+                String tailleTab = type.substring(type.indexOf('[')+1,type.indexOf(']'));
+                String typeTab   = "";
+                if (type.contains("entier")    ) typeTab  = "entier";
+                if (type.contains("reel")      ) typeTab  = "reel";
+                if (type.contains("boolean")   ) typeTab = "boolean";
+                if (type.contains("caracteres") ) typeTab = "caractere";
+                if (type.contains("chaine")    ) typeTab = "chaine";
 
-            for ( String nom : variables ){
-                addVariable(nom, type);
+                if ( lstConstantes.containsKey(tailleTab) ) {
+                    System.out.println("La taille est une constante :" + tailleTab+".");
+                    System.out.println("Et son type est " + typeTab);
+                    System.out.println("Sa taille est " + lstConstantes.get(tailleTab).getVal() );
+                    System.out.println("Son nom   est " + variables[0]);
+                    addTableau(false,variables[0],typeTab,String.valueOf(lstConstantes.get(tailleTab).getVal()));
+                }
+                else {
+                    System.out.println("La taille n'est pas une constante");
+                    addTableau(false,variables[0],typeTab, tailleTab);
+                }
+            }
+            else {
+                for ( String nom : variables ){
+                    addVariable(nom, type);
+                }
             }
 
             ligne = fichier.get(cpt++);
