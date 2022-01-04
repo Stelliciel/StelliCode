@@ -61,21 +61,15 @@ public class Variable<E>
      */
     public void setIndTab(int ind, E valeur)
     {
-        if ( estTableau() )
-        {
-            tabValeur[ind] = valeur;
-        }
+        tabValeur[ind] = valeur;
     }
 
     /** Recupere la valeur de l'indice entrée
      * @param ind indice
      */
     public E getIndTab(int ind){
-        if (estTableau())
-        {
-            if ( ind < tabValeur.length )
-                return (E) this.tabValeur[ind];
-        }
+        if ( ind < tabValeur.length )
+            return (E) this.tabValeur[ind];
 
         return null;
     }
