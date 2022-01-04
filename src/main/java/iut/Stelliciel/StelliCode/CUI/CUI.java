@@ -47,7 +47,7 @@ public class CUI {
     }
 
     private void affLig(int numLig){
-        System.out.println("| ←"+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(String.format(Locale.US,"%-50s ",this.affCode.affLig(numLig)))+"|");
+        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(String.format(Locale.US,"%-70s |",this.affCode.affLig(numLig))));
     }
 
     private static String corrigeCharSpe(String in){
