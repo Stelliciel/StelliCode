@@ -45,7 +45,7 @@ public class Variable<E>
      */
     public String toString()
     {
-        String sRep = nom + ": ";
+        String sRep = nom + "=";
 
         if ( estTableau() ){
             sRep += "[";
@@ -60,7 +60,7 @@ public class Variable<E>
         else
             sRep += valeur;
 
-        sRep += "    type=" + type;
+        sRep += ":" + type;
         return sRep;
     }
 

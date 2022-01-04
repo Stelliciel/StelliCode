@@ -29,7 +29,7 @@ public class Interpreteur {
             System.out.println("Nom de la constante : "+k+"\t || " + v);
         });
         lstVariables.forEach((k,v) -> {
-            System.out.println("Nom de la variable : "+k+"\t || " + v);
+            System.out.println("Nom de la variable  : "+k+"\t || " + v);
         });
     }
 
@@ -73,8 +73,6 @@ public class Interpreteur {
             String type = mots[1];
 
             if ( type.contains("tableau") ){
-                System.out.println("Nous avons un tableau ! ");
-                System.out.println("Le type : " + type);
                 String tailleTab = type.substring(type.indexOf('[')+1,type.indexOf(']'));
                 String typeTab   = "";
                 if (type.contains("entier")    ) typeTab  = "entier";
@@ -84,20 +82,15 @@ public class Interpreteur {
                 if (type.contains("chaine")    ) typeTab = "chaine";
 
                 if ( lstConstantes.containsKey(tailleTab) ) {
-                    System.out.println("La taille est une constante :" + tailleTab+".");
-                    System.out.println("Et son type est " + typeTab);
-                    System.out.println("Sa taille est " + lstConstantes.get(tailleTab).getVal() );
-                    System.out.println("Son nom   est " + variables[0]);
                     addTableau(false,variables[0],typeTab,String.valueOf(lstConstantes.get(tailleTab).getVal()));
                 }
                 else {
-                    System.out.println("La taille n'est pas une constante");
                     addTableau(false,variables[0],typeTab, tailleTab);
                 }
             }
             else {
                 for ( String nom : variables ){
-                    addVariable(nom, type);
+                    addVariable(nom, type.replaceAll(" ", ""));
                 }
             }
 
@@ -240,8 +233,6 @@ public class Interpreteur {
 
 
     public static void main(String[] args) {
-
-        String ligne = "    MAXIMUM <-- 100";
 
     }
 }

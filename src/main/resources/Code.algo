@@ -1,8 +1,9 @@
 ALGORITHME ExempleIndentation
 constante:
-    MAXIMUM <-- 100
+    MAXIMUM <-- 5
 variable:
-    tab: tableau[MAXIMUM] de caracteres
+    tabConst: tableau[MAXIMUM] de caracteres
+    tabVar: tableau[3] de boolean
     age: entier
     message: chaine
 DEBUT
