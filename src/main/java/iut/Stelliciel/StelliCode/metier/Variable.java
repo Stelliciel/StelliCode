@@ -15,7 +15,7 @@ public class Variable<E>
     /**constructeur d'une variable
      * @param nom le nom est un string
      * @param type le type de primitif de la valeur
-     * @param valeur valeur de n'importe quel type primitif (int, double, booléen, character, chaine de character)
+     * @param valeur valeur de n'importe quel type primitif (int, double, booléen, caractere, chaine de caractere)
      */
     public Variable( String nom, String type, E valeur )
     {
@@ -23,6 +23,12 @@ public class Variable<E>
         this.nom    = nom;
         this.valeur = valeur;
     }
+
+    public Variable(String nom, String type){
+        this.type   = type;
+        this.nom    = nom;
+    }
+
 
     /**constructeur d'une variable
      * @param nom le nom est un string
@@ -52,6 +58,7 @@ public class Variable<E>
         else
             sRep += valeur;
 
+        sRep += "    type=" + type;
         return sRep;
     }
 

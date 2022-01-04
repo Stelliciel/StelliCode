@@ -1,7 +1,9 @@
-Algorithme ExempleIndentation
+ALGORITHME ExempleIndentation
+constante:
+    MAXIMUM <-- 100
 variable:
     age: entier
-    message: chaine de caractères
+    message: chaine
 DEBUT
     lire (age)
 
