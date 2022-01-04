@@ -18,7 +18,7 @@ dependencies {
 }
 
 application {
-    getMainClass().set('iut.Stelliciel.StelliCode.Main.java')
+    getMainClass().set('iut.Stelliciel.StelliCode.Main')
 }
 
 compileJava {
