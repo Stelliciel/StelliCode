@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<coloration>
+    <fonction nom="si">
+        <couleurTexte valeurR="240" valeurG="170" valeurB="30">orange</couleurTexte>
+        <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
+        <poids>normal</poids>
+    </fonction>
+    <fonction nom="tq">
+        <couleurTexte valeurR="240" valeurG="170" valeurB="30">orange</couleurTexte>
+        <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
+        <poids>normal</poids>
+    </fonction>
+
+    <variable>
+        <couleurTexte valeurR="175" valeurG="210" valeurB="215">lightgray</couleurTexte>
+        <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
+        <poids>gras</poids>
+    </variable>
+
+    <ligneEnCour>
+        <couleurTexte valeurR="255" valeurG="255" valeurB="255">white</couleurTexte>
+        <couleurFond valeurR="160" valeurG="20" valeurB="20">red</couleurFond>
+        <poids>normal</poids>
+    </ligneEnCour>
+
+    <commentaire>
+        <couleurTexte valeurR="55" valeurG="150" valeurB="75">green</couleurTexte>
+        <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
+        <poids>normal</poids>
+    </commentaire>
+
+    <primitive>
+        <couleurTexte valeurR="" valeurG="" valeurB="">rouge</couleurTexte>
+        <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
+        <poids>gras</poids>
+    </primitive>
+
+    <methode>
+        <couleurTexte valeurR="" valeurG="" valeurB="">rouge</couleurTexte>
+        <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
+        <poids>gras</poids>
+    </methode>
+</coloration>
