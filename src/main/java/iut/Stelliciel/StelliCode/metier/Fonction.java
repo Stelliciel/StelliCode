@@ -6,31 +6,93 @@ import java.util.ArrayList;
 
 public class Fonction {
     private String affichage="";
-    public Fonction(ArrayList<String> ligne)
+
+    public Fonction(ArrayList<String> lignes)
     {
+        String res ="";
         String[] str;
-        for(String s : ligne) {
-            primitive(s);
-        }
-    }
 
-    private void primitive(String str) {
-        String[] primitive = str.split(" ");
-        switch (primitive[1])
+        System.out.println("é".equals("é"));
+
+
+        trouverVariable(lignes);
+        for(int i=0; i< lignes.size();i++)
         {
-            case "lire"     : //Main.lire(); break;
-            case "écrire"   : affichage += ecrire(str); break;
-            case "enChaine" :
-            case "enEntier" :
-            case "enRéel"   :
-            default         : System.out.println("non traité");
+            String s = lignes.get(i);
+
+            switch ( s )
+            {
+                case "si" :
+                    int cptSi = 1;
+
+                    break;
+                default   :res += chercher(s);
+            }
+        }
+
+        System.out.println(res);
+    }
+
+
+    private String chercher(String str) {
+        str = str.trim();
+        String[] chercher = str.split(" ");
+        //System.out.println(str );
+        System.out.println(chercher[0]);
+        switch (chercher[0])
+        {
+            case "lire"     ->{return "lire";}//Main.lire(); break;
+            case "écrire"   -> {return "écrire";}//return ecrire(str);}
+            case "enChaine" -> {return "hello";}//return enChaine(str);}
+            case "enEntier" -> {return "hello";}//return enEntier(str);}
+            //case "enRéel"  -> return enReel(str);
+            default         -> {return "non traité\n";}
         }
     }
 
-    private String ecrire(String str) {
+    public void trouverVariable(ArrayList<String> lignes)
+    {
+        boolean dansVariable = false;
+        boolean dansConstante = false;
+        for(String s : lignes) {
+            String[] chercher = s.split(" ");
+
+            if (chercher[0].equals("variable"))
+                dansVariable = true;
+
+            if (chercher[0].equals("constante")) {
+                dansVariable  = false;
+                dansConstante = true;
+            }
+
+            if (chercher[0].equals("DEBUT")) {
+                dansVariable  = false;
+                dansConstante = false;
+            }
+
+            if (dansVariable)
+            {
+                //Ajouter variables
+            }
+
+            if (dansConstante)
+            {
+                //Ajouter constante
+            }
+
+
+        }
+    }
+
+    /*private String enReel(String str)
+    {
+
+    }*/
+
+    private String ecrire(String str)
+    {
         boolean parenthese = false;
         boolean ecrire     = false;
-        //boolean virgule    = false;
         StringBuilder res        = new StringBuilder();
 
         for(int ind=7;ind<str.length();ind++)
@@ -39,10 +101,6 @@ public class Fonction {
             //contenu entre ""
             if (car == '\"')
                 ecrire = !ecrire;
-
-            /*//vigule passé
-            if (car == ',' && !ecrire)
-                virgule = true;*/
 
             //écrire ( "vous êtes ", message )
             if(ecrire)
@@ -62,7 +120,55 @@ public class Fonction {
             }
         }
 
-        return res.toString();
+        return "ooooo"+res.toString();
 
+    }
+
+    private String enChaine(String str)
+    {
+        String contenu = entreParenthese(str);
+        String res = "";
+
+        for(int ind=0;ind<contenu.length();ind++)
+            res += contenu.charAt(ind);
+
+        return res;
+    }
+
+    private String enEntier(String str)
+    {
+        String contenu = entreParenthese(str);
+        String res = "";
+
+        //Si est un entier on caste
+        for(int ind=0;ind<contenu.length();ind++)
+            if(contenu.charAt(ind) != '.' || contenu.charAt(ind) != ',') {
+                res += contenu.charAt(ind);
+            }
+        return res;
+    }
+
+    private String entreParenthese(String str)
+    {
+        boolean contenu = false;
+        String res="";
+
+        for(int ind=0;ind+1<str.length()+1;ind++)
+        {
+            if(str.substring(ind,ind+1).equals("( "))
+                contenu = true;
+
+            if(contenu) {
+                while (str.substring(ind,ind+1).equals(" )"))
+                {
+                    res += str.charAt(ind);
+                    ind++;
+                }
+
+                return res;
+            }
+        }
+
+        return null;
     }
 }
