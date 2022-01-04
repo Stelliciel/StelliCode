@@ -32,8 +32,6 @@ public class CUI {
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             if ( i < controlleur.getCode().size() )
                 this.affLig(i);
-            else
-                System.out.println(this.affTabVar.affLig(i) +" |"+ String.format("%-" +controlleur.getNbChiffre() + "d",i));
         }
         System.out.println("________________________________________________________________________________\n\nconsole\n________________________________________________________________________________\n");
         System.out.println(this.affConsole);
@@ -48,6 +46,6 @@ public class CUI {
     }
 
     private void affLig(int numLig){
-        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + String.format("-20%s",this.affCode.affLig(numLig)) +"|");
+        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + String.format("%-51s",this.affCode.affLig(numLig)) +"|");
     }
 }

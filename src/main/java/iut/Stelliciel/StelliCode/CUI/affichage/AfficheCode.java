@@ -11,7 +11,14 @@ public class AfficheCode {
         this.arrString =arrString;
     }
 
+    private String getLig(int num){
+        if(num <= this.arrString.size())
+            return arrString.get(num);
+        else
+            return " ";
+    }
+
     public String affLig(int num){
-        return String.format("%" +nbChiffreSign + "d",num) + " " + this.arrString.get(num);
+        return String.format("%" +nbChiffreSign + "d",num) + " " + this.getLig(num);
     }
 }
