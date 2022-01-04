@@ -53,33 +53,15 @@ public class Expression {
     }
 
 
-    public static double calculer(String expression){
-        System.out.println("\tCalcul simple :"+expression);
-        String[] chiffres;
-        if( expression.contains("*") )
-        {
-            chiffres = expression.split("\\*");
-            return Double.parseDouble(chiffres[0]) * Double.parseDouble(chiffres[1]);
-        }
-        else if( expression.contains("/") )
-        {
-            chiffres = expression.split("/");
-            return Double.parseDouble(chiffres[0]) / Double.parseDouble(chiffres[1]);
-        }
-        else if( expression.contains("+") )
-        {
-            chiffres = expression.split("\\+");
-            return Double.parseDouble(chiffres[0]) + Double.parseDouble(chiffres[1]);
-        }
-        else if( expression.contains("-") )
-        {
-            chiffres = expression.split("-");
-            return Double.parseDouble(chiffres[0]) - Double.parseDouble(chiffres[1]);
-        }
-        else if( expression.contains("^") )
-        {
-            chiffres = expression.split("\\^");
-            return Math.pow(Double.parseDouble(chiffres[0]), Double.parseDouble(chiffres[1]));
+    public static double calculer(double var1, String operande, double var2){
+        System.out.println("\tCalcul simple :"+ var1+operande+var2);
+
+        switch (operande){
+            case "*" -> {return var1*var2;}
+            case "+" -> {return var1+var2;}
+            case "-" -> {return var1-var2;}
+            case "/" -> {return var1/var2;}
+            case "^" -> {return Math.pow(var1,var2);}
         }
 
         return 0;
@@ -95,15 +77,15 @@ public class Expression {
 
             if( !Character.isDigit(c) ) {
                 System.out.println("Operande:"+c);
-                String calcul = pile.pop().toString();
+                double calcul = pile.pop();
                 System.out.println("depile de "+calcul);
                 if ( pile.isEmpty() ) {
                     System.out.println("pile vide envoie calcul");
-                    return Double.parseDouble(calcul);
+                    return calcul;
                 }
                 else{
                     System.out.println("pile pas vide calcul, on dépile:"+ pile.peek());
-                    pile.push(Expression.calculer(  pile.pop().toString() + c + calcul ));
+                    pile.push(Expression.calculer(  pile.pop(), String.valueOf(c), calcul ));
                     System.out.println("rajout de "+pile.peek());
                 }
 
@@ -119,7 +101,7 @@ public class Expression {
 
     public static void main(String[] args)
     {
-        String expression = "2*3+4/(5+6)";
+        String expression = "5+2/(3-8)^5^2";
         String EPO        = Expression.toEPO(expression);
 
         System.out.println(EPO);
