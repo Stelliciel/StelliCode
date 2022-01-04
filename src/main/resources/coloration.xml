@@ -30,14 +30,14 @@
     </commentaire>
 
     <primitive>
-        <couleurTexte valeurR="" valeurG="" valeurB="">rouge</couleurTexte>
+        <couleurTexte valeurR="20" valeurG="175" valeurB="220">blue</couleurTexte>
         <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
         <poids>gras</poids>
     </primitive>
 
     <methode>
-        <couleurTexte valeurR="" valeurG="" valeurB="">rouge</couleurTexte>
+        <couleurTexte valeurR="20" valeurG="175" valeurB="220">blue</couleurTexte>
         <couleurFond valeurR="-1" valeurG="-1" valeurB="-1">aucun</couleurFond>
-        <poids>gras</poids>
+        <poids>normal</poids>
     </methode>
 </coloration>
