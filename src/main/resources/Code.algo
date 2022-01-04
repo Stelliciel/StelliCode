@@ -6,9 +6,9 @@ DEBUT
     lire (age)
 
     si age < 18 alors
-     message ← " mineur"
+     message <-- " mineur"
     sinon
-     message ← " majeur"
+     message <-- " majeur"
     fsi ×
     écrire ( "vous êtes ", message )
 FIN

@@ -10,7 +10,7 @@ public class Main {
     private final CUI ihm;
 
     public Main() {
-        metier = new Interpreteur(this, "C:\\Users\\Gaspard\\IdeaProjects\\StelliCode\\src\\main\\resources\\Code.algo");
+        metier = new Interpreteur(this, "src/main/resources/Code.algo");
         ihm    = new CUI(this);
 
         ihm.afficher();

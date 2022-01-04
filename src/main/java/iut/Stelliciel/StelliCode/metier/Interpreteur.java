@@ -128,8 +128,15 @@ public class Interpreteur {
         try{
             Scanner sc = new Scanner ( new FileInputStream ( adresse ) );
 
+            char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
                 String ligne = sc.nextLine();
+                /*for (char c:ligne.toCharArray()) {
+                    if(c == '?' && charPrecedent == '?'){
+
+                    charPrecedent = c;
+                    }*/
+
                 fichier.add(ligne);
             }
             sc.close();
