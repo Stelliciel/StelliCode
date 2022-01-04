@@ -15,14 +15,22 @@ public class AfficheCode {
         this.arrString =arrString;
     }
 
-    private Ansi getLig(int num){
-        if(num <= this.arrString.size()){
-            return  (ansi().fgRgb(0,255,254).a(arrString.get(num)).reset());}
-        else
-            return null;
+    private Ansi getLig(int num,int ligEnCours) {
+        if (num <= arrString.size()) {
+            if (num == ligEnCours) {
+                return (ansi().fgRgb(0, 255, 255).a(arrString.get(num)).reset().a("").fgRgb(255,0,255).a("oui").reset().a("").fgRgb(5,47,245).a("non").reset());
+            } else {
+                return (ansi().a(arrString.get(num)).reset());
+            }
+        } else {
+            return (ansi().a(" ").reset());
+        }
+    }
+    public String affLig(int num, int ligEnCours){
+        return String.format("%" +nbChiffreSign + "d ",num+1) + this.getLig(num,ligEnCours);
     }
 
-    public String affLig(int num){
-        return String.format("%" +nbChiffreSign + "d ",num+1) + this.getLig(num);
+    public  int getTaille(int num){
+        return  arrString.get(num).length();
     }
 }
