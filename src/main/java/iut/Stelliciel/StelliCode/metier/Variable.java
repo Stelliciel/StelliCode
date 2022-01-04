@@ -1,4 +1,5 @@
 package iut.Stelliciel.StelliCode.metier;
+
 /**
  * @author Gaspard Gordien , Benjamin Cléon, Raphaël Lizot
  * @version 3
@@ -7,29 +8,83 @@ package iut.Stelliciel.StelliCode.metier;
 public class Variable<E>
 {
     private final String nom;
-    private String type;
+    private final String type;
     private E valeur;
+    private Object[] tabValeur;
 
     /**constructeur d'une variable
      * @param nom le nom est un string
-     * @param valeur valeur de n'importe quel type primitif (int,double,booléen,charactere,chaine de caractere)
+     * @param type le type de primitif de la valeur
+     * @param valeur valeur de n'importe quel type primitif (int, double, booléen, character, chaine de character)
      */
-    Variable( String nom, String type, E valeur )
+    public Variable( String nom, String type, E valeur )
     {
         this.type   = type;
         this.nom    = nom;
         this.valeur = valeur;
     }
 
-    /**@return le string pour rentrer dans le tableau affichTab
+    /**constructeur d'une variable
+     * @param nom le nom est un string
+     * @param type le type de primitif du tableau
+     * @param taille taille du tableau
+     */
+    public Variable (String nom, int taille, String type ){
+        this.nom = nom;
+        this.type = type;
+        this.tabValeur = new Object[taille];
+    }
+
+    /**@return le string de variable
      */
     public String toString()
     {
-        String sRep = "";
+        String sRep = nom + ": ";
 
-        sRep = nom + ": " + valeur;
+        if ( estTableau() ){
+            sRep += "[";
+            StringBuilder sRepBuilder = new StringBuilder(sRep);
+            for(Object o : tabValeur) sRepBuilder.append(o).append(",");
+            sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
+            sRep = sRepBuilder.toString();
+            sRep += "]";
+        }
+        else
+            sRep += valeur;
 
         return sRep;
+    }
+
+    /** Change la valeur à l'indice donner
+     * @param ind indice
+     * @param valeur la nouvelle valeur
+     */
+    public void setIndTab(int ind, E valeur)
+    {
+        if ( estTableau() )
+        {
+            tabValeur[ind] = valeur;
+        }
+    }
+
+    /** Recupere la valeur de l'indice entrée
+     * @param ind indice
+     */
+    public E getIndTab(int ind){
+        if (estTableau())
+        {
+            if ( ind < tabValeur.length )
+                return (E) this.tabValeur[ind];
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Return si la variable est un tableau
+     */
+    private boolean estTableau() {
+        return type.startsWith("tab");
     }
 
     /**
@@ -47,7 +102,12 @@ public class Variable<E>
     /**
      * @return la valeur de la variable
      */
-    public E getVal(){return this.valeur;}
+    public Object getVal(){
+        if (estTableau())
+            return tabValeur;
+        else
+            return this.valeur;
+    }
 
     /** change la valeur
      * @param val nouvelle valeur de la variable
