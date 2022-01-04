@@ -126,7 +126,7 @@ public class Interpreteur {
     public static ArrayList<String> lireFichier(String adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
-            Scanner sc = new Scanner ( new FileInputStream ( adresse ), "UTF8" );
+            Scanner sc = new Scanner ( new FileInputStream ( adresse ) );
 
             while ( sc.hasNextLine() ) {
                 String ligne = sc.nextLine();
