@@ -20,7 +20,7 @@ public class CUI {
         this.affTabVar   = new AfficheTab();
         this.affConsole  = new AfficheConsole();
         this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
-        this.numLig1     = 1;
+        this.numLig1     = 0;
     }
 
     public void scroll(int num){
@@ -46,6 +46,26 @@ public class CUI {
     }
 
     private void affLig(int numLig){
-        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + String.format("%-51s",this.affCode.affLig(numLig)) +"|")
+        System.out.println("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(String.format("%-50s ",this.affCode.affLig(numLig)))+"|");
+    }
+
+    private static String corrigeCharSpe(String in){
+        String add = "";
+        int cptA, cptF;
+        cptA  = cptF = 0;
+        for (char c:in.toCharArray()){
+            if(c == '\uF0DF'){
+                cptF++;
+                if (cptF % 3 == 0) {
+                    add += "  ";}
+                }
+            else if (c != '\uF0DF' && (int) c > 127) {
+                cptA++;
+                if (cptA % 2 == 0) {
+                    add += " ";
+                }
+            }
+        }
+        return in + add;
     }
 }

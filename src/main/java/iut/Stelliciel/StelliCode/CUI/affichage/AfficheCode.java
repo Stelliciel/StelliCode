@@ -19,6 +19,6 @@ public class AfficheCode {
     }
 
     public String affLig(int num){
-        return String.format("%" +nbChiffreSign + "d",num) + " " + this.getLig(num);
+        return String.format("%" +nbChiffreSign + "d ",num+1) + this.getLig(num);
     }
 }
