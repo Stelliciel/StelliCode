@@ -15,7 +15,7 @@ public class Variable<E>
     /**constructeur d'une variable
      * @param nom le nom est un string
      * @param type le type de primitif de la valeur
-     * @param valeur valeur de n'importe quel type primitif (int, double, booléen, character, chaine de character)
+     * @param valeur valeur de n'importe quel type primitif (int, double, booléen, caractere, chaine de caractere)
      */
     public Variable( String nom, String type, E valeur )
     {
@@ -23,6 +23,12 @@ public class Variable<E>
         this.nom    = nom;
         this.valeur = valeur;
     }
+
+    public Variable(String nom, String type){
+        this.type   = type;
+        this.nom    = nom;
+    }
+
 
     /**constructeur d'une variable
      * @param nom le nom est un string
@@ -39,19 +45,22 @@ public class Variable<E>
      */
     public String toString()
     {
-        String sRep = nom + ": ";
+        String sRep = nom + "=";
 
         if ( estTableau() ){
             sRep += "[";
+
             StringBuilder sRepBuilder = new StringBuilder(sRep);
             for(Object o : tabValeur) sRepBuilder.append(o).append(",");
             sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
             sRep = sRepBuilder.toString();
+
             sRep += "]";
         }
         else
             sRep += valeur;
 
+        sRep += ":" + type;
         return sRep;
     }
 
@@ -78,7 +87,7 @@ public class Variable<E>
      * @return Return si la variable est un tableau
      */
     private boolean estTableau() {
-        return type.startsWith("tab");
+        return this.tabValeur != null;
     }
 
     /**

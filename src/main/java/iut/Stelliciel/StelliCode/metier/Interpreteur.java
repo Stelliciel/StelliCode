@@ -9,16 +9,103 @@ import java.io.FileInputStream;
 
 public class Interpreteur {
 
-    private ArrayList<String> fichier;
+    private final ArrayList<String> fichier;
     private final Main ctrl;
     private final HashMap<String, Variable<Object>> lstConstantes;
     private final HashMap<String, Variable<Object>> lstVariables;
+    private String signature;
 
     public Interpreteur(Main ctrl, String adresseFichier) {
         this.ctrl    = ctrl;
         this.fichier = Interpreteur.lireFichier(adresseFichier);
         lstConstantes = new HashMap<>();
         lstVariables  = new HashMap<>();
+
+        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
+        initialisationFichier();
+
+        System.out.println("Signature : " + signature);
+        lstConstantes.forEach((k,v) -> {
+            System.out.println("Nom de la constante : "+k+"\t || " + v);
+        });
+        lstVariables.forEach((k,v) -> {
+            System.out.println("Nom de la variable  : "+k+"\t || " + v);
+        });
+    }
+
+    private void initialisationFichier() {
+        int cpt =0;
+        while ( !fichier.get(cpt).equals("DEBUT") ) {
+            String[] mots = fichier.get(cpt).split(" ");
+
+            switch (mots[0]){
+                case "ALGORITHME" -> { signature = mots[1]; }
+                case "constante:" -> { cpt = ajouterConstante(cpt);}
+                case "variable:"  -> { cpt = ajouterVariables(cpt);}
+            }
+
+            if( !fichier.get(cpt).equals("DEBUT"))
+                cpt++;
+        }
+    }
+
+    private int ajouterConstante(int cpt) {
+        String ligne = fichier.get(++cpt);
+
+        while ( !(ligne.equals("DEBUT") || ligne.equals("variable:"))){
+            String[] mots = ligne.replaceAll(" ", "").split("<--");
+            String valeur = mots[1];
+            String nom    = mots[0];
+
+            addConstante(nom,getType(valeur),valeur);
+
+            ligne = fichier.get(++cpt);
+        }
+
+        return cpt-1;
+    }
+    private int ajouterVariables(int cpt) {
+        String ligne = fichier.get(++cpt);
+
+        while ( !ligne.equals("DEBUT") ){
+            String[] mots = ligne.split(":");
+            String[] variables = mots[0].replaceAll(" ", "").split(",");
+            String type = mots[1];
+
+            if ( type.contains("tableau") ){
+                String tailleTab = type.substring(type.indexOf('[')+1,type.indexOf(']'));
+                String typeTab   = "";
+                if (type.contains("entier")    ) typeTab  = "entier";
+                if (type.contains("reel")      ) typeTab  = "reel";
+                if (type.contains("boolean")   ) typeTab = "boolean";
+                if (type.contains("caracteres") ) typeTab = "caractere";
+                if (type.contains("chaine")    ) typeTab = "chaine";
+
+                if ( lstConstantes.containsKey(tailleTab) ) {
+                    addTableau(false,variables[0],typeTab,String.valueOf(lstConstantes.get(tailleTab).getVal()));
+                }
+                else {
+                    addTableau(false,variables[0],typeTab, tailleTab);
+                }
+            }
+            else {
+                for ( String nom : variables ){
+                    addVariable(nom, type.replaceAll(" ", ""));
+                }
+            }
+
+            ligne = fichier.get(cpt++);
+        }
+
+        return cpt-1;
+    }
+    private String getType(String valeur){
+        if ( valeur.contains(".,")) return "reel";
+        if ( valeur.equals("vrai") || valeur.equals("faux") ) return "boolean";
+        if ( valeur.matches("^\\d+$")) return "entier";
+        if ( valeur.length() == 1 ) return "caractere";
+
+        return "chaine";
     }
 
     /*-----------------------*/
@@ -29,7 +116,7 @@ public class Interpreteur {
     public int                               getNbChiffre()     { return (this.fichier.size()+"").length(); }
 
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
-    public void addVariable(String nom, String type, String valeur) { lstVariables.put(nom, get(nom, type, valeur) );  }
+    public void addVariable(String nom, String type) { lstVariables .put(nom, new Variable<>(nom, type) );  }
     public void addTableau(boolean constante, String nom, String type, String taille) {
         if ( constante )
             lstConstantes.put(nom, new Variable<>(nom,Integer.parseInt(taille),type));
@@ -61,7 +148,7 @@ public class Interpreteur {
     private static Object convertitValeur(String type, String valeur){
         switch (type){
             case "entier"    -> { return Integer.parseInt(valeur);     }
-            case "character" -> { return valeur.charAt(0);             }
+            case "caractere" -> { return valeur.charAt(0);             }
             case "boolean"   -> { return Boolean.parseBoolean(valeur); }
             case "reel"      -> { return Double.parseDouble(valeur);   }
             default          -> { return valeur;                       }
@@ -75,7 +162,7 @@ public class Interpreteur {
                 var.setVal(val);
             }
 
-            case "character" -> { char val = valeur.charAt(0);
+            case "caractere" -> { char val = valeur.charAt(0);
                 var.setVal(val);
             }
 
@@ -98,7 +185,7 @@ public class Interpreteur {
                 var = new Variable<>(nom,type, val);
             }
 
-            case "character" -> {
+            case "caractere" -> {
                 char val = valeur.charAt(0);
                 var = new Variable<>(nom,type, val);
             }
@@ -116,7 +203,6 @@ public class Interpreteur {
             }
         }
 
-        System.out.println("Creation variable : " + var);
         return var;
     }
     /* Fin gestion des variables */
@@ -126,7 +212,7 @@ public class Interpreteur {
     public static ArrayList<String> lireFichier(String adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
-            Scanner sc = new Scanner ( new FileInputStream ( adresse ) );
+            Scanner sc = new Scanner(new FileInputStream(adresse));
 
             char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
@@ -145,17 +231,8 @@ public class Interpreteur {
         return fichier;
     }
 
+
     public static void main(String[] args) {
-        Interpreteur i = new Interpreteur(null, "C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo");
 
-        i.addConstante("TAILLE", "entier", "10");
-        i.addTableau(false, "tabInt", "entier", String.valueOf(i.getConstante("TAILLE")));
-
-        i.setTableau("tabInt",0,"69");
-
-        System.out.println( i.getIndTableau("tabInt",0) );
-        System.out.println( i.getIndTableau("tabInt",1) );
     }
-
-
 }
