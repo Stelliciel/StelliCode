@@ -64,6 +64,17 @@ public class LectureCouleur {
         }
     }
 
+    public Couleur getCouleur (String nom){
+
+        for(Couleur c : lstCouleur)
+        {
+            if (c.getNom().equals(nom))
+                return  c;
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
         new LectureCouleur();
     }
