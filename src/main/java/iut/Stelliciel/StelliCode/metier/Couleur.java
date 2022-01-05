@@ -9,9 +9,9 @@ public class Couleur {
     public String  getNom     (){ return nom;      }
     public String  getCoulTxt (){ return coulTxt;  }
     public String  getCoulFond(){ return coulFond; }
-    public int     getValR    (){ return valR;     }
-    public int     getValG    (){ return valG;     }
-    public int     getValB    (){ return valB;     }
+    public int     getValRFond(){ return valR;     }
+    public int     getValGFond(){ return valG;     }
+    public int     getValBFond(){ return valB;     }
     public boolean estGras    (){ return gras;     }
 
     public void setNom     (String  nom ) { this.nom      = nom;  }
