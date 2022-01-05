@@ -80,7 +80,36 @@ public class CUI {
     }
 
     public void proposeChoix(){
+        String inUser = Main.saisie();
 
+        if(inUser.equals("m")) {
+            if (ligEnCour != affCode.getTaillePro() - 1) {
+                //controlleur.prochaineLig();
+                this.ligEnCour++;
+            }
+        }else if(inUser.equals("b")) {
+            if(ligEnCour != 0){
+                //controlleur.LignePre();
+                this.ligEnCour--;}
+        }else if (inUser.substring(4).equals("+ bk")) {
+            if (inUser.substring(5).matches("\\D+") || Integer.parseInt(inUser.substring(5)) > affCode.getTaillePro()) {
+                System.out.println("entrer un nombre inférieur au nombre de ligne");}
+            else{
+                    //addBK(Integer.parseInt(inUser.substring(5)));
+                    // controlleur.addBK(Integer.parseInt(inUser.substring(5)));
+            }
+        }
+
+        //point d'arret +/-/go bk (x/x/)
+        //quitter       q
+        //pas a pas     entrée
+        //pas arriere   b
+        //ligne précise Lx
+        //stop boucle itteration l-x
+        //detail        det var Nom
+        //    copie det    pp
+        //    quiter       entrée
+        //trace
     }
 
     public void majConsole(){
