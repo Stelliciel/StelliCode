@@ -17,14 +17,10 @@ public class LectureCouleur {
         Document document;
         File fichierXML = new File("src/main/resources/coloration.xml");
         SAXBuilder sxb  = new SAXBuilder();
-        lstCouleur      = new ArrayList<Couleur>();
+        lstCouleur      = new ArrayList<>();
 
         try {
-            System.out.println("1");
-            document = sxb.build(fichierXML);
-            System.out.println("2");
-            racine   = document.getRootElement();
-            System.out.println("3");
+            racine = sxb.build(fichierXML).getRootElement();
             chargerCouleur();
 
             for(Couleur c : lstCouleur)
@@ -41,23 +37,22 @@ public class LectureCouleur {
 
         for(Element e:lstElement)
         {
+            lstCouleur.add(new Couleur());
+            lstCouleur.get(lstCouleur.size()-1).setNom(e.getAttributeValue("type"));
+
             List<Element> lstCouleurTexte = e.getChildren("couleurTexte");
             List<Element> lstCouleurFond  = e.getChildren("couleurFond" );
             List<Element> lstPoids        = e.getChildren("poids"       );
-            lstCouleur.add(new Couleur());
-            lstCouleur.get(lstCouleur.size()-1).setNom(e.getAttributeValue("type"));
-            //continuer ça
 
             for (Element t : lstCouleurTexte) {
                 lstCouleur.get(lstCouleur.size()-1).setCoulTxt (t.getAttributeValue("nom"));
-                lstCouleur.get(lstCouleur.size()-1).setCoulFond(t.getAttributeValue("nom"));
-                lstCouleur.get(lstCouleur.size()-1).setValR   (Integer.parseInt(t.getAttributeValue("valeurR")));
-                lstCouleur.get(lstCouleur.size()-1).setValG   (Integer.parseInt(t.getAttributeValue("valeurG")));
-                lstCouleur.get(lstCouleur.size()-1).setValB   (Integer.parseInt(t.getAttributeValue("valeurB")));
+                lstCouleur.get(lstCouleur.size()-1).setValR    (Integer.parseInt(t.getAttributeValue("valeurR")));
+                lstCouleur.get(lstCouleur.size()-1).setValG    (Integer.parseInt(t.getAttributeValue("valeurG")));
+                lstCouleur.get(lstCouleur.size()-1).setValB    (Integer.parseInt(t.getAttributeValue("valeurB")));
             }
 
             for (Element f : lstCouleurFond) {
-                lstCouleur.get(lstCouleur.size()-1).setCoulTxt(f.getAttributeValue("nom"));
+                lstCouleur.get(lstCouleur.size()-1).setCoulFond(f.getAttributeValue("nom"));
                 lstCouleur.get(lstCouleur.size()-1).setValR   (Integer.parseInt(f.getAttributeValue("valeurR")));
                 lstCouleur.get(lstCouleur.size()-1).setValG   (Integer.parseInt(f.getAttributeValue("valeurG")));
                 lstCouleur.get(lstCouleur.size()-1).setValB   (Integer.parseInt(f.getAttributeValue("valeurB")));
