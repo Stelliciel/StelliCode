@@ -28,7 +28,7 @@ public class CUI {
         this.affConsole  = new AfficheConsole();
         this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
         this.numLig1     = 0;
-        this.ligEnCour  = 0;
+        this.ligEnCour   = 0;
     }
 
     public void nextLigne(){
@@ -77,17 +77,28 @@ public class CUI {
     }
 
     private static String corrigeCharSpe(String in){
-        StringBuilder add = new StringBuilder();
-        int cpt;
-        cpt = 0;
-        for (char c:in.toCharArray()){
-            if ((int) c > 127) {
-                cpt++;
-                if (cpt % 2 == 0) {
-                    add.append(" ");
+        try{
+            String operatingSystem = System.getProperty("os.name").toLowerCase();
+
+            if(operatingSystem.contains("win")){
+                StringBuilder add = new StringBuilder();
+                int cpt;
+                cpt = 0;
+                for (char c:in.toCharArray()){
+                    if ((int) c > 127) {
+                        cpt++;
+                        if (cpt % 2 == 0) {
+                            add.append(" ");
+                        }
+                    }
                 }
+                return in + add;
+            } else {
+                return  in;
             }
+        }catch(Exception e){
+            System.out.println(e);
         }
-        return in + add;
+        return in;
     }
 }
