@@ -15,7 +15,17 @@ public class Parcours {
         this.lecteur  = new ArrayList<>();
     }
 
+    public ArrayList<EtatLigne> getLecteur() {
+        return lecteur;
+    }
+
     public void nouvelleEtat(EtatLigne etatLigne){
+        if ( !lecteur.isEmpty() ){
+            ArrayList<String> traceAlgo = lecteur.get( lecteur.size() -1 ).getTraceAlgo();
+
+            if ( traceAlgo != null )
+                for(String ligne : traceAlgo ) etatLigne.setTraceAlgo( ligne );
+        }
         lecteur.add(etatLigne);
     }
 

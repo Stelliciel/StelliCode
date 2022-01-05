@@ -4,6 +4,7 @@ import iut.Stelliciel.StelliCode.Main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 import java.io.FileInputStream;
 
@@ -44,11 +45,65 @@ public class Interpreteur {
         for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++) System.out.println("->"+fichier.get(cpt));
 
         parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
+
+        while( cpt < fichier.size() ){
+            String ligne = fichier.get(cpt);
+
+            traiter(cpt, ligne );
+
+
+            cpt++;
+        }
+    }
+
+    private void traiter(int numLigne, String ligne){
+
+        if( ligne.contains("<--") ){
+            String[] separation = Fonction.affectation(ligne);
+
+            System.out.println("nom:" + separation[0]);
+            System.out.println("valeur:" + separation[1]);
+
+            if( separation.length == 3 ) {
+                System.out.println("index:" + separation[2]);
+                setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
+            }
+            else {
+                setVariable(separation[0], separation[1]);
+            }
+
+            parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
+        }
+        else if ( ligne.contains("écrire") ) {
+            String ecrire  = Fonction.entreParenthese(ligne);
+            String afficher= Fonction.entreGuillemet(ecrire);
+
+            if( ecrire.contains("\",") ){
+                String variable = ecrire.substring( ecrire.indexOf(",")+1 ).trim();
+                EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
+
+                if ( estConstante( variable) )
+                    etatLigne.setTraceAlgo(afficher+getConstante(variable));
+                else
+                    etatLigne.setTraceAlgo(afficher+getVariable(variable));
+
+                parcours.nouvelleEtat(etatLigne);
+            }
+            else {
+                EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
+                etatLigne.setTraceAlgo(afficher);
+                parcours.nouvelleEtat(etatLigne);
+            }
+        }
+
+
     }
 
     private EtatLigne nouvelleEtatLigne(int numLigne){
         return new EtatLigne(signature, lstConstantes, lstVariables, numLigne);
     }
+
+    public Parcours getParcours() { return parcours; }
     /* Fin lecture fichier*/
     /*--------------------*/
 
@@ -159,8 +214,13 @@ public class Interpreteur {
             return lstVariables.get(nom).getIndTab(ind);
     }
 
-    public void setVariable(String nom, String valeur)          { Interpreteur.set(lstVariables.get(nom), valeur);  }
+    public void setVariable(String nom, String valeur)          {
+        if ( valeur.contains("\""))
+            valeur = Fonction.entreGuillemet(valeur);
+        Interpreteur.set(lstVariables.get(nom), valeur);  }
     public void setTableau (String nom, int ind, String valeur) {
+        if ( valeur.contains("\""))
+            valeur = Fonction.entreGuillemet(valeur);
         Variable<Object> v;
         if ( estConstante(nom) )
             v = lstConstantes.get(nom);
@@ -260,5 +320,15 @@ public class Interpreteur {
 
     public static void main(String[] args) {
 
+        Interpreteur t = new Interpreteur(null, "C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo");
+
+        ArrayList<EtatLigne> lecteur = t.getParcours().getLecteur();
+
+        for(int cpt = 0; cpt < lecteur.size(); cpt++){
+            EtatLigne e = lecteur.get(cpt);
+            System.out.println( e.getNumLigne() + " " + t.getCode().get(e.getNumLigne()) );
+
+            System.out.println("\nTrace : " + e.getTraceAlgo());
+        }
     }
 }

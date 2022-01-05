@@ -109,27 +109,43 @@ public class Fonction {
         return res;
     }
 
-    private String entreParenthese(String str)
+    public static String entreParenthese(String str)
     {
-        boolean contenu = false;
-        String res="";
+        return str.substring( str.indexOf("(")+1, str.indexOf(")") ).trim();
+    }
 
-        for(int ind=0;ind+1<str.length()+1;ind++)
-        {
-            if(str.substring(ind,ind+1).equals("( "))
-                contenu = true;
+    public static String entreGuillemet(String str)
+    {
+        return str.substring( str.indexOf("\"")+1, str.lastIndexOf("\"") ).trim();
+    }
 
-            if(contenu) {
-                while (str.substring(ind,ind+1).equals(" )"))
-                {
-                    res += str.charAt(ind);
-                    ind++;
-                }
 
-                return res;
-            }
+    public static String[] affectation(String ligne) {
+
+        if ( ligne.contains("[") ){
+            String[] affectation = new String[3];
+            ligne = ligne.replaceAll(" ", "");
+            affectation[0] = ligne.substring(0,ligne.indexOf("["));
+            affectation[1] = ligne.substring(ligne.indexOf("<--")+3 );
+            affectation[2] = ligne.substring(ligne.indexOf("[")+1, ligne.indexOf("]"));
+
+            return affectation;
         }
+        else
+            return ligne.replaceAll(" ", "").split("<--");
+    }
 
-        return null;
+
+    public static void main(String[] args) {
+        String[] test = affectation("tab[1] <-- 5");
+        System.out.println("taille:" + test.length);
+        for(String t : test ) System.out.println(t);
+
+        test = affectation( "s <-- \"chaine\"");
+        System.out.println("taille:" + test.length);
+        for(String t : test ) System.out.println(t);
+
+
+        System.out.println( Fonction.entreGuillemet( "\"chaine\""));
     }
 }
