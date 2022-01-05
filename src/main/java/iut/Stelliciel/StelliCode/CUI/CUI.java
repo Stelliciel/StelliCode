@@ -79,6 +79,10 @@ public class CUI {
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
+    public void proposeChoix(){
+
+    }
+
     public void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();

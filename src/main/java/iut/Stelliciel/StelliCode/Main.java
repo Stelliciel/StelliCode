@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Scanner;
 
 /**
  *
@@ -25,13 +26,12 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        //ihm.majConsole();
         System.out.println("Donnez le chemin absolue de votre fichier .algo");
         String adresse = "../resources/main/Code.algo";
         metier = new Interpreteur(this, "../resources/main/Code.algo");
         ihm    = new CUI(this);
         ihm.afficher();
-        //proposeChoix()
+        ihm.proposeChoix();
         //point d'arret +/-/go bk (x/x/)
         //quitter       q
         //pas a pas     entrée
@@ -67,6 +67,12 @@ public class Main {
 
     public int getNbChiffre() {
         return  metier.getNbChiffre();
+    }
+
+    public static String saisie()
+    {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
     }
 
     public static void main(String[] args) {
