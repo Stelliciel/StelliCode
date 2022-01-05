@@ -16,7 +16,7 @@ public class Interpreteur {
     private final HashMap<String, Variable<Object>> lstVariables;
     private final Parcours parcours;
     private String signature;
-    private final static LectureCouleur lectureCouleur = new LectureCouleur();
+    public final static LectureCouleur lectureCouleur = new LectureCouleur();
 
     public Interpreteur(Main ctrl, String adresseFichier) {
         this.ctrl           = ctrl;
