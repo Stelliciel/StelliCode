@@ -1,5 +1,6 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EtatLigne {
@@ -12,6 +13,7 @@ public class EtatLigne {
     private boolean lecture;
 
     private final int     numLigne;
+    private ArrayList<String> traceAlgo;
 
     public EtatLigne(String signature, HashMap<String, Variable<Object>> lstConstantes,
                      HashMap<String, Variable<Object>> lstVariables, int numLigne) {
@@ -19,6 +21,17 @@ public class EtatLigne {
         this.lstConstantes = copyVariable(lstConstantes);
         this.lstVariables  = copyVariable(lstVariables);
         this.numLigne = numLigne;
+        this.traceAlgo = new ArrayList<>();
+    }
+
+    public void setTraceAlgo(String trace){
+        this.traceAlgo.add(trace);
+    }
+
+    public ArrayList<String> getTraceAlgo(){
+        if (traceAlgo.isEmpty())
+            return null;
+        return traceAlgo;
     }
 
     public void setCondition(boolean condition) {
