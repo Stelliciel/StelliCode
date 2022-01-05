@@ -10,7 +10,7 @@ public class LectureCouleur {
     private int valR,valG,valB;
 
     private Element racine;
-    private List<Couleur> lstCouleur;
+    private static List<Couleur> lstCouleur;
 
     public LectureCouleur()
     {
@@ -64,7 +64,7 @@ public class LectureCouleur {
         }
     }
 
-    public Couleur getCouleur (String nom){
+    public static Couleur getCouleur (String nom){
 
         for(Couleur c : lstCouleur)
         {
