@@ -31,17 +31,11 @@ public class Main {
         metier = new Interpreteur(this, "../resources/main/Code.algo");
         ihm    = new CUI(this);
         ihm.afficher();
-        ihm.proposeChoix();
-        //point d'arret +/-/go bk (x/x/)
-        //quitter       q
-        //pas a pas     entrée
-        //pas arriere   b
-        //ligne précise Lx
-        //stop boucle itteration l-x
-        //detail        det var Nom
-        //    copie det    pp
-        //    quiter       entrée
-        //trace
+        String sUser = "-1";
+        while (sUser != "q"){
+            ihm.proposeChoix();
+            ihm.afficher();
+        }
 
         /*
         ihm.demander.doc

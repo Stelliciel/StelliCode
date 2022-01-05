@@ -1,5 +1,8 @@
 package iut.Stelliciel.StelliCode.CUI.affichage;
 
+import iut.Stelliciel.StelliCode.metier.Couleur;
+import iut.Stelliciel.StelliCode.metier.Interpreteur;
+import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import org.fusesource.jansi.Ansi;
 
 import java.util.ArrayList;
@@ -15,10 +18,14 @@ public class AfficheCode {
         this.arrString =arrString;
     }
 
+    public  int getTaillePro(){
+        return this.arrString.size();
+    }
+
     private Ansi getLig(int num,int ligEnCours) {
         if (num <= arrString.size()) {
             if (num == ligEnCours) {
-                return (ansi().bgRgb(0, 255, 255).a(arrString.get(num)).reset().bgRgb(255,255,255).fgRgb(0,0,0));
+                return (ansi().bgRgb(Interpreteur.lectureCouleur.getCouleur("ligneEnCour").getValRFond(),Interpreteur.lectureCouleur.getCouleur("ligneEnCour").getValGFond(),Interpreteur.lectureCouleur.getCouleur("ligneEnCour").getValBFond()).a(arrString.get(num)).reset().bgRgb(255,255,255).fgRgb(0,0,0));
             } else {
                 return (ansi().a(arrString.get(num)).reset().bgRgb(255,255,255).fgRgb(0,0,0));
             }
