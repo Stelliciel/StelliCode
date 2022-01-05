@@ -4,9 +4,19 @@ import iut.Stelliciel.StelliCode.CUI.affichage.AfficheCode;
 import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
+import iut.Stelliciel.StelliCode.metier.Variable;
+import org.fusesource.jansi.Ansi;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import  java.lang.ProcessBuilder;
+import  java.lang.Process;
+import java.util.Scanner;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 public class CUI {
     private final Main controlleur;
@@ -23,7 +33,33 @@ public class CUI {
         this.affConsole  = new AfficheConsole();
         this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
         this.numLig1     = 0;
-        this.ligEnCour  = 0;
+        this.ligEnCour   = 0;
+    }
+
+    public static String adaptTxt(String in){
+        if(in.length()<10){return  in;}
+        else{
+            return in.substring(0,4)+".."+in.substring(in.length()-3,in.length()-1);
+        }
+    }
+
+    public void demandeVars(){
+        this.afficher();
+        System.out.println("Quelles variables voulez vous suivre?");
+        HashMap<String ,Variable<Object>> lstVar = controlleur.getVariables();
+        StringBuilder sRep = new StringBuilder();
+        int numVar = 1;
+        for(String nom : lstVar.keySet()){
+            if(numVar % 5 == 1 ){
+                sRep.append('\n');}
+            sRep.append(numVar).append(" ").append(CUI.adaptTxt(nom)).append("  ");
+            numVar ++;
+        }
+        System.out.println(sRep);
+        try {
+            Scanner sc = new Scanner(System.in);
+        }
+        catch (Exception e){e.printStackTrace();}
     }
 
     public void nextLigne(){
@@ -35,58 +71,65 @@ public class CUI {
     }
 
     public void afficher(){
-        System.out.println("________________________________________________________________________________");
+        StringBuilder affichage = new StringBuilder();
+        affichage.append("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             if ( i < controlleur.getCode().size() )
-                this.affLig(i,this.ligEnCour);
+                affichage.append(this.affLig(i, this.ligEnCour));
         }
-        System.out.println("________________________________________________________________________________\n\nconsole\n________________________________________________________________________________\n");
-        System.out.println(this.affConsole);
+        affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
+        affichage.append(this.affConsole);
+        this.majConsole();
+        System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
     private void majConsole(){
-        try {
-            Runtime.getRuntime().exec(System.getProperty("os.name").contains("win")?"cls":"clear");
-        } catch (IOException e) {
-            e.printStackTrace();
+        try{
+            String operatingSystem = System.getProperty("os.name").toLowerCase();
+
+            if(operatingSystem.contains("win")){
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
+            } else {
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            }
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
 
-    private void affLig(int numLig,int ligEncour){
+    private String affLig(int numLig, int ligEncour){
         String espace = " ";
-        System.out.print(("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(this.affCode.affLig(numLig,ligEncour))));
-        System.out.println(espace.repeat(80-this.affCode.getTaille(numLig))+"|");
+        return ("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }
 
     private static String corrigeCharSpe(String in){
-        StringBuilder add = new StringBuilder();
-        int cpt;
-        cpt = 0;
-        for (char c:in.toCharArray()){
-            if ((int) c > 127) {
-                cpt++;
-                if (cpt % 2 == 0) {
-                    add.append(" ");
+        try{
+            String operatingSystem = System.getProperty("os.name").toLowerCase();
+
+            if(operatingSystem.contains("win")){
+                StringBuilder add = new StringBuilder();
+                int cpt;
+                cpt = 0;
+                for (char c:in.toCharArray()){
+                    if ((int) c > 127) {
+                        cpt++;
+                        if (cpt % 2 == 0) {
+                            add.append(" ");
+                        }
+                    }
                 }
+                return in + add;
+            } else {
+                return  in;
             }
+        }catch(Exception e){
+            System.out.println(e);
         }
-        return in + add;
+        return in;
     }
-
-    private static String corrigeCouleur(String in){
-        String add ="";
-        int nbCouleur = (in.length() - in.replace("\u001B","").length());
-        System.out.println(nbCouleur);
-        if(nbCouleur == 1){nbCouleur--;}
-        else {nbCouleur = nbCouleur/2;}
-
-        int i =0;
-        while(i < nbCouleur){
-            add += "";
-            i++;
-        }
-        return in + add;
-    }
-    /*add += "                 ";
-    add += "                    ";*/
 }

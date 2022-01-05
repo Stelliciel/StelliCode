@@ -116,4 +116,15 @@ public class Variable<E>
      * @param val nouvelle valeur de la variable
      */
     public void setVal(E val){ this.valeur = val;}
+
+    private Variable(String nom, String type, E[] tabValeur){
+        this.nom =nom;
+        this.type=type;
+        this.tabValeur = tabValeur;
+    }
+
+    public static Variable copy(Variable v){
+
+        return new Variable(v.getNom(), v.getType(), v.getVal());
+    }
 }
