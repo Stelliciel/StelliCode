@@ -7,8 +7,11 @@ import org.fusesource.jansi.AnsiConsole;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Scanner;
 
 /**
  *
@@ -17,19 +20,43 @@ import java.util.HashMap;
 public class Main {
     private final Interpreteur metier;
     private final CUI ihm;
+    private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
+    private static Main instance;
 
     public Main() {
+        instance = this;
         AnsiConsole.systemInstall();
-        try {
-            new FileOutputStream("test.algo");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Donnez le chemin absolue de votre fichier .algo");
+        String adresse = "../resources/main/Code.algo";
         metier = new Interpreteur(this, "../resources/main/Code.algo");
-        //metier = new Interpreteur(this, "src/main/resources/Code.algo");
         ihm    = new CUI(this);
-
         ihm.afficher();
+        ihm.proposeChoix();
+        //point d'arret +/-/go bk (x/x/)
+        //quitter       q
+        //pas a pas     entrée
+        //pas arriere   b
+        //ligne précise Lx
+        //stop boucle itteration l-x
+        //detail        det var Nom
+        //    copie det    pp
+        //    quiter       entrée
+        //trace
+
+        /*
+        ihm.demander.doc
+        new interpretteur()
+        new ihm()
+
+        si demander.doc
+        new interpretteur()
+        new ihm()
+
+        */
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 
     public ArrayList<String> getCode(){
@@ -40,6 +67,12 @@ public class Main {
 
     public int getNbChiffre() {
         return  metier.getNbChiffre();
+    }
+
+    public static String saisie()
+    {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
     }
 
     public static void main(String[] args) {

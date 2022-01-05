@@ -4,12 +4,17 @@ import iut.Stelliciel.StelliCode.CUI.affichage.AfficheCode;
 import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
+import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import  java.lang.ProcessBuilder;
 import  java.lang.Process;
+import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -29,6 +34,28 @@ public class CUI {
         this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
         this.numLig1     = 0;
         this.ligEnCour   = 0;
+    }
+
+    public static String adaptTxt(String in){
+        if(in.length()<10){return  in;}
+        else{
+            return in.substring(0,4)+".."+in.substring(in.length()-3,in.length()-1);
+        }
+    }
+
+    public void demandeVars(){
+        this.afficher();
+        System.out.println("Quelles variables voulez vous suivre?");
+        HashMap<String ,Variable<Object>> lstVar = controlleur.getVariables();
+        StringBuilder sRep = new StringBuilder();
+        int numVar = 1;
+        for(String nom : lstVar.keySet()){
+            if(numVar % 5 == 1 ){
+                sRep.append('\n');}
+            sRep.append(numVar).append(" ").append(CUI.adaptTxt(nom)).append("  ");
+            numVar ++;
+        }
+        System.out.println(sRep);
     }
 
     public void nextLigne(){
@@ -52,7 +79,11 @@ public class CUI {
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
-    private void majConsole(){
+    public void proposeChoix(){
+
+    }
+
+    public void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -73,32 +104,6 @@ public class CUI {
 
     private String affLig(int numLig, int ligEncour){
         String espace = " ";
-        return ("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
-    }
-
-    private static String corrigeCharSpe(String in){
-        try{
-            String operatingSystem = System.getProperty("os.name").toLowerCase();
-
-            if(operatingSystem.contains("win")){
-                StringBuilder add = new StringBuilder();
-                int cpt;
-                cpt = 0;
-                for (char c:in.toCharArray()){
-                    if ((int) c > 127) {
-                        cpt++;
-                        if (cpt % 2 == 0) {
-                            add.append(" ");
-                        }
-                    }
-                }
-                return in + add;
-            } else {
-                return  in;
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return in;
+        return ("| "+ this.affTabVar.affLig(numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }
 }

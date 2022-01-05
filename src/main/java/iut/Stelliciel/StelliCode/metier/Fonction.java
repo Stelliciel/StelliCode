@@ -3,6 +3,7 @@ package iut.Stelliciel.StelliCode.metier;
 import iut.Stelliciel.StelliCode.Main;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Fonction {
     private String affichage="";
@@ -18,6 +19,7 @@ public class Fonction {
 
             switch ( s )
             {
+                case "tq" :
                 case "si" :
                     int cptSi = 1;
 
@@ -33,10 +35,9 @@ public class Fonction {
     private String chercher(String str) {
         str = str.trim();
         String[] chercher = str.split(" ");
-        System.out.println(chercher[0]);
         switch (chercher[0])
         {
-            case "lire"     ->{return "lire";}//Main.lire(); break;
+            case "lire"     -> {return Main.saisie();}
             case "écrire"   -> {return "écrire";}//return ecrire(str);}
             case "enChaine" -> {return "enChaine";}//return enChaine(str);}
             case "enEntier" -> {return "enEntier";}//return enEntier(str);}
@@ -90,8 +91,7 @@ public class Fonction {
         String contenu = entreParenthese(str);
         String res = "";
 
-        for(int ind=0;ind<contenu.length();ind++)
-            res += contenu.charAt(ind);
+        //res += Interpreteur.getVariable(contenu).getVal();
 
         return res;
     }
