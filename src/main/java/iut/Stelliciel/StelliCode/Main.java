@@ -25,11 +25,24 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        try {
-            new FileOutputStream("test.algo");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        //ihm.majConsole();
+        System.out.println("Donnez le chemin absolue de votre fichier .algo");
+        String adresse = "../resources/main/Code.algo";
+        metier = new Interpreteur(this, "../resources/main/Code.algo");
+        ihm    = new CUI(this);
+        ihm.afficher();
+        //proposeChoix()
+        //point d'arret +/-/go bk (x/x/)
+        //quitter       q
+        //pas a pas     entrée
+        //pas arriere   b
+        //ligne précise Lx
+        //stop boucle itteration l-x
+        //detail        det var Nom
+        //    copie det    pp
+        //    quiter       entrée
+        //trace
+
         /*
         ihm.demander.doc
         new interpretteur()
@@ -40,11 +53,6 @@ public class Main {
         new ihm()
 
         */
-        metier = new Interpreteur(this, "../resources/main/Code.algo");
-        //metier = new Interpreteur(this, "src/main/resources/Code.algo");
-        ihm    = new CUI(this);
-        ihm.demandeVars();
-        ihm.afficher();
     }
 
     public static Main getInstance() {

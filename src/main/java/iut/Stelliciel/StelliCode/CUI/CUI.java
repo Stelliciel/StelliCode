@@ -56,10 +56,6 @@ public class CUI {
             numVar ++;
         }
         System.out.println(sRep);
-        try {
-            Scanner sc = new Scanner(System.in);
-        }
-        catch (Exception e){e.printStackTrace();}
     }
 
     public void nextLigne(){
@@ -83,7 +79,7 @@ public class CUI {
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
-    private void majConsole(){
+    public void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -104,32 +100,6 @@ public class CUI {
 
     private String affLig(int numLig, int ligEncour){
         String espace = " ";
-        return ("| "+ this.affTabVar.affLig(numLig) + " |" + CUI.corrigeCharSpe(this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
-    }
-
-    private static String corrigeCharSpe(String in){
-        try{
-            String operatingSystem = System.getProperty("os.name").toLowerCase();
-
-            if(operatingSystem.contains("win")){
-                StringBuilder add = new StringBuilder();
-                int cpt;
-                cpt = 0;
-                for (char c:in.toCharArray()){
-                    if ((int) c > 127) {
-                        cpt++;
-                        if (cpt % 2 == 0) {
-                            add.append(" ");
-                        }
-                    }
-                }
-                return in + add;
-            } else {
-                return  in;
-            }
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return in;
+        return ("| "+ this.affTabVar.affLig(numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }
 }
