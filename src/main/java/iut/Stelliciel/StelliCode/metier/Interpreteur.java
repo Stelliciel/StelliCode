@@ -13,6 +13,7 @@ public class Interpreteur {
     private final Main ctrl;
     private final HashMap<String, Variable<Object>> lstConstantes;
     private final HashMap<String, Variable<Object>> lstVariables;
+    private final Parcours parcours;
     private String signature;
 
     public Interpreteur(Main ctrl, String adresseFichier) {
@@ -20,6 +21,7 @@ public class Interpreteur {
         this.fichier = Interpreteur.lireFichier(adresseFichier);
         lstConstantes = new HashMap<>();
         lstVariables  = new HashMap<>();
+        parcours      = new Parcours(ctrl);
 
         System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
@@ -31,8 +33,28 @@ public class Interpreteur {
         lstVariables.forEach((k,v) -> {
             System.out.println("Nom de la variable  : "+k+"\t || " + v);
         });
+
+        lectureFichier();
     }
 
+    /*--------------------*/
+    /* Lecture du fichier */
+    private void lectureFichier() {
+        int cpt;
+        for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++) System.out.println("->"+fichier.get(cpt));
+
+        parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
+    }
+
+    private EtatLigne nouvelleEtatLigne(int numLigne){
+        return new EtatLigne(signature, lstConstantes, lstVariables, numLigne);
+    }
+    /* Fin lecture fichier*/
+    /*--------------------*/
+
+
+    /*------------------------------*/
+    /* Initialisation des variables */
     private void initialisationFichier() {
         int cpt =0;
         while ( !fichier.get(cpt).equals("DEBUT") ) {
@@ -100,8 +122,8 @@ public class Interpreteur {
         return cpt-1;
     }
 
-    /*a revoir chaine de nombres, ect.*/
     private String getType(String valeur){
+        if ( valeur.charAt(0) == '"' && valeur.charAt(valeur.length()-1) == '"') return "chaine";
         if ( valeur.contains(".,")) return "reel";
         if ( valeur.equals("vrai") || valeur.equals("faux") ) return "boolean";
         if ( valeur.matches("^\\d+$")) return "entier";
@@ -109,6 +131,8 @@ public class Interpreteur {
 
         return "chaine";
     }
+    /* Fin Initialisation des variables */
+    /*----------------------------------*/
 
     /*-----------------------*/
     /* Gestion des variables */
@@ -214,7 +238,7 @@ public class Interpreteur {
     public static ArrayList<String> lireFichier(String adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
-            Scanner sc = new Scanner(new FileInputStream(adresse));
+            Scanner sc = new Scanner(new FileInputStream(adresse), "UTF8");
 
             char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
