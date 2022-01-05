@@ -16,13 +16,14 @@ public class Interpreteur {
     private final HashMap<String, Variable<Object>> lstVariables;
     private final Parcours parcours;
     private String signature;
+    private final static LectureCouleur lectureCouleur = new LectureCouleur();
 
     public Interpreteur(Main ctrl, String adresseFichier) {
-        this.ctrl    = ctrl;
-        this.fichier = Interpreteur.lireFichier(adresseFichier);
-        lstConstantes = new HashMap<>();
-        lstVariables  = new HashMap<>();
-        parcours      = new Parcours(ctrl);
+        this.ctrl           = ctrl;
+        this.fichier        = Interpreteur.lireFichier(adresseFichier);
+        lstConstantes       = new HashMap<>();
+        lstVariables        = new HashMap<>();
+        parcours            = new Parcours(ctrl);
 
         System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
