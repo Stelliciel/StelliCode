@@ -37,19 +37,13 @@ public class Fonction {
         String[] chercher = str.split(" ");
         switch (chercher[0])
         {
-            case "lire"     ->{return saisie();}
+            case "lire"     -> {return Main.saisie();}
             case "écrire"   -> {return "écrire";}//return ecrire(str);}
             case "enChaine" -> {return "enChaine";}//return enChaine(str);}
             case "enEntier" -> {return "enEntier";}//return enEntier(str);}
             case "enRéel"  ->  {return "enRéel";}//return enReel(str)};
             default         -> {return "non traité\n";}
         }
-    }
-
-    private String saisie()
-    {
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
     }
 
     /*private String enReel(String str)
