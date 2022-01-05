@@ -99,6 +99,8 @@ public class Interpreteur {
 
         return cpt-1;
     }
+
+    /*a revoir chaine de nombres, ect.*/
     private String getType(String valeur){
         if ( valeur.contains(".,")) return "reel";
         if ( valeur.equals("vrai") || valeur.equals("faux") ) return "boolean";
@@ -116,16 +118,16 @@ public class Interpreteur {
     public int                               getNbChiffre()     { return (this.fichier.size()+"").length(); }
 
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
-    public void addVariable(String nom, String type) { lstVariables .put(nom, new Variable<>(nom, type) );  }
-    public void addTableau(boolean constante, String nom, String type, String taille) {
+    public void addVariable (String nom, String type)               { lstVariables .put(nom, new Variable<>(nom, type) );  }
+    public void addTableau  (boolean constante, String nom, String type, String taille) {
         if ( constante )
             lstConstantes.put(nom, new Variable<>(nom,Integer.parseInt(taille),type));
         else
             lstVariables.put(nom, new Variable<>(nom,Integer.parseInt(taille),type));
     }
 
-    public Object getConstante(String nom) { return  lstConstantes.get(nom).getVal(); }
-    public Object getVariable (String nom) { return  lstVariables .get(nom).getVal(); }
+    public Object getConstante (String nom) { return  lstConstantes.get(nom).getVal(); }
+    public Object getVariable  (String nom) { return  lstVariables .get(nom).getVal(); }
     public Object getIndTableau(String nom, int ind) {
         if( estConstante(nom) )
             return lstConstantes.get(nom).getIndTab(ind);
@@ -133,7 +135,7 @@ public class Interpreteur {
             return lstVariables.get(nom).getIndTab(ind);
     }
 
-    public void setVariable(String nom, String valeur) { Interpreteur.set(lstVariables.get(nom), valeur);  }
+    public void setVariable(String nom, String valeur)          { Interpreteur.set(lstVariables.get(nom), valeur);  }
     public void setTableau (String nom, int ind, String valeur) {
         Variable<Object> v;
         if ( estConstante(nom) )

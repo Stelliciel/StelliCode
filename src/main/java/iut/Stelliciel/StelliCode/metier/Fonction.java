@@ -12,10 +12,6 @@ public class Fonction {
         String res ="";
         String[] str;
 
-        System.out.println("é".equals("é"));
-
-
-        trouverVariable(lignes);
         for(int i=0; i< lignes.size();i++)
         {
             String s = lignes.get(i);
@@ -37,50 +33,15 @@ public class Fonction {
     private String chercher(String str) {
         str = str.trim();
         String[] chercher = str.split(" ");
-        //System.out.println(str );
         System.out.println(chercher[0]);
         switch (chercher[0])
         {
             case "lire"     ->{return "lire";}//Main.lire(); break;
             case "écrire"   -> {return "écrire";}//return ecrire(str);}
-            case "enChaine" -> {return "hello";}//return enChaine(str);}
-            case "enEntier" -> {return "hello";}//return enEntier(str);}
-            //case "enRéel"  -> return enReel(str);
+            case "enChaine" -> {return "enChaine";}//return enChaine(str);}
+            case "enEntier" -> {return "enEntier";}//return enEntier(str);}
+            case "enRéel"  ->  {return "enRéel";}//return enReel(str)};
             default         -> {return "non traité\n";}
-        }
-    }
-
-    public void trouverVariable(ArrayList<String> lignes)
-    {
-        boolean dansVariable = false;
-        boolean dansConstante = false;
-        for(String s : lignes) {
-            String[] chercher = s.split(" ");
-
-            if (chercher[0].equals("variable"))
-                dansVariable = true;
-
-            if (chercher[0].equals("constante")) {
-                dansVariable  = false;
-                dansConstante = true;
-            }
-
-            if (chercher[0].equals("DEBUT")) {
-                dansVariable  = false;
-                dansConstante = false;
-            }
-
-            if (dansVariable)
-            {
-                //Ajouter variables
-            }
-
-            if (dansConstante)
-            {
-                //Ajouter constante
-            }
-
-
         }
     }
 
@@ -93,7 +54,7 @@ public class Fonction {
     {
         boolean parenthese = false;
         boolean ecrire     = false;
-        StringBuilder res        = new StringBuilder();
+        StringBuilder res  = new StringBuilder();
 
         for(int ind=7;ind<str.length();ind++)
         {
