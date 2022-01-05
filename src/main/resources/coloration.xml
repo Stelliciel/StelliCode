@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <coloration>
-    <noir>
+    <!--<noir>
         <fonction>
             <couleurTexte nom = "orange" valeurR="240"  valeurG="170"  valeurB="30" />
             <couleurFond  nom = "white"  valeurR="255"  valeurG="255"  valeurB="255"/>
@@ -36,43 +36,40 @@
             <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
             <poids        gras = "sans"/>
         </methode>
-    </noir>
+    </noir>-->
+    <element type ="fonction">
+        <couleurTexte nom  = "orange" valeurR="150" valeurG="105" valeurB="15" />
+        <couleurFond  nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "false"/>
+    </element>
 
-    <blanc>
-        <fonction>
-            <couleurTexte nom  = "orange" valeurR="150" valeurG="105" valeurB="15" />
-            <couleurFond  nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
-            <poids        gras = "sans"/>
-        </fonction>
+    <element type ="variable">
+        <couleurTexte nom  = "lightgray" valeurR="0"   valeurG="0"   valeurB="0"/>
+        <couleurFond  nom  = "white"     valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "false"/>
+    </element>
 
-        <variable>
-            <couleurTexte nom  = "lightgray" valeurR="0"   valeurG="0"   valeurB="0"/>
-            <couleurFond  nom  = "white"     valeurR="255" valeurG="255" valeurB="255"/>
-            <poids        gras = "avec"/>
-        </variable>
+    <element type = "ligneEnCour">
+        <couleurTexte nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurFond  nom  = "yellow" valeurR="245" valeurG="200" valeurB="120"/>
+        <poids        gras = "false"/>
+    </element>
 
-        <ligneEnCour>
-            <couleurFond  nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
-            <couleurFond  nom  = "yellow" valeurR="245" valeurG="200" valeurB="120"/>
-            <poids        gras = "sans"/>
-        </ligneEnCour>
+    <element type ="commentaire">
+        <couleurTexte nom  ="green"  valeurR="55"  valeurG="150" valeurB="75"/>
+        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "false"/>
+    </element>
 
-        <commentaire>
-            <couleurTexte nom  ="green"  valeurR="55"  valeurG="150" valeurB="75"/>
-            <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
-            <poids        gras = "sans"/>
-        </commentaire>
+    <element type = "primitive">
+        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220" />
+        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "true"/>
+    </element>
 
-        <primitive>
-            <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220" />
-            <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
-            <poids        gras = "avec"/>
-        </primitive>
-
-        <methode>
-            <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"/>
-            <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
-            <poids        gras = "sans"/>
-        </methode>
-    </blanc>
+    <element type="methode">
+        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"/>
+        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "false"/>
+    </element>
 </coloration>
