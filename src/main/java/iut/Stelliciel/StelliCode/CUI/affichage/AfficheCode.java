@@ -18,12 +18,12 @@ public class AfficheCode {
     private Ansi getLig(int num,int ligEnCours) {
         if (num <= arrString.size()) {
             if (num == ligEnCours) {
-                return (ansi().fgRgb(0, 255, 255).a(arrString.get(num)).reset().a("").fgRgb(255,0,255).a("oui").reset().a("").fgRgb(5,47,245).a("non").reset());
+                return (ansi().bgRgb(0, 255, 255).a(arrString.get(num)).reset().bgRgb(255,255,255).fgRgb(0,0,0));
             } else {
-                return (ansi().a(arrString.get(num)).reset());
+                return (ansi().a(arrString.get(num)).reset().bgRgb(255,255,255).fgRgb(0,0,0));
             }
         } else {
-            return (ansi().a(" ").reset());
+            return (ansi().a(" ").reset().bgRgb(255,255,255).fgRgb(0,0,0));
         }
     }
     public String affLig(int num, int ligEnCours){
