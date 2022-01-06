@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <coloration>
-    <!--<noir>
+    <!--
         <fonction>
             <couleurTexte nom = "orange" valeurR="240"  valeurG="170"  valeurB="30" />
             <couleurFond  nom = "white"  valeurR="255"  valeurG="255"  valeurB="255"/>
@@ -35,8 +35,13 @@
             <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"/>
             <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
             <poids        gras = "sans"/>
-        </methode>
-    </noir>-->
+        </methode>-->
+    <elemont type ="defaut">
+        <couleurTexte nom  = "black" valeurR="0" valeurG="0" valeurB="0" />
+        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "false"/>
+    </elemont>
+
     <element type ="fonction">
         <couleurTexte nom  = "orange" valeurR="150" valeurG="105" valeurB="15" />
         <couleurFond  nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
@@ -50,8 +55,8 @@
     </element>
 
     <element type = "ligneEnCour">
-        <couleurTexte nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
-        <couleurFond  nom  = "yellow" valeurR="245" valeurG="200" valeurB="120"/>
+        <couleurTexte nom  = "black" valeurR="0"   valeurG="0"   valeurB="0"/>
+        <couleurFond  nom  = "cyan"  valeurR="100" valeurG="245" valeurB="235"/>
         <poids        gras = "false"/>
     </element>
 
