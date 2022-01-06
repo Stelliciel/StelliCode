@@ -46,16 +46,16 @@ public class LectureCouleur {
 
             for (Element t : lstCouleurTexte) {
                 lstCouleur.get(lstCouleur.size()-1).setCoulTxt (t.getAttributeValue("nom"));
-                lstCouleur.get(lstCouleur.size()-1).setValR    (Integer.parseInt(t.getAttributeValue("valeurR")));
-                lstCouleur.get(lstCouleur.size()-1).setValG    (Integer.parseInt(t.getAttributeValue("valeurG")));
-                lstCouleur.get(lstCouleur.size()-1).setValB    (Integer.parseInt(t.getAttributeValue("valeurB")));
+                lstCouleur.get(lstCouleur.size()-1).setValRTxt (Integer.parseInt(t.getAttributeValue("valeurR")));
+                lstCouleur.get(lstCouleur.size()-1).setValGTxt (Integer.parseInt(t.getAttributeValue("valeurG")));
+                lstCouleur.get(lstCouleur.size()-1).setValBTxt (Integer.parseInt(t.getAttributeValue("valeurB")));
             }
 
             for (Element f : lstCouleurFond) {
                 lstCouleur.get(lstCouleur.size()-1).setCoulFond(f.getAttributeValue("nom"));
-                lstCouleur.get(lstCouleur.size()-1).setValR   (Integer.parseInt(f.getAttributeValue("valeurR")));
-                lstCouleur.get(lstCouleur.size()-1).setValG   (Integer.parseInt(f.getAttributeValue("valeurG")));
-                lstCouleur.get(lstCouleur.size()-1).setValB   (Integer.parseInt(f.getAttributeValue("valeurB")));
+                lstCouleur.get(lstCouleur.size()-1).setValRFond (Integer.parseInt(f.getAttributeValue("valeurR")));
+                lstCouleur.get(lstCouleur.size()-1).setValGFond (Integer.parseInt(f.getAttributeValue("valeurG")));
+                lstCouleur.get(lstCouleur.size()-1).setValBFond (Integer.parseInt(f.getAttributeValue("valeurB")));
             }
 
             for (Element p:lstPoids) {

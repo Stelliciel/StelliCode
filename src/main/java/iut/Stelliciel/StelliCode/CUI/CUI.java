@@ -4,6 +4,7 @@ import iut.Stelliciel.StelliCode.CUI.affichage.AfficheCode;
 import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
+import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
 
@@ -24,14 +25,14 @@ public class CUI {
     private final AfficheConsole affConsole;
     private final AfficheCode affCode;
 
-    int numLig1;
+    private int numLig1;
     private int ligEnCour;
 
-    public CUI(Main controleur){
-        this.controleur = controleur;
-        this.affTabVar   = new AfficheTab();
+    public CUI(Main controleur, LectureCouleur lectureCouleur){
+        this.controleur  = controleur;
+        this.affTabVar   = new AfficheTab    ();
         this.affConsole  = new AfficheConsole();
-        this.affCode     = new AfficheCode(controleur.getCode(),controleur.getNbChiffre());
+        this.affCode     = new AfficheCode   (controleur.getCode(),controleur.getNbChiffre(),lectureCouleur);
         this.numLig1     = 0;
         this.ligEnCour   = 0;
     }
