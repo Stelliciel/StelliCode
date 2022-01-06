@@ -29,6 +29,7 @@ public class AfficheCode {
         {
             if (num == ligEnCours)
             {
+                System.out.println(LectureCouleur.getCouleur("ligneEnCour"));
                 return (ansi().bgRgb(lectureCouleur.getCouleur("ligneEnCour").getValRFond(),
                                      lectureCouleur.getCouleur("ligneEnCour").getValGFond(),
                                      lectureCouleur.getCouleur("ligneEnCour").getValBFond()

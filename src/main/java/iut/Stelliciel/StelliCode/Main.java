@@ -29,8 +29,9 @@ public class Main {
         instance = this;
         AnsiConsole.systemInstall();
         System.out.println("Donnez le chemin absolue de votre fichier .algo");
-        String adresse = "../resources/main/Code.algo";
-        metier         = new Interpreteur(this, "../resources/main/Code.algo");
+        //String adresse = "../resources/main/Code.algo";
+        String adresse = "../../src/main/resources/Code.algo";
+        metier         = new Interpreteur(this, adresse);
         lectureCouleur = new LectureCouleur();
         ihm            = new CUI(this,lectureCouleur);
         ihm.afficher();
@@ -40,16 +41,6 @@ public class Main {
             ihm.afficher();
         }
 
-        /*
-        ihm.demander.doc
-        new interpretteur()
-        new ihm()
-
-        si demander.doc
-        new interpretteur()
-        new ihm()
-
-        */
     }
 
     public static Main getInstance() {
