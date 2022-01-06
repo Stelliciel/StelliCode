@@ -9,6 +9,8 @@ public class Variable<E>
 {
     private final String nom;
     private final String type;
+    private static int nbVar = 0;
+    private int numVar;
     private E valeur;
     private Object[] tabValeur;
 
@@ -22,6 +24,11 @@ public class Variable<E>
         this.type   = type;
         this.nom    = nom;
         this.valeur = valeur;
+        this.numVar = nbVar++;
+    }
+
+    public int getNumVar(){
+        return numVar;
     }
 
     public Variable(String nom, String type){
@@ -41,29 +48,6 @@ public class Variable<E>
         this.tabValeur = new Object[taille];
     }
 
-    /**@return le string de variable
-     */
-    public String toString()
-    {
-        String sRep = nom + "=";
-
-        if ( estTableau() ){
-            sRep += "[";
-
-            StringBuilder sRepBuilder = new StringBuilder(sRep);
-            for(Object o : tabValeur) sRepBuilder.append(o).append(",");
-            sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
-            sRep = sRepBuilder.toString();
-
-            sRep += "]";
-        }
-        else
-            sRep += valeur;
-
-        sRep += ":" + type;
-        return sRep;
-    }
-
     /** Change la valeur à l'indice donner
      * @param ind indice
      * @param valeur la nouvelle valeur
@@ -81,6 +65,22 @@ public class Variable<E>
             return (E) this.tabValeur[ind];
 
         return null;
+    }
+
+    public String valToString(){
+        if (this.valeur == null){return "";}
+        String sRep ="";
+        if ( estTableau() ){
+            sRep += "[";
+
+            StringBuilder sRepBuilder = new StringBuilder(sRep);
+            for(Object o : tabValeur) sRepBuilder.append(o).append(",");
+            sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
+            sRep = sRepBuilder.toString();
+
+            sRep += "]";
+        }
+        return this.valeur.toString();
     }
 
     /**

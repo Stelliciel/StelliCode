@@ -99,6 +99,16 @@ public class Interpreteur {
 
     }
 
+    public EtatLigne getEtatVar(int lig){
+        ArrayList<EtatLigne> arrLig = parcours.getLecteur();
+        for (EtatLigne e: arrLig) {
+            if(e.getNumLigne() == lig){
+                return e;
+            }
+        }
+        return  null;
+    }
+
     private EtatLigne nouvelleEtatLigne(int numLigne){
         return new EtatLigne(signature, lstConstantes, lstVariables, numLigne);
     }

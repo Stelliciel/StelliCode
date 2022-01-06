@@ -33,14 +33,11 @@ public class AfficheTab {
     public String toString(){
         StringBuilder sRep = new StringBuilder("     nom    |  valeur   \n");
         for(String nom : listeVar.keySet()){
-            sRep.append(String.format("%12s", CUI.adaptTxt(nom))+"|"+String.format("%12s",CUI.adaptTxt(listeVar.get(nom).getVal().toString())));
+            sRep.append(String.format("%-12s", CUI.adaptTxt(nom))+"|"
+                       +String.format("%-12s", CUI.adaptTxt(listeVar.get(nom).valToString())));
         }
+        System.out.println(sRep.toString());
         return sRep.toString();
-    }
-
-    public static void main(String[] args) {
-        AfficheTab tab = new AfficheTab();
-        System.out.println(tab);
     }
 
     public String affLig(int num){

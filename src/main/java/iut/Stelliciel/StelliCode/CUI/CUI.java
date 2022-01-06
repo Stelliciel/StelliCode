@@ -4,6 +4,7 @@ import iut.Stelliciel.StelliCode.CUI.affichage.AfficheCode;
 import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
+import iut.Stelliciel.StelliCode.metier.EtatLigne;
 import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
@@ -27,6 +28,7 @@ public class CUI {
 
     private int numLig1;
     private int ligEnCour;
+    private ArrayList<String> arrNom;
 
     public CUI(Main controleur){
         this.controleur  = controleur;
@@ -34,13 +36,14 @@ public class CUI {
         this.affConsole  = new AfficheConsole();
         this.affCode     = new AfficheCode   (controleur.getCode(),controleur.getNbChiffre());
         this.numLig1     = 0;
-        this.ligEnCour   = 0;
+        this.ligEnCour   = getLigDebut();
+        this.arrNom      = new ArrayList<>();
     }
 
     public static String adaptTxt(String in){
-        if(in.length()<10){return  in;}
+        if(in.length()<100){return  in;}
         else{
-            return in.substring(0,4)+".."+in.substring(in.length()-3,in.length()-1);
+            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length()-1);
         }
     }
 
@@ -57,10 +60,23 @@ public class CUI {
             numVar ++;
         }
         System.out.println(sRep);
-    }
-
-    public void nextLigne(){
-        this.ligEnCour++;
+        String inUser = controleur.saisie();
+        if(inUser.matches("\\d+")){
+            if(Integer.parseInt(inUser)-1 >=lstVar.size()){
+                System.out.println("entrer un nombre valide");
+            }
+            else{
+                int cpt=0;
+                for (String s: lstVar.keySet() ) {
+                    if (cpt == Integer.parseInt(inUser)-1) {
+                        arrNom.add(lstVar.get(s).getNom());
+                    }
+                    cpt++;
+                };
+            }
+        }else{
+            System.out.println("entrer un nombre valide");
+        }
     }
 
     public void scroll(int num){
@@ -76,20 +92,19 @@ public class CUI {
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
-        this.majConsole();
+        //this.majConsole();
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
     public void proposeChoix(){
         String inUser = Main.saisie();
-
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
                 //controleur.prochaineLig();
                 this.ligEnCour++;
             }
         }else if(inUser.equals("b")) {
-            if(ligEnCour != 0){
+            if(ligEnCour != getLigDebut()){
                 //controleur.LignePre();
                 this.ligEnCour--;}
         }else if (inUser.substring(4).equals("+ bk")) {
@@ -99,6 +114,8 @@ public class CUI {
                     //addBK(Integer.parseInt(inUser.substring(5)));
                     // controleur.addBK(Integer.parseInt(inUser.substring(5)));
             }
+        } else if(inUser.substring(0,6).equals("addvar")){
+            demandeVars();
         }
 
         //point d'arret +/-/go bk (x/x/)
@@ -113,7 +130,27 @@ public class CUI {
         //trace
     }
 
-    public void majConsole(){
+    public void sendVar(ArrayList<String> arrNom, EtatLigne lig){
+        for (String nom: arrNom) {
+            System.out.println(nom);
+            affTabVar.maj(lig.getLstVar().get(nom));
+        }
+    }
+
+    public ArrayList<String> getArrNom() {
+        return arrNom;
+    }
+
+    public int getLigDebut(){
+        int cpt =0;
+        for (String s:affCode.getArrString()) {
+            if (s.equals("DEBUT")){return  cpt;}
+            cpt++;
+        }
+        return -1;
+    }
+
+    /*public void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -130,6 +167,10 @@ public class CUI {
         }catch(Exception e){
             System.out.println(e);
         }
+    }*/
+
+    public int getLigEnCour() {
+        return ligEnCour;
     }
 
     private String affLig(int numLig, int ligEncour){
