@@ -64,4 +64,8 @@ public class AfficheCode {
         if(arrString.get(num).length() == 0){return  1;}
         return  arrString.get(num).length();
     }
+
+    public ArrayList<String> getArrString() {
+        return arrString;
+    }
 }

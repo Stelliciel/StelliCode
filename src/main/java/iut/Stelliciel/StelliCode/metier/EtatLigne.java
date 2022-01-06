@@ -69,4 +69,8 @@ public class EtatLigne {
 
         return newLst;
     }
+
+    public HashMap<String,Variable<Object>> getLstVar(){
+        return lstVariables;
+    }
 }

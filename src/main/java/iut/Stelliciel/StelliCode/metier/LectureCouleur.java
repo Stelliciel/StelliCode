@@ -23,9 +23,6 @@ public class LectureCouleur {
         try {
             racine = sxb.build(fichierXML).getRootElement();
             chargerCouleur();
-
-            for(Couleur c : lstCouleur)
-                System.out.println(c);
         }
         catch (Exception e) {
             System.out.println("erreur");
