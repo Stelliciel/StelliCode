@@ -15,7 +15,7 @@ public class LectureCouleur {
     public LectureCouleur()
     {
         Document document;
-    //  File fichierXML = new File("src/main/resources/coloration.xml");
+        //File fichierXML = new File("src/main/resources/coloration.xml");
         File fichierXML = new File("../../src/main/resources/coloration.xml");
         SAXBuilder sxb  = new SAXBuilder();
         lstCouleur      = new ArrayList<>();
@@ -69,7 +69,6 @@ public class LectureCouleur {
 
         for(Couleur c : lstCouleur)
         {
-            System.out.println("\ncouleur : "+c);
             if (c.getNom().equals(nom))
                 return  c;
         }

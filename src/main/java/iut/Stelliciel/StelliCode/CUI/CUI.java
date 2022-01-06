@@ -28,11 +28,11 @@ public class CUI {
     private int numLig1;
     private int ligEnCour;
 
-    public CUI(Main controleur, LectureCouleur lectureCouleur){
+    public CUI(Main controleur){
         this.controleur  = controleur;
         this.affTabVar   = new AfficheTab    ();
         this.affConsole  = new AfficheConsole();
-        this.affCode     = new AfficheCode   (controleur.getCode(),controleur.getNbChiffre(),lectureCouleur);
+        this.affCode     = new AfficheCode   (controleur.getCode(),controleur.getNbChiffre());
         this.numLig1     = 0;
         this.ligEnCour   = 0;
     }

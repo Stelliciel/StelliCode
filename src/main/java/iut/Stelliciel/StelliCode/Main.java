@@ -23,7 +23,6 @@ public class Main {
     private final CUI ihm;
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static Main instance;
-    private LectureCouleur lectureCouleur;
 
     public Main() {
         instance = this;
@@ -32,8 +31,7 @@ public class Main {
         //String adresse = "../resources/main/Code.algo";
         String adresse = "../../src/main/resources/Code.algo";
         metier         = new Interpreteur(this, adresse);
-        lectureCouleur = new LectureCouleur();
-        ihm            = new CUI(this,lectureCouleur);
+        ihm            = new CUI(this);
         ihm.afficher();
         String sUser = "-1";
         while (sUser != "q"){
