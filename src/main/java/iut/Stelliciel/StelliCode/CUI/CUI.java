@@ -19,7 +19,7 @@ import java.util.Scanner;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class CUI {
-    private final Main controlleur;
+    private final Main controleur;
     private final AfficheTab affTabVar;
     private final AfficheConsole affConsole;
     private final AfficheCode affCode;
@@ -27,11 +27,11 @@ public class CUI {
     int numLig1;
     private int ligEnCour;
 
-    public CUI(Main controlleur){
-        this.controlleur = controlleur;
+    public CUI(Main controleur){
+        this.controleur = controleur;
         this.affTabVar   = new AfficheTab();
         this.affConsole  = new AfficheConsole();
-        this.affCode     = new AfficheCode(controlleur.getCode(),controlleur.getNbChiffre());
+        this.affCode     = new AfficheCode(controleur.getCode(),controleur.getNbChiffre());
         this.numLig1     = 0;
         this.ligEnCour   = 0;
     }
@@ -46,7 +46,7 @@ public class CUI {
     public void demandeVars(){
         this.afficher();
         System.out.println("Quelles variables voulez vous suivre?");
-        HashMap<String ,Variable<Object>> lstVar = controlleur.getVariables();
+        HashMap<String ,Variable<Object>> lstVar = controleur.getVariables();
         StringBuilder sRep = new StringBuilder();
         int numVar = 1;
         for(String nom : lstVar.keySet()){
@@ -70,7 +70,7 @@ public class CUI {
         StringBuilder affichage = new StringBuilder();
         affichage.append("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
-            if ( i < controlleur.getCode().size() )
+            if ( i < controleur.getCode().size() )
                 affichage.append(this.affLig(i, this.ligEnCour));
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
@@ -84,19 +84,19 @@ public class CUI {
 
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
-                //controlleur.prochaineLig();
+                //controleur.prochaineLig();
                 this.ligEnCour++;
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != 0){
-                //controlleur.LignePre();
+                //controleur.LignePre();
                 this.ligEnCour--;}
         }else if (inUser.substring(4).equals("+ bk")) {
             if (inUser.substring(5).matches("\\D+") || Integer.parseInt(inUser.substring(5)) > affCode.getTaillePro()) {
                 System.out.println("entrer un nombre inférieur au nombre de ligne");}
             else{
                     //addBK(Integer.parseInt(inUser.substring(5)));
-                    // controlleur.addBK(Integer.parseInt(inUser.substring(5)));
+                    // controleur.addBK(Integer.parseInt(inUser.substring(5)));
             }
         }
 
