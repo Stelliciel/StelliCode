@@ -2,6 +2,7 @@ package iut.Stelliciel.StelliCode;
 
 import iut.Stelliciel.StelliCode.CUI.CUI;
 import iut.Stelliciel.StelliCode.metier.Interpreteur;
+import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
@@ -22,14 +23,16 @@ public class Main {
     private final CUI ihm;
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static Main instance;
+    private LectureCouleur lectureCouleur;
 
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
         System.out.println("Donnez le chemin absolue de votre fichier .algo");
         String adresse = "../resources/main/Code.algo";
-        metier = new Interpreteur(this, "../resources/main/Code.algo");
-        ihm    = new CUI(this);
+        metier         = new Interpreteur(this, "../resources/main/Code.algo");
+        lectureCouleur = new LectureCouleur();
+        ihm            = new CUI(this,lectureCouleur);
         ihm.afficher();
         String sUser = "-1";
         while (sUser != "q"){
