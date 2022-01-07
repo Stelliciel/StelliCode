@@ -35,15 +35,15 @@ public class CUI {
         this.affTabVar   = new AfficheTab    ();
         this.affConsole  = new AfficheConsole();
         this.affCode     = new AfficheCode   (controleur.getCode(),controleur.getNbChiffre());
-        this.numLig1     = 0;
         this.ligEnCour   = getLigDebut();
         this.arrNom      = new ArrayList<>();
+        this.numLig1     = 0;
     }
 
     public static String adaptTxt(String in){
         if(in.length()<10){return  in;}
         else{
-            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length()-1);
+            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length());
         }
     }
 
@@ -80,9 +80,7 @@ public class CUI {
         }
     }
 
-    public void scroll(int num){
-        this.numLig1 += num;
-    }
+    public void scroll(int num){this.numLig1 += num;}
 
     public void afficher(){
         String sTabVar = affTabVar.toString();
@@ -94,7 +92,7 @@ public class CUI {
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
-        this.majConsole();
+        //this.majConsole();
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
@@ -135,7 +133,6 @@ public class CUI {
 
     public void sendVar(ArrayList<String> arrNom, EtatLigne lig){
         for (String nom: arrNom) {
-            System.out.println(nom);
             affTabVar.maj(lig.getLstVar().get(nom));
         }
     }

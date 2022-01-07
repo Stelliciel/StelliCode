@@ -34,7 +34,7 @@ public class AfficheTab {
         StringBuilder sRep = new StringBuilder("     nom    |  valeur   \n");
         for(String nom : listeVar.keySet()){
             sRep.append(String.format("%-12s", CUI.adaptTxt(nom))+"|"
-                       +String.format("%-12s", CUI.adaptTxt(listeVar.get(nom).valToString()))+'\n');
+                       +String.format("%-11s", CUI.adaptTxt(listeVar.get(nom).valToString()))+'\n');
         }
         System.out.println(sRep.toString());
         return sRep.toString();
@@ -44,7 +44,6 @@ public class AfficheTab {
         ArrayList<String> arrString = new ArrayList<>();
         arrString.add("");
         int ind = 0;
-        if(num >= ind ){return "                        ";}
         for (char c:toutesLig.toCharArray()){
             if(c != '\n'){arrString.add(arrString.remove(ind) + c);}
             else{
@@ -52,6 +51,7 @@ public class AfficheTab {
                 arrString.add("");
             }
         }
+        if(num >= ind ){return "                        ";}
         return arrString.get(num);
     }
 }

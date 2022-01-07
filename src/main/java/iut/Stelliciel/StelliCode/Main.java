@@ -11,6 +11,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 /**
  *
  * penser à mettre sa console en utf-8 (windows : chcp 65001)
@@ -36,7 +38,6 @@ public class Main {
             ihm.proposeChoix();
             affecterVariables(ihm.getArrNom());
         }
-
     }
 
     public void affecterVariables(ArrayList<String> lstNom){
