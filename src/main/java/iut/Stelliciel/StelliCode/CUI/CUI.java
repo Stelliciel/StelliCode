@@ -41,7 +41,7 @@ public class CUI {
     }
 
     public static String adaptTxt(String in){
-        if(in.length()<100){return  in;}
+        if(in.length()<10){return  in;}
         else{
             return in.substring(0,5)+".."+in.substring(in.length()-3,in.length()-1);
         }
@@ -52,10 +52,11 @@ public class CUI {
         System.out.println("Quelles variables voulez vous suivre?");
         HashMap<String ,Variable<Object>> lstVar = controleur.getVariables();
         StringBuilder sRep = new StringBuilder();
+        /*A MODIFIER*/
         int numVar = 1;
         for(String nom : lstVar.keySet()){
-            if(numVar % 5 == 1 ){
-                sRep.append('\n');}
+            if(numVar % 5 == 1 )
+                sRep.append('\n');
             sRep.append(numVar).append(" ").append(CUI.adaptTxt(nom)).append("  ");
             numVar ++;
         }
@@ -84,15 +85,16 @@ public class CUI {
     }
 
     public void afficher(){
+        String sTabVar = affTabVar.toString();
         StringBuilder affichage = new StringBuilder();
         affichage.append("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             if ( i < controleur.getCode().size() )
-                affichage.append(this.affLig(i, this.ligEnCour));
+                affichage.append(this.affLig(i, this.ligEnCour,sTabVar));
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
-        //this.majConsole();
+        this.majConsole();
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
@@ -101,11 +103,13 @@ public class CUI {
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
                 //controleur.prochaineLig();
+                if(ligEnCour +1 == numLig1 +30){scroll(10);}
                 this.ligEnCour++;
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
                 //controleur.LignePre();
+                if(ligEnCour -1 == numLig1 +10 && ligEnCour-1 != 10){scroll(-10);}
                 this.ligEnCour--;}
         }else if (inUser.substring(4).equals("+ bk")) {
             if (inUser.substring(5).matches("\\D+") || Integer.parseInt(inUser.substring(5)) > affCode.getTaillePro()) {
@@ -121,7 +125,6 @@ public class CUI {
         //point d'arret +/-/go bk (x/x/)
         //quitter       q
         //pas a pas     entrée
-        //pas arriere   b
         //ligne précise Lx
         //stop boucle itteration l-x
         //detail        det var Nom
@@ -150,7 +153,7 @@ public class CUI {
         return -1;
     }
 
-    /*public void majConsole(){
+    public void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -167,14 +170,14 @@ public class CUI {
         }catch(Exception e){
             System.out.println(e);
         }
-    }*/
+    }
 
     public int getLigEnCour() {
         return ligEnCour;
     }
 
-    private String affLig(int numLig, int ligEncour){
+    private String affLig(int numLig, int ligEncour,String sTabVar){
         String espace = " ";
-        return ("| "+ this.affTabVar.affLig(numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
+        return ("| "+ this.affTabVar.affLig(sTabVar,numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }
 }
