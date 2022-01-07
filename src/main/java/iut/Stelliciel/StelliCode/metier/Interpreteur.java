@@ -24,16 +24,16 @@ public class Interpreteur {
         lstVariables        = new HashMap<>();
         parcours            = new Parcours(ctrl);
 
-        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
+//        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
 
-        System.out.println("Signature : " + signature);
+       /*System.out.println("Signature : " + signature);
         lstConstantes.forEach((k,v) -> {
             System.out.println("Nom de la constante : "+k+"\t || " + v);
         });
         lstVariables.forEach((k,v) -> {
             System.out.println("Nom de la variable  : "+k+"\t || " + v);
-        });
+        });*/
 
         lectureFichier();
     }
@@ -61,11 +61,11 @@ public class Interpreteur {
         if( ligne.contains("<--") ){
             String[] separation = Fonction.affectation(ligne);
 
-            System.out.println("nom:" + separation[0]);
-            System.out.println("valeur:" + separation[1]);
+            /*System.out.println("nom:" + separation[0]);
+            System.out.println("valeur:" + separation[1]);*/
 
             if( separation.length == 3 ) {
-                System.out.println("index:" + separation[2]);
+//                System.out.println("index:" + separation[2]);
                 setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
             }
             else {
@@ -97,6 +97,16 @@ public class Interpreteur {
         }
 
 
+    }
+
+    public EtatLigne getEtatVar(int lig){
+        ArrayList<EtatLigne> arrLig = parcours.getLecteur();
+        for (EtatLigne e: arrLig) {
+            if(e.getNumLigne() == lig){
+                return e;
+            }
+        }
+        return  null;
     }
 
     private EtatLigne nouvelleEtatLigne(int numLigne){

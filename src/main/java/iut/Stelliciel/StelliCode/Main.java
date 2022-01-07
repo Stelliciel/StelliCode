@@ -9,10 +9,7 @@ import org.fusesource.jansi.AnsiConsole;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *
@@ -23,33 +20,27 @@ public class Main {
     private final CUI ihm;
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static Main instance;
-    private LectureCouleur lectureCouleur;
 
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
         System.out.println("Donnez le chemin absolue de votre fichier .algo");
-        String adresse = "../resources/main/Code.algo";
-        metier         = new Interpreteur(this, "../resources/main/Code.algo");
-        lectureCouleur = new LectureCouleur();
-        ihm            = new CUI(this,lectureCouleur);
+        //String adresse = "../resources/main/Code.algo";
+        String adresse = "../../src/main/resources/Code.algo";
+        metier         = new Interpreteur(this, adresse);
+        ihm            = new CUI(this);
         ihm.afficher();
         String sUser = "-1";
         while (sUser != "q"){
-            ihm.proposeChoix();
             ihm.afficher();
+            ihm.proposeChoix();
+            affecterVariables(ihm.getArrNom());
         }
 
-        /*
-        ihm.demander.doc
-        new interpretteur()
-        new ihm()
+    }
 
-        si demander.doc
-        new interpretteur()
-        new ihm()
-
-        */
+    public void affecterVariables(ArrayList<String> lstNom){
+        ihm.sendVar(lstNom,metier.getEtatVar(ihm.getLigEnCour()));
     }
 
     public static Main getInstance() {

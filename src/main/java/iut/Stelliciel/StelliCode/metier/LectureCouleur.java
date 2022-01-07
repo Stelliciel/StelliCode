@@ -15,16 +15,14 @@ public class LectureCouleur {
     public LectureCouleur()
     {
         Document document;
-        File fichierXML = new File("src/main/resources/coloration.xml");
+        //File fichierXML = new File("src/main/resources/coloration.xml");
+        File fichierXML = new File("../../src/main/resources/coloration.xml");
         SAXBuilder sxb  = new SAXBuilder();
         lstCouleur      = new ArrayList<>();
 
         try {
             racine = sxb.build(fichierXML).getRootElement();
             chargerCouleur();
-
-            for(Couleur c : lstCouleur)
-                System.out.println(c);
         }
         catch (Exception e) {
             System.out.println("erreur");
