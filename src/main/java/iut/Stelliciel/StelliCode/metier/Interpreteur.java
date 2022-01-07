@@ -179,7 +179,6 @@ public class Interpreteur {
                     addVariable(nom, type.replaceAll(" ", ""));
                 }
             }
-
             ligne = fichier.get(cpt++);
         }
 

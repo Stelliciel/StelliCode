@@ -80,14 +80,13 @@ public class Variable<V>
 
             sRep += "]";
         }
-        return "ok";/* switch (this.getType()){
-            case "entier"    -> Integer.parseInt((String) valeur) + "";
-            case "reel"      -> Double.parseDouble((String) valeur)+"";
-            case "caractere" -> ""+(String) valeur.charAt(0);
-            case "chaine"    -> valeur;
-            case "booleen"   -> valeur;
+        return switch (this.getType()){
+            case "entier"    -> Integer.parseInt((String)valeur) + "";
+            case "reel"      -> Double.parseDouble((String)valeur)+"";
+            case "caractere" -> ""+((String)valeur).charAt(0);
+            case "chaine", "booleen" -> (String)valeur;
             default          -> "erreur imposible";
-        };*/
+        };
     }
 
     /**
