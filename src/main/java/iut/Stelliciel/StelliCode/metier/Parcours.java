@@ -1,16 +1,12 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import iut.Stelliciel.StelliCode.Main;
-
 import java.util.ArrayList;
 
 public class Parcours {
-    private ArrayList<EtatLigne> lecteur;
+    private final ArrayList<EtatLigne> lecteur;
     private int pointeur;
-    private Main ctrl;
 
-    public Parcours(Main ctrl) {
-        this.ctrl     = ctrl;
+    public Parcours() {
         this.pointeur = 0;
         this.lecteur  = new ArrayList<>();
     }

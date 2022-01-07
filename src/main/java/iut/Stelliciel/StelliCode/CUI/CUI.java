@@ -5,23 +5,14 @@ import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
 import iut.Stelliciel.StelliCode.metier.EtatLigne;
-import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
-import org.fusesource.jansi.Ansi;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import  java.lang.ProcessBuilder;
-import  java.lang.Process;
-import java.util.Scanner;
+import java.io.File;
+import java.util.*;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class CUI {
-    private final Main controleur;
     private final AfficheTab affTabVar;
     private final AfficheConsole affConsole;
     private final AfficheCode affCode;
@@ -30,18 +21,17 @@ public class CUI {
     private int ligEnCour;
     private ArrayList<String> arrNom;
 
-    public CUI(Main controleur){
-        this.controleur  = controleur;
+    public CUI(){
         this.affTabVar   = new AfficheTab    ();
         this.affConsole  = new AfficheConsole();
-        this.affCode     = new AfficheCode   (controleur.getCode(),controleur.getNbChiffre());
+        this.affCode     = new AfficheCode   (Main.getInstance().getCode(),Main.getInstance().getNbChiffre());
         this.numLig1     = 0;
         this.ligEnCour   = getLigDebut();
         this.arrNom      = new ArrayList<>();
     }
 
     public static String adaptTxt(String in){
-        if(in.length()<100){return  in;}
+        if(in.length()<10){return  in;}
         else{
             return in.substring(0,5)+".."+in.substring(in.length()-3,in.length()-1);
         }
@@ -50,7 +40,7 @@ public class CUI {
     public void demandeVars(){
         this.afficher();
         System.out.println("Quelles variables voulez vous suivre?");
-        HashMap<String ,Variable<Object>> lstVar = controleur.getVariables();
+        HashMap<String ,Variable<Object>> lstVar = Main.getInstance().getVariables();
         StringBuilder sRep = new StringBuilder();
         int numVar = 1;
         for(String nom : lstVar.keySet()){
@@ -60,7 +50,7 @@ public class CUI {
             numVar ++;
         }
         System.out.println(sRep);
-        String inUser = controleur.saisie();
+        String inUser = Main.getInstance().saisie();
         if(inUser.matches("\\d+")){
             if(Integer.parseInt(inUser)-1 >=lstVar.size()){
                 System.out.println("entrer un nombre valide");
@@ -87,7 +77,7 @@ public class CUI {
         StringBuilder affichage = new StringBuilder();
         affichage.append("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
-            if ( i < controleur.getCode().size() )
+            if ( i < Main.getInstance().getCode().size() )
                 affichage.append(this.affLig(i, this.ligEnCour));
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
@@ -97,7 +87,7 @@ public class CUI {
     }
 
     public void proposeChoix(){
-        String inUser = Main.saisie();
+        String inUser = Main.getInstance().saisie();
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
                 //controleur.prochaineLig();
@@ -176,5 +166,58 @@ public class CUI {
     private String affLig(int numLig, int ligEncour){
         String espace = " ";
         return ("| "+ this.affTabVar.affLig(numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
+    }
+
+    public static File getAdresse() {
+        File files = afficherOption();
+        System.out.println("File : " + files);
+        return files;
+    }
+
+    private static File afficherOption() {
+        ArrayList<File> file = new ArrayList<>();
+        File[] dir = Objects.requireNonNull((new File("../../src/main/resources")).listFiles());
+        for (File item: dir)
+            if (item.isFile() && item.getName().endsWith(".algo"))
+                file.add(item);
+
+        StringBuilder sRep = new StringBuilder();
+        for (int i = 1; i-1 <= file.size(); i++) {
+            if(i % 5 == 1 )
+                sRep.append('\n');
+            if (i-1==file.size())
+                sRep.append(i).append(" ").append(CUI.adaptTxt("autre")).append("  ");
+            else
+                sRep.append(i).append(" ").append(CUI.adaptTxt(file.get(i-1).getName().substring(0, file.get(i-1).getName().length()-5))).append("  ");
+        }
+        System.out.println(sRep);
+        while (true) {
+            String inUser = Main.getInstance().saisie();
+            if (inUser.matches("\\d+")) {
+                if (Integer.parseInt(inUser) - 1 > file.size()) {
+                    System.out.println("entrer un nombre valide ou -1 pour quitté");
+                } else if (Integer.parseInt(inUser) == -1) {
+                    System.out.println("Vous avez choisie de quitté le programme");
+                    System.exit(0);
+                } else if (Integer.parseInt(inUser) - 1 == file.size()) {
+                    System.out.println("Donnez le chemin absolue de votre fichier .algo");
+                    inUser = Main.getInstance().saisie();
+                    File customDir = new File(inUser);
+                    if (customDir.exists() && customDir.isFile() && customDir.getName().endsWith(".algo")) {
+                        return customDir;
+                    } else {
+                        System.out.println("Le chemin absolue du fichier .algo spécifié n'est pas reconnu");
+                    }
+                } else {
+                    for (int i = 0; i<file.size(); i++) {
+                        if (i == Integer.parseInt(inUser) - 1) {
+                            return file.get(i).getAbsoluteFile();
+                        }
+                    }
+                }
+            } else {
+                System.out.println("entrer un nombre valide ou -1 pour quitté");
+            }
+        }
     }
 }

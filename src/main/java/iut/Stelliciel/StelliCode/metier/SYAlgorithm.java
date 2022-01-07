@@ -20,20 +20,19 @@ import java.util.regex.Pattern;
 public class SYAlgorithm {
 
     public static void main(String[] args) {
-        SYAlgorithm a = new SYAlgorithm();
-
-        System.out.println(a.doTheShuntingYard("52+2/(3-8)^5^2"));
+        new SYAlgorithm();
     }
 
-    private final Map<String, Integer> operators;
+    private final Map<String, Integer> operators = new HashMap<>() {{
+        put("-", 0);
+        put("+", 0);
+        put("/", 1);
+        put("*", 1);
+        put("^", 2);
+    }};
 
     public SYAlgorithm(){
-        operators = new HashMap<>();
-        operators.put("-", 0);
-        operators.put("+", 0);
-        operators.put("/", 1);
-        operators.put("*", 1);
-        operators.put("^", 2);
+        System.out.println(doTheShuntingYard("52+2/(3-8)^5^2"));
     }
 
     /**

@@ -18,6 +18,7 @@ public class Expression {
 
     public static String toEPO(String expression)
     {
+        expression = expression.replaceAll(" ", "");
         Stack<Character> pile = new Stack<>();
 
         String sortie = "";

@@ -1,28 +1,24 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import iut.Stelliciel.StelliCode.Main;
-
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Scanner;
-import java.io.FileInputStream;
 
 public class Interpreteur {
 
     private final ArrayList<String> fichier;
-    private final Main ctrl;
     private final HashMap<String, Variable<Object>> lstConstantes;
     private final HashMap<String, Variable<Object>> lstVariables;
     private final Parcours parcours;
     private String signature;
 
-    public Interpreteur(Main ctrl, String adresseFichier) {
-        this.ctrl           = ctrl;
+    public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
         lstConstantes       = new HashMap<>();
         lstVariables        = new HashMap<>();
-        parcours            = new Parcours(ctrl);
+        parcours            = new Parcours();
 
 //        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
@@ -305,7 +301,7 @@ public class Interpreteur {
     /*---------------------------*/
 
 
-    public static ArrayList<String> lireFichier(String adresse) {
+    public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
             Scanner sc = new Scanner(new FileInputStream(adresse), "UTF8");
@@ -328,7 +324,7 @@ public class Interpreteur {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         Interpreteur t = new Interpreteur(null, "C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo");
 
@@ -340,5 +336,5 @@ public class Interpreteur {
 
             System.out.println("\nTrace : " + e.getTraceAlgo());
         }
-    }
+    }*/
 }

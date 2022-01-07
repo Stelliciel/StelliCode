@@ -1,10 +1,13 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import java.io.*;
-import org.jdom2.*;
-import org.jdom2.input.*;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LectureCouleur {
     private int valR,valG,valB;
@@ -62,7 +65,7 @@ public class LectureCouleur {
         }
     }
 
-    public static Couleur getCouleur (String nom){
+    public static @Nullable Couleur getCouleur (String nom){
 
         for(Couleur c : lstCouleur)
         {

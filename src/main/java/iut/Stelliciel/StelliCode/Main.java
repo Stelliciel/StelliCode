@@ -2,19 +2,13 @@ package iut.Stelliciel.StelliCode;
 
 import iut.Stelliciel.StelliCode.CUI.CUI;
 import iut.Stelliciel.StelliCode.metier.Interpreteur;
-import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
-/**
- *
- * penser à mettre sa console en utf-8 (windows : chcp 65001)
- */
 public class Main {
     private final Interpreteur metier;
     private final CUI ihm;
@@ -24,14 +18,11 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        System.out.println("Donnez le chemin absolue de votre fichier .algo");
-        //String adresse = "../resources/main/Code.algo";
-        String adresse = "../../src/main/resources/Code.algo";
-        metier         = new Interpreteur(this, adresse);
-        ihm            = new CUI(this);
+        metier         = new Interpreteur(CUI.getAdresse());
+        ihm            = new CUI();
         ihm.afficher();
         String sUser = "-1";
-        while (sUser != "q"){
+        while (!sUser.equals("q")){
             ihm.afficher();
             ihm.proposeChoix();
             affecterVariables(ihm.getArrNom());
@@ -57,7 +48,7 @@ public class Main {
         return  metier.getNbChiffre();
     }
 
-    public static String saisie()
+    public String saisie()
     {
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
