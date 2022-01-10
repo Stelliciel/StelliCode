@@ -85,7 +85,6 @@ public class Expression {
         }
 
 
-        System.out.println();
 
         Stack<Double> pile = new Stack<>();
         Stack<Boolean> pileSortie = new Stack<>();
@@ -147,8 +146,6 @@ public class Expression {
             }
         }
         return pileSortie.peek();
-
-
     }
 
     public static double calculer(String expression) {
@@ -215,8 +212,6 @@ public class Expression {
             sortie.add(pileOp.pop());
         }
 
-        for(String s : sortie )
-            System.out.println("S : " + s);
 
         Stack<Double> pile = new Stack<>();
         for(String expr : sortie){

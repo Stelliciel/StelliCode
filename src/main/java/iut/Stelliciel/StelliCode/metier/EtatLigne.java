@@ -8,7 +8,7 @@ public class EtatLigne {
     private final HashMap<String, Variable<Object>> lstVariables;
     private final String signature;
 
-    private boolean condition;
+    private boolean[] condition;
     private boolean pointArret;
     private boolean lecture;
 
@@ -23,20 +23,22 @@ public class EtatLigne {
         this.lstVariables  = copyVariable(lstVariables);
         this.numLigne = numLigne;
         this.traceAlgo = new ArrayList<>();
+
+        condition = new boolean[2];
     }
 
     public void setTraceAlgo(String trace){
         this.traceAlgo.add(trace);
     }
 
+
     public ArrayList<String> getTraceAlgo(){
-        if (traceAlgo.isEmpty())
-            return null;
         return traceAlgo;
     }
 
     public void setCondition(boolean condition) {
-        this.condition = condition;
+        this.condition[0] = true;
+        this.condition[1] = condition;
     }
 
     public void setPointArret(boolean pointArret) {
@@ -57,7 +59,8 @@ public class EtatLigne {
         return signature;
     }
 
-    public boolean isCondition()  { return condition; }
+    public boolean isCondition()    { return condition[0]; }
+    public boolean isConditionTrue(){ return  condition[1]; }
     public boolean isPointArret() { return pointArret; }
     public boolean isLecture()    { return lecture; }
     public int     getNumLigne()  { return numLigne; }
