@@ -1,7 +1,6 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import iut.Stelliciel.StelliCode.Main;
-
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,18 +9,16 @@ import java.util.Scanner;
 public class Interpreteur {
 
     private final ArrayList<String> fichier;
-    private final Main ctrl;
     private final HashMap<String, Variable<Object>> lstConstantes;
     private final HashMap<String, Variable<Object>> lstVariables;
     private final Parcours parcours;
     private String signature;
 
-    public Interpreteur(Main ctrl, String adresseFichier) {
-        this.ctrl           = ctrl;
+    public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
         lstConstantes       = new HashMap<>();
         lstVariables        = new HashMap<>();
-        parcours            = new Parcours(ctrl);
+        parcours            = new Parcours();
 
 //        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
@@ -66,49 +63,50 @@ public class Interpreteur {
 
     private void traiter(int numLigne, String ligne){
 
-        if( ligne.contains("<--") ){
+        if (ligne.contains("<--")) {
             String[] separation = Fonction.affectation(ligne);
 
             /*System.out.println("nom:" + separation[0]);
             System.out.println("valeur:" + separation[1]);*/
 
-            if( separation.length == 3 ) {
+            if (separation.length == 3) {
 //                System.out.println("index:" + separation[2]);
                 setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
-            }
-            else {
+            } else {
                 setVariable(separation[0], separation[1]);
             }
 
-            parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
-        }
-        else if ( ligne.contains("écrire") ) {
-            String ecrire  = Fonction.entreParenthese(ligne);
-            String afficher= Fonction.entreGuillemet(ecrire);
+            parcours.nouvelleEtat(nouvelleEtatLigne(numLigne));
+        } else if (ligne.contains("écrire")) {
+            String ecrire = Fonction.entreParenthese(ligne);
+            String afficher = Fonction.entreGuillemet(ecrire);
 
-            if( ecrire.contains("\",") ){
-                String variable = ecrire.substring( ecrire.indexOf(",")+1 ).trim();
+            if (ecrire.contains("\",")) {
+                String variable = ecrire.substring(ecrire.indexOf(",") + 1).trim();
                 EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
 
-                if (estConstante( variable ))
-                    etatLigne.setTraceAlgo(afficher+getConstante(variable));
+                if (estConstante(variable))
+                    etatLigne.setTraceAlgo(afficher + getConstante(variable));
                 else
-                    etatLigne.setTraceAlgo(afficher+getVariable(variable));
+                    etatLigne.setTraceAlgo(afficher + getVariable(variable));
 
                 parcours.nouvelleEtat(etatLigne);
-            }
-            else {
+            } else {
                 EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
                 etatLigne.setTraceAlgo(afficher);
                 parcours.nouvelleEtat(etatLigne);
             }
+        }else {
+            parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
         }
 
     }
     //< > =
     public boolean ou(String ligne)
     {
-        String tab[] = ligne.toUpperCase().split("OU");
+        //System.out.println("true3   : " + ou("3-1 < 2 OU 8+8 < 16"));
+        String[] tab = ligne.toUpperCase().split("OU");
+
         for(String str : tab)
         {
             str = str.trim();
@@ -136,7 +134,7 @@ public class Interpreteur {
     {
         boolean egal = false;
 
-        String tab[] = ligne.toUpperCase().split("ET");
+        String[] tab = ligne.toUpperCase().split("ET");
 
         for(String str : tab)
         {
@@ -160,6 +158,7 @@ public class Interpreteur {
     }
 
     public boolean estInferieurSuperieur(String comparateur, String ligne){
+
         System.out.println("2 -> " + ligne);
 
         String tab[] = ligne.toUpperCase().split(comparateur);
@@ -171,6 +170,7 @@ public class Interpreteur {
         System.out.println("calc1 -> " + calc1);
         //if (calc1.matches("/^-?\\d+\\.?\\d+[-+*\\/]-?\\d+\\.?\\d+$/")) {//(\d+[\.])?[0-9]+
             System.out.println("aaaaa4 -> " + tab[1]);
+
             SYAlgorithm ope = new SYAlgorithm();
             double      d1  = ope.doTheShuntingYard(calc1);
 
@@ -238,11 +238,11 @@ public class Interpreteur {
 
         //est une chaine
         if(tab[0].contains("\"") || tab[1].contains("\""))
-           return estEgal(tab,"\"");
+            return estEgal(tab,"\"");
 
         //est un charactère
         if(tab[0].contains("'") || tab[1].contains("'"))
-           return estEgal(tab,"'");
+            return estEgal(tab,"'");
 
         /*Variable var0 = (Variable) getVariable(tab[0]);
         Variable var1 = (Variable) getVariable(tab[1]);
@@ -283,11 +283,10 @@ public class Interpreteur {
     public EtatLigne getEtatVar(int lig){
         ArrayList<EtatLigne> arrLig = parcours.getLecteur();
         for (EtatLigne e: arrLig) {
-            if(e.getNumLigne() == lig){
+            if(e.getNumLigne() == lig)
                 return e;
-            }
         }
-        return  null;
+        return null;
     }
 
     private EtatLigne nouvelleEtatLigne(int numLigne){
@@ -307,9 +306,9 @@ public class Interpreteur {
             String[] mots = fichier.get(cpt).split(" ");
 
             switch (mots[0]){
-                case "ALGORITHME" -> { signature = mots[1]; }
-                case "constante:" -> { cpt = ajouterConstante(cpt);}
-                case "variable:"  -> { cpt = ajouterVariables(cpt);}
+                case "ALGORITHME" ->  signature = mots[1];
+                case "constante:" ->  cpt = ajouterConstante(cpt);
+                case "variable:"  ->  cpt = ajouterVariables(cpt);
             }
 
             if( !fichier.get(cpt).equals("DEBUT"))
@@ -361,7 +360,6 @@ public class Interpreteur {
                     addVariable(nom, type.replaceAll(" ", ""));
                 }
             }
-
             ligne = fichier.get(cpt++);
         }
 
@@ -486,7 +484,7 @@ public class Interpreteur {
     /*---------------------------*/
 
 
-    public static ArrayList<String> lireFichier(String adresse) {
+    public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
             Scanner sc = new Scanner(new FileInputStream(adresse), "UTF8");
@@ -508,18 +506,11 @@ public class Interpreteur {
         return fichier;
     }
 
-
-    public static void main(String[] args) {
-
-        Interpreteur t = new Interpreteur(null, "C:\\Users\\vatre\\IdeaProjects\\StelliCode\\src\\main\\resources\\Code.algo");
-
-        ArrayList<EtatLigne> lecteur = t.getParcours().getLecteur();
-
-        for(int cpt = 0; cpt < lecteur.size(); cpt++){
-            EtatLigne e = lecteur.get(cpt);
-            System.out.println( e.getNumLigne() + " " + t.getCode().get(e.getNumLigne()) );
-
-            System.out.println("\nTrace : " + e.getTraceAlgo());
+    public ArrayList<String> changLig(char dir) {
+        if(dir == 'f'){
+            return parcours.next().getTraceAlgo();
+        }else{
+            return parcours.prec().getTraceAlgo();
         }
     }
 }

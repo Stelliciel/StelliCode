@@ -2,11 +2,19 @@ ALGORITHME ExempleIndentation
 constante:
     MAXIMUM <-- 5
 variable:
-    tabConst: tableau[MAXIMUM] de caracteres
+    tabConst: tableau[MAXIMUM] de caractere
     tabVar: tableau[3] de boolean
     age: entier
     message: chaine
 DEBUT
+    lire (age)
+
+    si age < 18 alors
+     message <-- " mineur"
+    sinon
+     message <-- " majeur"
+    fsi ×
+    écrire ( "vous êtes ", message )
     lire (age)
 
     si age < 18 alors
