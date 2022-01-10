@@ -5,12 +5,17 @@ import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
 import iut.Stelliciel.StelliCode.metier.EtatLigne;
+import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
+import org.fusesource.jansi.Ansi;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Locale;
+import  java.lang.ProcessBuilder;
+import  java.lang.Process;
+import java.util.Scanner;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -35,7 +40,7 @@ public class CUI {
     public static String adaptTxt(String in){
         if(in.length()<10){return  in;}
         else{
-            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length()-1);
+            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length());
         }
     }
 
@@ -44,10 +49,11 @@ public class CUI {
         System.out.println("Quelles variables voulez vous suivre?");
         HashMap<String ,Variable<Object>> lstVar = Main.getInstance().getVariables();
         StringBuilder sRep = new StringBuilder();
+        /*A MODIFIER*/
         int numVar = 1;
         for(String nom : lstVar.keySet()){
-            if(numVar % 5 == 1 ){
-                sRep.append('\n');}
+            if(numVar % 5 == 1 )
+                sRep.append('\n');
             sRep.append(numVar).append(" ").append(CUI.adaptTxt(nom)).append("  ");
             numVar ++;
         }
@@ -64,7 +70,7 @@ public class CUI {
                         arrNom.add(lstVar.get(s).getNom());
                     }
                     cpt++;
-                };
+                }
             }
         }else{
             System.out.println("entrer un nombre valide");
@@ -76,6 +82,7 @@ public class CUI {
     }
 
     public void afficher(){
+        String sTabVar = affTabVar.toString();
         StringBuilder affichage = new StringBuilder();
         affichage.append("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
@@ -84,7 +91,7 @@ public class CUI {
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
-        //this.majConsole();
+        this.majConsole();
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
@@ -92,13 +99,17 @@ public class CUI {
         String inUser = Main.getInstance().saisie();
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
-                //controleur.prochaineLig();
+                affConsole.Ajouter(controleur.changLig('f'));
+                if(ligEnCour +1 == numLig1 +30){scroll(10);}
                 this.ligEnCour++;
+                majInOut();
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
-                //controleur.LignePre();
-                this.ligEnCour--;}
+                affConsole.Ajouter(controleur.changLig('b'));
+                if(ligEnCour -1 == numLig1 +10 && ligEnCour-1 != 10){scroll(-10);}
+                this.ligEnCour--;
+                majInOut();}
         }else if (inUser.substring(4).equals("+ bk")) {
             if (inUser.substring(5).matches("\\D+") || Integer.parseInt(inUser.substring(5)) > affCode.getTaillePro()) {
                 System.out.println("entrer un nombre inférieur au nombre de ligne");}
@@ -106,14 +117,13 @@ public class CUI {
                     //addBK(Integer.parseInt(inUser.substring(5)));
                     // controleur.addBK(Integer.parseInt(inUser.substring(5)));
             }
-        } else if(inUser.substring(0,6).equals("addvar")){
+        } else if(inUser.startsWith("addvar")){
             demandeVars();
         }
 
         //point d'arret +/-/go bk (x/x/)
         //quitter       q
         //pas a pas     entrée
-        //pas arriere   b
         //ligne précise Lx
         //stop boucle itteration l-x
         //detail        det var Nom
@@ -122,9 +132,12 @@ public class CUI {
         //trace
     }
 
+    private void majInOut() {
+        affConsole.Ajouter('i',"rest");
+    }
+
     public void sendVar(ArrayList<String> arrNom, EtatLigne lig){
         for (String nom: arrNom) {
-            System.out.println(nom);
             affTabVar.maj(lig.getLstVar().get(nom));
         }
     }

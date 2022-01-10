@@ -2,12 +2,14 @@ package iut.Stelliciel.StelliCode;
 
 import iut.Stelliciel.StelliCode.CUI.CUI;
 import iut.Stelliciel.StelliCode.metier.Interpreteur;
+import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 public class Main {
     private final Interpreteur metier;
@@ -55,5 +57,9 @@ public class Main {
 
     public static void main(String[] args) {
         new Main();
+    }
+
+    public ArrayList<String> changLig(char dir) {
+        return metier.changLig(dir);
     }
 }
