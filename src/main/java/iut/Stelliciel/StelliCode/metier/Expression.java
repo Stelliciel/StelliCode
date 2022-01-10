@@ -15,7 +15,6 @@ public class Expression {
         System.out.println(Expression.calculer("52+2/(3-8)^5^2"));
     }
 
-
     public static double calculer(String expression) {
         Map<String, Integer> operators = new HashMap<>();
         operators.put("-", 0);
@@ -26,26 +25,21 @@ public class Expression {
         operators.put("^", 2);
         operators.put("\\/¯", 2);
 
-        //remove all blank spaces
         expression = expression.replaceAll("\\s+","");
-
-        //add a 0 before the "-" in order to consider the "-" as a standalone operator
         expression = expression.replace("(-", "(0-");
 
-        //same thing here
         if (expression.startsWith("-")){
             expression = "0" + expression;
         }
 
-        //read the expression and check if it contains only allowed token
         Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([\\+\\-\\*\\/\\(\\)\\^]))");
         Matcher matcher = pattern.matcher(expression);
 
-        int cpt = 0; //must be equal to the index of the end of the last matching group
+        int cpt = 0;
         List<String> file = new ArrayList<>();
         while(matcher.find()){
-            file.add(matcher.group().trim());//add the token if it's okay
-            cpt += file.get(file.size() - 1 ).length();//update the cpt
+            file.add(matcher.group().trim());
+            cpt += file.get(file.size() - 1 ).length();
         }
         
 
