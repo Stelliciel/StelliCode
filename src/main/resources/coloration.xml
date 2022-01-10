@@ -55,8 +55,8 @@
     </element>
 
     <element type = "ligneEnCour">
-        <couleurTexte nom  = "black" valeurR="0"   valeurG="0"   valeurB="0"/>
-        <couleurFond  nom  = "cyan"  valeurR="100" valeurG="245" valeurB="235"/>
+        <couleurTexte nom  = "black" valeurR="0"   valeurG="0"   valeurB="0" />
+        <couleurFond  nom  = "cyan"  valeurR="100" valeurG="245" valeurB="235" />
         <poids        gras = "false"/>
     </element>
 
@@ -68,7 +68,7 @@
 
     <element type = "primitive">
         <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220" />
-        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255" />
         <poids        gras = "true"/>
     </element>
 
@@ -76,5 +76,11 @@
         <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"/>
         <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
         <poids        gras = "false"/>
+    </element>
+
+    <element type="conditionBoucles">
+        <couleurTexte nom  = "purple"  valeurR="255"  valeurG="0" valeurB="255"/>
+        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <poids        gras = "true"/>
     </element>
 </coloration>
