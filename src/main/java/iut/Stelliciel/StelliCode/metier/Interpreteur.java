@@ -58,6 +58,8 @@ public class Interpreteur {
             System.out.println("\tAffectation:"+(cpt+1)+"|"+ligne);
             String[] separation = Fonction.affectation(ligne);
 
+            separation[1] = remplacerValeurVariable(separation[1]);
+
             if (separation.length == 3) {
                 setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
             } else {
@@ -105,17 +107,7 @@ public class Interpreteur {
             String condition = ligne.replaceAll("si", "").replaceAll("alors", "").trim();
             condition = condition.replaceAll(" ", "");
 
-            for(String v : lstConstantes.keySet() ){
-                if ( condition.contains(v) ){
-                    condition = condition.replaceAll(v, lstConstantes.get(v).valToString() );
-                }
-            }
-
-            for(String v : lstVariables.keySet() ){
-                if ( condition.contains(v) ){
-                    condition = condition.replaceAll(v, lstVariables.get(v).getVal().toString() );
-                }
-            }
+            condition = remplacerValeurVariable(condition);
 
             boolean b = Expression.calculLogique(condition);
             EtatLigne eL = nouvelleEtatLigne(cpt);
@@ -148,8 +140,36 @@ public class Interpreteur {
 
 
         }
-        else if (ligne.startsWith("tq") )
+        else if (ligne.contains("tq ") )
         {
+            System.out.println("\tTQ:"+(cpt+1)+"|"+ligne);
+            String condition = ligne.replaceAll("tq|alors| ", "");
+            condition = remplacerValeurVariable(condition);
+
+            boolean b = Expression.calculLogique(condition);
+
+            System.out.println("\tcondition:"+condition+"->"+b);
+
+            if( b ){
+                int numLigne = cpt;
+
+                while ( b ) {
+                    int i = cpt + 1;
+                    while (!this.fichier.get(i).contains("ftq")) {
+                        traiter(fichier.get(i));
+                        i++;
+                    }
+                    condition = remplacerValeurVariable(fichier.get(numLigne).replaceAll("tq|alors| ", ""));
+                    System.out.println("\tcondition du tq:"+condition);
+                    b = Expression.calculLogique(condition);
+                }
+            }
+
+            for(int i = cpt+1; !this.fichier.get(i).contains("ftq");i++){
+                System.out.println("pacoure:"+fichier.get(i));
+                cpt=i;
+            }
+
 
         }
         else {
@@ -157,6 +177,24 @@ public class Interpreteur {
         }
 
 
+    }
+
+
+    public String remplacerValeurVariable(String ligne){
+
+        for(String v : lstConstantes.keySet() ){
+            if ( ligne.contains(v) ){
+                ligne = ligne.replaceAll(v, lstConstantes.get(v).valToString() );
+            }
+        }
+
+        for(String v : lstVariables.keySet() ){
+            if ( ligne.contains(v) ){
+                ligne = ligne.replaceAll(v, lstVariables.get(v).getVal().toString() );
+            }
+        }
+
+        return ligne;
     }
 
     public EtatLigne getEtatVar(int lig){
@@ -312,7 +350,12 @@ public class Interpreteur {
 
     public static void             set(Variable<Object> var, String valeur)   {
         switch (var.getType()){
-            case "entier"    -> { int val = Integer.parseInt(valeur);
+            case "entier"    -> {
+                int val;
+                valeur = String.valueOf(Expression.calculer(valeur));
+                if(valeur.contains("."))
+                    valeur = valeur.substring(0,valeur.indexOf("."));
+                val = Integer.parseInt(valeur);
                 var.setVal(val);
             }
 

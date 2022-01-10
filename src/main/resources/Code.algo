@@ -6,10 +6,18 @@ variable:
     tabVar: tableau[3] de boolean
     age: entier
     message: chaine
+    cpt: entier
 DEBUT
     age <-- 5
 
     écrire (age)
+
+    écrire ("Boucle de 0 à 9:")
+    cpt <-- 0
+    tq cpt < 10 alors
+        écrire (cpt)
+        cpt <-- cpt+1
+    ftq
 
     si age < 18 alors
      message <-- " mineur"
