@@ -9,23 +9,15 @@ public class AfficheConsole{
         this.arrString = new ArrayList<>();
     }
 
-    public void Ajouter(char io, String s){
-        if(io == 'i'){AjouterIn(s);}
-        else{AjouterOut(s);}
-    }
-
-    public void AjouterIn(String s){
-        this.arrString.add("utilisateur >>" + s);
-    }
-
-    public void AjouterOut(String s){
-        this.arrString.add(s);
-    }
-
     public void Ajouter(ArrayList<String> arrIn){
         if(arrIn != null){
             for (String s:arrIn) {
-                Ajouter(s.charAt(0),s.substring(1));
+                if(s.charAt(0) == 'i'){
+                    this.arrString.add("utilisateur >>" + s);
+                }
+                else{
+                    this.arrString.add(s);
+                }
             }
         }
     }

@@ -18,7 +18,7 @@ public class Interpreteur {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
         lstConstantes       = new HashMap<>();
         lstVariables        = new HashMap<>();
-        parcours            = new Parcours(null);
+        parcours            = new Parcours();
 
 //        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
@@ -488,8 +488,10 @@ public class Interpreteur {
     public ArrayList<String> changLig(char dir) {
         if(dir == 'f'){
             return parcours.next().getTraceAlgo();
-        }else{
+        }else if(dir == 'b'){
             return parcours.prec().getTraceAlgo();
+        }else{
+            return null;
         }
     }
 }

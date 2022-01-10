@@ -65,5 +65,9 @@ public class Main {
     public ArrayList<String> changLig(char dir) {
         return metier.changLig(dir);
     }
+
+    public ArrayList<String> getTextConsole(int lig){
+        return metier.getEtatVar(lig).getTraceAlgo();
+    }
 }
 
