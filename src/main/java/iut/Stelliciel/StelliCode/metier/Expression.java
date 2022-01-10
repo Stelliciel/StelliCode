@@ -14,7 +14,8 @@ public class Expression {
         //System.out.println(Expression.calculer("52+2/(3-8)^5^2*\\/¯25"));
         //System.out.println(Expression.calculer("\\/¯25"));
         //System.out.println(Expression.calculer("2*3+4/(5+6)"));
-        System.out.println(Expression.calculLogique("((17<17 ou (18>14))et(14<12)ou13>14)et 1==1"));
+        System.out.println(Expression.calculLogique("2<6 et A != a"));
+        System.out.println(Expression.calculLogique("A == A"));
     }
 
     public static boolean calculLogique(String expression) {
@@ -32,7 +33,7 @@ public class Expression {
         expression = expression.replaceAll("\\s+","");
 
 
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
         Matcher matcher = pattern.matcher(expression);
 
         int cpt = 0;
@@ -41,6 +42,8 @@ public class Expression {
             file.add(matcher.group().trim());
             cpt += file.get(file.size() - 1 ).length();
         }
+
+
 
         Stack<String> pileOp = new Stack<>(); //pile pour operateur
         List<String> sortie = new ArrayList<>(); //sortie queue
@@ -75,15 +78,23 @@ public class Expression {
             }
         }
 
+
+
         while(!pileOp.empty()){
             sortie.add(pileOp.pop());
         }
 
+
+        System.out.println();
+
         Stack<Double> pile = new Stack<>();
         Stack<Boolean> pileSortie = new Stack<>();
         for(String expr : sortie){
-            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+") ){
-                pile.push(Double.parseDouble(expr));
+            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+|([a-z])|([A-Z])") ){
+                if ( expr.matches("([a-z])|([A-Z])"))
+                    pile.push((int) expr.charAt(0) * 1.0);
+                else
+                    pile.push(Double.parseDouble(expr));
             }
             else{
                 if ( expr.equals("non") ) {
