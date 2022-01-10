@@ -27,7 +27,6 @@ public class Main {
             ihm.proposeChoix();
             affecterVariables(ihm.getArrNom());
         }
-
     }
 
     public void affecterVariables(ArrayList<String> lstNom){

@@ -5,13 +5,13 @@ package iut.Stelliciel.StelliCode.metier;
  * @version 3
  */
 
-public class Variable<E>
+public class Variable<V>
 {
     private final String nom;
     private final String type;
     private static int nbVar = 0;
     private int numVar;
-    private E valeur;
+    private V valeur;
     private Object[] tabValeur;
 
     /**constructeur d'une variable
@@ -19,7 +19,7 @@ public class Variable<E>
      * @param type le type de primitif de la valeur
      * @param valeur valeur de n'importe quel type primitif (int, double, booléen, caractere, chaine de caractere)
      */
-    public Variable( String nom, String type, E valeur )
+    public Variable( String nom, String type, V valeur )
     {
         this.type   = type;
         this.nom    = nom;
@@ -52,7 +52,7 @@ public class Variable<E>
      * @param ind indice
      * @param valeur la nouvelle valeur
      */
-    public void setIndTab(int ind, E valeur)
+    public void setIndTab(int ind, V valeur)
     {
         tabValeur[ind] = valeur;
     }
@@ -60,9 +60,9 @@ public class Variable<E>
     /** Recupere la valeur de l'indice entrée
      * @param ind indice
      */
-    public E getIndTab(int ind){
+    public V getIndTab(int ind){
         if ( ind < tabValeur.length )
-            return (E) this.tabValeur[ind];
+            return (V) this.tabValeur[ind];
 
         return null;
     }
@@ -80,7 +80,13 @@ public class Variable<E>
 
             sRep += "]";
         }
-        return this.valeur.toString();
+        return switch (this.getType()){
+            case "entier"    -> Integer.parseInt((String)valeur) + "";
+            case "reel"      -> Double.parseDouble((String)valeur)+"";
+            case "caractere" -> ""+((String)valeur).charAt(0);
+            case "chaine", "booleen" -> (String)valeur;
+            default          -> "erreur imposible";
+        };
     }
 
     /**
@@ -115,9 +121,9 @@ public class Variable<E>
     /** change la valeur
      * @param val nouvelle valeur de la variable
      */
-    public void setVal(E val){ this.valeur = val;}
+    public void setVal(V val){ this.valeur = val;}
 
-    private Variable(String nom, String type, E[] tabValeur){
+    private Variable(String nom, String type, V[] tabValeur){
         this.nom =nom;
         this.type=type;
         this.tabValeur = tabValeur;

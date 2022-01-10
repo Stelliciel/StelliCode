@@ -8,7 +8,9 @@ import iut.Stelliciel.StelliCode.metier.EtatLigne;
 import iut.Stelliciel.StelliCode.metier.Variable;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -140,7 +142,7 @@ public class CUI {
         return -1;
     }
 
-    /*public void majConsole(){
+    public void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -157,15 +159,15 @@ public class CUI {
         }catch(Exception e){
             System.out.println(e);
         }
-    }*/
+    }
 
     public int getLigEnCour() {
         return ligEnCour;
     }
 
-    private String affLig(int numLig, int ligEncour){
+    private String affLig(int numLig, int ligEncour,String sTabVar){
         String espace = " ";
-        return ("| "+ this.affTabVar.affLig(numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
+        return ("| "+ this.affTabVar.affLig(sTabVar,numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }
 
     public static File getAdresse() {

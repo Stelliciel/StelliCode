@@ -2,6 +2,7 @@ package iut.Stelliciel.StelliCode.metier;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -44,9 +45,18 @@ public class Interpreteur {
 
         while( cpt < fichier.size() ){
             String ligne = fichier.get(cpt);
+            SYAlgorithm ope = new SYAlgorithm();
+            double      d1  = ope.doTheShuntingYard("8+8/7");
 
             traiter(cpt, ligne );
 
+            System.out.println(d1);
+            System.out.println("true1   : " + ou("8+8/7 > 2 OU 8+8 = 16"));
+            System.out.println("true2   : " + ou("3-1 >= 2 OU 8+8 = 16"));
+            System.out.println("true3   : " + ou("3-1 < 2 OU 8+8 < 16"));
+            System.out.println("false4  : " + ou("3*1 <= 2 OU 8+8 > 16"));
+            System.out.println("true5   : " + et("8+8/7 > 8 ET 8+8 = 16"));
+            System.out.println("true6   : " + et("8 < 8 ET 8+8 = 16"));
 
             cpt++;
         }
@@ -78,7 +88,7 @@ public class Interpreteur {
                 String variable = ecrire.substring( ecrire.indexOf(",")+1 ).trim();
                 EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
 
-                if ( estConstante( variable) )
+                if (estConstante( variable ))
                     etatLigne.setTraceAlgo(afficher+getConstante(variable));
                 else
                     etatLigne.setTraceAlgo(afficher+getVariable(variable));
@@ -92,17 +102,176 @@ public class Interpreteur {
             }
         }
 
+    }
+    //< > =
+    public boolean ou(String ligne)
+    {
+        //System.out.println("true3   : " + ou("3-1 < 2 OU 8+8 < 16"));
+        String tab[] = ligne.toUpperCase().split("OU");
+        for(String str : tab)
+        {
+            if (str.contains("!=") && !estEgal(str))
+                return true;
+            else if (str.contains("=") && estEgal(str))
+                return true;
 
+            if (str.contains("=<") && !estInferieurSuperieur(">",str))
+                return true;
+            else if (str.contains("<") && estInferieurSuperieur("<",str))
+                return true;
+
+            if (str.contains("=>") && !estInferieurSuperieur("<",str))
+                return true;
+            else if (str.contains(">") && estInferieurSuperieur(">",str))
+                return true;
+
+        }
+        return false;
+    }
+
+    public boolean et(String ligne)
+    {
+        boolean egal = false;
+
+        String tab[] = ligne.toUpperCase().split("ET");
+
+        for(String str : tab)
+        {
+            if (str.contains("!=") && estEgal(str))
+                return false;
+            else if (str.contains("=") && !estEgal(str))
+                return false;
+
+            if (str.contains("<") && estInferieurSuperieur("<",str))
+                return false;
+            else if (str.contains("=>") && !estInferieurSuperieur("<",str))
+                return false;
+
+            if (str.contains(">") && !estInferieurSuperieur(">",str))
+                return false;
+            else if (str.contains("=<") && !estInferieurSuperieur(">",str))
+                return false;
+        }
+        return true;
+    }
+
+    public boolean estInferieurSuperieur(String comparateur, String ligne){
+        String tab[] = ligne.toUpperCase().split(comparateur);
+        System.out.println(comparateur);
+        if (tab[0].matches("([0-9]*[.])?[0-9]+")) {
+            SYAlgorithm ope = new SYAlgorithm();
+            double      d1  = ope.doTheShuntingYard(tab[0]);
+
+            if (tab[1].matches("([0-9]*[.])?[0-9]+")) {
+                if(comparateur.equals("=<")) {
+                    System.out.println("oui");
+                    return !((Double.compare(d1, ope.doTheShuntingYard(tab[1]))) > 0);
+                }
+                else if (comparateur.equals("<"))
+                    return (Double.compare(d1, ope.doTheShuntingYard(tab[1]))) < 0;
+
+                if(comparateur.equals("=>"))
+                    return !((Double.compare(d1, ope.doTheShuntingYard(tab[1]))) < 0);
+                else if (comparateur.equals(">"))
+                    return (Double.compare(d1, ope.doTheShuntingYard(tab[1]))) > 0;
+            }
+            else
+            {
+//                Variable var = (Variable) getVariable(tab[1]);
+//                return (Double.compare(d1,Double.parseDouble(var.valToString())) < 0);
+            }
+        }/*else
+        {
+            if (tab[1].matches("([0-9]*[.])?[0-9]+")) {
+                SYAlgorithm ope = new SYAlgorithm();
+                Variable    var = (Variable) getVariable(tab[0]);
+
+                if (comparateur.equals("<"))
+                    return (Double.compare(Double.parseDouble(var.valToString()), ope.doTheShuntingYard(tab[1]))) < 0;
+                if (comparateur.equals(">"))
+                    return (Double.compare(Double.parseDouble(var.valToString()), ope.doTheShuntingYard(tab[1]))) > 0;
+            }
+            else
+            {
+                Variable var0 = (Variable) getVariable(tab[0]);
+                Variable var1 = (Variable) getVariable(tab[1]);
+                return (Double.compare(Double.parseDouble(var0.valToString()),Double.parseDouble(var1.valToString())) < 0);
+            }
+        }*/
+
+        return false;
+    }
+
+    public boolean estEgal(String ligne)
+    {
+        String[] tab = ligne.replaceAll("!=", "=").split("=");
+
+        //est un calcul (dans une chaine)
+        if (tab[0].matches("(\\d+[\\.])?[0-9]+")) {
+            SYAlgorithm ope = new SYAlgorithm();
+            double d1 = ope.doTheShuntingYard(tab[0]);
+            if (tab[1].matches("(\\d+[\\.])?[0-9]+")) {
+                return (Double.compare(d1, ope.doTheShuntingYard(tab[1]))) == 0;
+            }/*
+            else
+            {
+                Variable var = (Variable) getVariable(tab[1]);
+                return (Double.compare(d1,Double.parseDouble(var.valToString())) == 0);
+            }*/
+        }
+
+        //est une chaine
+        if(tab[0].contains("\"") || tab[1].contains("\""))
+           return estEgal(tab,"\"");
+
+        //est un charactère
+        if(tab[0].contains("'") || tab[1].contains("'"))
+           return estEgal(tab,"'");
+
+        /*Variable var0 = (Variable) getVariable(tab[0]);
+        Variable var1 = (Variable) getVariable(tab[1]);
+
+        return var0.getVal().equals(var1.getVal());*/
+        return false;
+    }
+
+    private boolean estEgal(String[] tab, String Element)
+    {
+        //"" ou ''
+        if (tab[0].contains(Element)) {
+            tab[0] = contenu(Element, Element, tab[0]);
+            if(tab[1].contains(Element))
+            {
+                tab[1] = contenu(Element, Element, tab[1]);
+                return tab[0].equals(tab[1]);
+            }/*else
+            {
+                //avec une variable
+                Variable var = (Variable) getVariable(tab[1]);
+                return var.getVal().equals(tab[0]);
+            }*/
+        }
+        /*else {
+            tab[1] = contenu(Element, Element, tab[1]);
+            Variable var = (Variable) getVariable(tab[0]);
+            return var.getVal().equals(tab[1]);
+        }*/
+        return false;
+    }
+
+    public static String contenu(String element1,String element2,String str)
+    {
+        return str.substring( str.indexOf(element1), str.lastIndexOf(element2) ).trim();
     }
 
     public EtatLigne getEtatVar(int lig){
         ArrayList<EtatLigne> arrLig = parcours.getLecteur();
         for (EtatLigne e: arrLig) {
-            if(e.getNumLigne() == lig){
+            if(e.getNumLigne() == lig)
                 return e;
             }
         }
-        return  null;
+        return null;
     }
 
     private EtatLigne nouvelleEtatLigne(int numLigne){
@@ -176,7 +345,6 @@ public class Interpreteur {
                     addVariable(nom, type.replaceAll(" ", ""));
                 }
             }
-
             ligne = fichier.get(cpt++);
         }
 
@@ -304,7 +472,7 @@ public class Interpreteur {
     public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
-            Scanner sc = new Scanner(new FileInputStream(adresse), "UTF8");
+            Scanner sc = new Scanner(new FileInputStream(adresse), StandardCharsets.UTF_8);
 
             char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
