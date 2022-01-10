@@ -106,21 +106,24 @@ public class Interpreteur {
     {
         //System.out.println("true3   : " + ou("3-1 < 2 OU 8+8 < 16"));
         String[] tab = ligne.toUpperCase().split("OU");
+
         for(String str : tab)
         {
-            if (str.contains("!=") && !estEgal(str))
-                return true;
-            else if (str.contains("=") && estEgal(str))
-                return true;
+            str = str.trim();
 
-            if (str.contains("=<") && !estInferieurSuperieur(">",str))
+            if (str.contains("<=") && !estInferieurSuperieur(">",str.replaceAll("<=",">")))
                 return true;
             else if (str.contains("<") && estInferieurSuperieur("<",str))
                 return true;
 
-            if (str.contains("=>") && !estInferieurSuperieur("<",str))
+            if (str.contains(">=") && !estInferieurSuperieur("<",str.replaceAll(">=","<")))
                 return true;
             else if (str.contains(">") && estInferieurSuperieur(">",str))
+                return true;
+
+            if (str.contains("!=") && !estEgal(str.replaceAll("!=","=")))
+                return true;
+            else if (str.contains("=") && estEgal(str))
                 return true;
 
         }
@@ -135,50 +138,59 @@ public class Interpreteur {
 
         for(String str : tab)
         {
-            if (str.contains("!=") && estEgal(str))
+
+            if (str.contains("<=") && !estInferieurSuperieur(">",str.replaceAll("<=",">")))
+                return false;
+            else if (str.contains("<") && estInferieurSuperieur("<",str.replaceAll(">=","<")))
+                return false;
+
+            if (str.contains(">=") && !estInferieurSuperieur("<",str.replaceAll(">=","<")))
+                return false;
+            else if (str.contains(">") && !estInferieurSuperieur(">",str))
+                return false;
+
+            if (str.contains("!=") && estEgal(str.replaceAll("!=","=")))
                 return false;
             else if (str.contains("=") && !estEgal(str))
-                return false;
-
-            if (str.contains("<") && estInferieurSuperieur("<",str))
-                return false;
-            else if (str.contains("=>") && !estInferieurSuperieur("<",str))
-                return false;
-
-            if (str.contains(">") && !estInferieurSuperieur(">",str))
-                return false;
-            else if (str.contains("=<") && !estInferieurSuperieur(">",str))
                 return false;
         }
         return true;
     }
 
     public boolean estInferieurSuperieur(String comparateur, String ligne){
-        String[] tab = ligne.toUpperCase().split(comparateur);
-        System.out.println(comparateur);
-        if (tab[0].matches("([0-9]*[.])?[0-9]+")) {
+
+        System.out.println("2 -> " + ligne);
+
+        String tab[] = ligne.toUpperCase().split(comparateur);
+
+        System.out.println("3 -> " + tab[0]);
+        System.out.println("4 -> " + tab[1]);
+
+        String calc1 = tab[0].replaceAll("\"","");
+        System.out.println("calc1 -> " + calc1);
+        //if (calc1.matches("/^-?\\d+\\.?\\d+[-+*\\/]-?\\d+\\.?\\d+$/")) {//(\d+[\.])?[0-9]+
+            System.out.println("aaaaa4 -> " + tab[1]);
+
             SYAlgorithm ope = new SYAlgorithm();
-            double      d1  = ope.doTheShuntingYard(tab[0]);
+            double      d1  = ope.doTheShuntingYard(calc1);
 
-            if (tab[1].matches("([0-9]*[.])?[0-9]+")) {
-                if(comparateur.equals("=<")) {
-                    System.out.println("oui");
-                    return !((Double.compare(d1, ope.doTheShuntingYard(tab[1]))) > 0);
-                }
-                else if (comparateur.equals("<"))
-                    return (Double.compare(d1, ope.doTheShuntingYard(tab[1]))) < 0;
+                //if (tab[1].matches("/^-?\\d+\\.?\\d+[-+*\\/]-?\\d+\\.?\\d+$/")) {//("(\\d+[\\.])?[0-9]+")) {
+                    String calc2 = tab[1].replaceAll("\"","");
+                //}
+                String test = "16";
+        System.out.println("-"+test + "- -" + calc2+"-");
+                if (comparateur.equals("<"))
+                    return (Double.compare(d1, ope.doTheShuntingYard(calc2.trim()))) < 0;
 
-                if(comparateur.equals("=>"))
-                    return !((Double.compare(d1, ope.doTheShuntingYard(tab[1]))) < 0);
-                else if (comparateur.equals(">"))
-                    return (Double.compare(d1, ope.doTheShuntingYard(tab[1]))) > 0;
-            }
-            else
-            {
+                if (comparateur.equals(">"))
+                    return (Double.compare(d1, ope.doTheShuntingYard(calc2.trim()))) > 0;
+            //}
+            //else
+            //{
 //                Variable var = (Variable) getVariable(tab[1]);
 //                return (Double.compare(d1,Double.parseDouble(var.valToString())) < 0);
-            }
-        }/*else
+            //}
+        /*else
         {
             if (tab[1].matches("([0-9]*[.])?[0-9]+")) {
                 SYAlgorithm ope = new SYAlgorithm();
@@ -203,13 +215,19 @@ public class Interpreteur {
     public boolean estEgal(String ligne)
     {
         String[] tab = ligne.replaceAll("!=", "=").split("=");
-
+        System.out.println(ligne);
         //est un calcul (dans une chaine)
-        if (tab[0].matches("(\\d+[\\.])?[0-9]+")) {
+        String calc1 = tab[0].replaceAll("\"","");
+        //System.out.println(calc1 + "\n--------------------------------");
+        if (calc1.matches("(\\d+[\\.])?[0-9]+")) {
+            System.out.println("eeeeee");
+            System.out.println("calc1 : " + calc1);
             SYAlgorithm ope = new SYAlgorithm();
-            double d1 = ope.doTheShuntingYard(tab[0]);
-            if (tab[1].matches("(\\d+[\\.])?[0-9]+")) {
-                return (Double.compare(d1, ope.doTheShuntingYard(tab[1]))) == 0;
+            double d1 = ope.doTheShuntingYard(calc1);
+            if (tab[1].contains("\"")) {
+                String calc2 = contenu("\"","",tab[1]);
+                System.out.println("ooo");
+                return (Double.compare(d1, ope.doTheShuntingYard(calc2)) == 0);
             }/*
             else
             {
