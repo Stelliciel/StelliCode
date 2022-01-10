@@ -102,15 +102,16 @@ public class CUI {
             if (ligEnCour != affCode.getTaillePro() - 1) {
                 affConsole.Ajouter(controleur.changLig('f'));
                 if(ligEnCour +1 == numLig1 +30){scroll(10);}
+                majInOut(controleur.getEtatVar(ligEnCour));
                 this.ligEnCour++;
-                majInOut();
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
                 affConsole.Ajouter(controleur.changLig('b'));
                 if(ligEnCour -1 == numLig1 +10 && ligEnCour-1 != 10){scroll(-10);}
+                majInOut(controleur.getEtatVar(ligEnCour));
                 this.ligEnCour--;
-                majInOut();}
+            }
         }else if (inUser.substring(4).equals("+ bk")) {
             if (inUser.substring(5).matches("\\D+") || Integer.parseInt(inUser.substring(5)) > affCode.getTaillePro()) {
                 System.out.println("entrer un nombre inférieur au nombre de ligne");}
@@ -133,8 +134,8 @@ public class CUI {
         //trace
     }
 
-    private void majInOut() {
-        affConsole.Ajouter('i',"rest");
+    private void majInOut(ArrayList<String> arrS) {
+        affConsole.Ajouter(arrS);
     }
 
     public void sendVar(ArrayList<String> arrNom, EtatLigne lig){
@@ -179,7 +180,7 @@ public class CUI {
         return ligEnCour;
     }
 
-    private String affLig(int numLig, int ligEncour,String sTabVar){
+    private String affLig(int numLig, int ligEncour, String sTabVar){
         String espace = " ";
         return ("| "+ this.affTabVar.affLig(sTabVar,numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }

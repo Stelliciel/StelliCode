@@ -30,20 +30,28 @@ public class AfficheConsole{
         }
     }
 
+    public String formatConsole(String s){
+        if(s.startsWith("utilisateur")){
+            return String.format("|%-110s|\n",s);
+        }else{
+            return String.format("|%110s|\n",s);
+        }
+    }
+
     public String toString(){
         if (arrString.isEmpty() || arrString ==null){ return "";}
         else {
-            StringBuilder sRep = new StringBuilder();
+            String sRep = "";
             if(arrString.size()>3) {
-                sRep.append(arrString.get(arrString.size() - 3)).append("\n");
-                sRep.append(arrString.get(arrString.size() - 2)).append("\n");
-                sRep.append(arrString.get(arrString.size() - 1)).append("\n");
+                sRep += formatConsole(arrString.get(arrString.size() - 3));
+                sRep += formatConsole(arrString.get(arrString.size() - 2));
+                sRep += formatConsole(arrString.get(arrString.size() - 1));
             } else {
                 for (String s:arrString) {
-                    sRep.append(s).append("\n");
+                    sRep += formatConsole(s);
                 }
             }
-            return sRep.toString();
+            return sRep;
         }
     }
 }

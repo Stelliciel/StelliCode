@@ -44,6 +44,10 @@ public class Main {
         ihm.sendVar(lstNom,metier.getEtatVar(ihm.getLigEnCour()));
     }
 
+    public ArrayList<String> getEtatVar(int lig){
+        return this.metier.getEtatVar(lig).getTraceAlgo();
+    }
+
     public static Main getInstance() {
         return instance;
     }
