@@ -8,43 +8,10 @@ import java.util.Scanner;
 public class Fonction {
     private String affichage="";
 
-    public Fonction(ArrayList<String> lignes)
-    {
-        String res ="";
-        String[] str;
-
-        for(int i=0; i< lignes.size();i++)
-        {
-            String s = lignes.get(i);
-
-            switch ( s )
-            {
-                case "tq" :
-                case "si" :
-                    int cptSi = 1;
-
-                    break;
-                default   :res += chercher(s);
-            }
-        }
-
-        System.out.println(res);
-    }
 
 
-    private String chercher(String str) {
-        str = str.trim();
-        String[] chercher = str.split(" ");
-        switch (chercher[0])
-        {
-            case "lire"     -> {return Main.saisie();}
-            case "écrire"   -> {return "écrire";}//return ecrire(str);}
-            case "enChaine" -> {return "enChaine";}//return enChaine(str);}
-            case "enEntier" -> {return "enEntier";}//return enEntier(str);}
-            case "enRéel"  ->  {return "enRéel";}//return enReel(str)};
-            default         -> {return "non traité\n";}
-        }
-    }
+
+
 
     /*private String enReel(String str)
     {
