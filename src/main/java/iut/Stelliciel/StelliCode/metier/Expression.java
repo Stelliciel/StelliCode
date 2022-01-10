@@ -1,111 +1,121 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Expression {
 
-    public static int getPriority(char ch)
-    {
-        if (ch == '+' || ch == '-')
-            return 1;
-        else if (ch == '*' || ch == '/')
-            return 2;
-        else if (ch == '^')
-            return 3;
-        else
-            return -1;
+    public static void main(String[] args) {
+
+        System.out.println(Expression.calculer("52+2/(3-8)^5^2"));
     }
 
-    public static String toEPO(String expression)
-    {
-        Stack<Character> pile = new Stack<>();
+    public static double calculer(String expression) {
+        Map<String, Integer> operators = new HashMap<>();
+        operators.put("-", 0);
+        operators.put("+", 0);
+        operators.put("%", 1);
+        operators.put("/", 1);
+        operators.put("*", 1);
+        operators.put("^", 2);
+        operators.put("\\/¯", 2);
 
-        String sortie = "";
+        expression = expression.replaceAll("\\s+","");
+        expression = expression.replace("(-", "(0-");
 
-        for (int cpt = 0; cpt < expression.length(); ++cpt) {
-            char c = expression.charAt(cpt);
+        if (expression.startsWith("-")){
+            expression = "0" + expression;
+        }
 
-            if (Character.isLetterOrDigit(c))
-                sortie += c;
-            else if ( c == '(' )
-                pile.push(c);
-            else if ( c == ')' ) {
-                while ( !pile.isEmpty() && pile.peek() != '(' )
-                    sortie += pile.pop();
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([\\+\\-\\*\\/\\(\\)\\^]))");
+        Matcher matcher = pattern.matcher(expression);
 
-                pile.pop();
-            }
-            else {
-                while ( !pile.isEmpty() && getPriority(c) <= getPriority(pile.peek()) ) {
-                    sortie += pile.pop();
+        int cpt = 0;
+        List<String> file = new ArrayList<>();
+        while(matcher.find()){
+            file.add(matcher.group().trim());
+            cpt += file.get(file.size() - 1 ).length();
+        }
+        
+
+        Stack<String> pileOp = new Stack<>(); //pile pour operateur
+        List<String> sortie = new ArrayList<>(); //sortie queue
+
+        for(String expr : file){
+            if(operators.containsKey(expr)){
+                while(!pileOp.empty() &&
+                        operators.containsKey(pileOp.peek())&&
+                        ((operators.get(expr) <= operators.get(pileOp.peek()) && !expr.equals("^"))||
+                                (operators.get(expr) < operators.get(pileOp.peek()) && expr.equals("^")))) {
+                    sortie.add(pileOp.pop());
                 }
-                pile.push(c);
+                pileOp.push(expr);
+
+            }
+            else if(expr.equals("(")){
+                pileOp.push(expr);
+            }
+            else if(expr.equals(")")){
+               while(!pileOp.empty()){
+                    if(!pileOp.peek().equals("(")){
+                        sortie.add(pileOp.pop());
+                    }
+                }
+                if(!pileOp.empty()){
+                    pileOp.pop();
+                }
+            }
+            else{
+                sortie.add(expr);
             }
         }
 
-        while (!pile.isEmpty()) {
-            if (pile.peek() == '(')
-                return "Erreur";
-            sortie += pile.pop();
+        while(!pileOp.empty()){
+            sortie.add(pileOp.pop());
         }
 
-        return sortie;
-    }
-
-
-    public static double calculer(double var1, String operande, double var2){
-        System.out.println("\tCalcul simple :"+ var1+operande+var2);
-
-        switch (operande){
-            case "*" -> {return var1*var2;}
-            case "+" -> {return var1+var2;}
-            case "-" -> {return var1-var2;}
-            case "/" -> {return var1/var2;}
-            case "^" -> {return Math.pow(var1,var2);}
-        }
-
-        return 0;
-    }
-
-    public static double caculerEPO(String expression){
         Stack<Double> pile = new Stack<>();
-
-        for(int cpt = 0; cpt < expression.length(); cpt++ )
-        {
-            char c = expression.charAt(cpt);
-            System.out.println("char="+c);
-
-            if( !Character.isDigit(c) ) {
-                System.out.println("Operande:"+c);
-                double calcul = pile.pop();
-                System.out.println("depile de "+calcul);
-                if ( pile.isEmpty() ) {
-                    System.out.println("pile vide envoie calcul");
-                    return calcul;
-                }
-                else{
-                    System.out.println("pile pas vide calcul, on dépile:"+ pile.peek());
-                    pile.push(Expression.calculer(  pile.pop(), String.valueOf(c), calcul ));
-                    System.out.println("rajout de "+pile.peek());
-                }
-
+        for(String expr : sortie){
+            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+") ){
+                pile.push(Double.parseDouble(expr));
             }
-            else {
-                System.out.println("chiffre="+c);
-                pile.push(Double.parseDouble(String.valueOf(c)));
-                System.out.println("on empile "+c);
+            else{
+                if(pile.size() > 1){
+                    if ( expr.equals("\\/¯") )
+                        pile.push( Math.sqrt(pile.pop()) );
+                    else{
+                        double op1 = pile.pop();
+                        double op2 = pile.pop();
+                        switch (expr) {
+                            case "+":
+                                pile.push(op2 + op1);
+                                break;
+                            case "-":
+                                pile.push(op2 - op1);
+                                break;
+                            case "%":
+                                pile.push(op2 % op1);
+                                break;
+                            case "*":
+                                pile.push(op2 * op1);
+                                break;
+                            case "/":
+                                pile.push(op2 / op1);
+                                break;
+                            case "^":
+                                pile.push(Math.pow(op2, op1));
+                                break;
+                        }
+                    }
+                }
             }
         }
-        return pile.pop();
-    }
 
-    public static void main(String[] args)
-    {
-        String expression = "5+2/(3-8)^5^2";
-        String EPO        = Expression.toEPO(expression);
-
-        System.out.println(EPO);
-
-        System.out.println(Expression.caculerEPO(EPO));
+        return pile.peek();
     }
 }

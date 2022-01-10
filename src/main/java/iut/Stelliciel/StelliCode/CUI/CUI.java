@@ -43,7 +43,7 @@ public class CUI {
     public static String adaptTxt(String in){
         if(in.length()<10){return  in;}
         else{
-            return in.substring(0,5)+".."+in.substring(in.length()-3);
+            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length());
         }
     }
 
@@ -73,7 +73,7 @@ public class CUI {
                         arrNom.add(lstVar.get(s).getNom());
                     }
                     cpt++;
-                }
+                };
             }
         }else{
             System.out.println("entrer un nombre valide");
@@ -92,7 +92,7 @@ public class CUI {
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
-        this.majConsole();
+        //this.majConsole();
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
@@ -100,14 +100,14 @@ public class CUI {
         String inUser = Main.saisie();
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
-                affConsole.Ajouter(controleur.changLig('f'));
+                //controleur.prochaineLig();
                 if(ligEnCour +1 == numLig1 +30){scroll(10);}
                 majInOut(controleur.getEtatVar(ligEnCour));
                 this.ligEnCour++;
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
-                affConsole.Ajouter(controleur.changLig('b'));
+                //controleur.LignePre();
                 if(ligEnCour -1 == numLig1 +10 && ligEnCour-1 != 10){scroll(-10);}
                 majInOut(controleur.getEtatVar(ligEnCour));
                 this.ligEnCour--;
@@ -119,7 +119,7 @@ public class CUI {
                     //addBK(Integer.parseInt(inUser.substring(5)));
                     // controleur.addBK(Integer.parseInt(inUser.substring(5)));
             }
-        } else if(inUser.startsWith("addvar")){
+        } else if(inUser.substring(0,6).equals("addvar")){
             demandeVars();
         }
 
@@ -133,11 +133,11 @@ public class CUI {
         //    quiter       entrée
         //trace
     }
-
+  
     private void majInOut(ArrayList<String> arrS) {
         affConsole.Ajouter(arrS);
     }
-
+  
     public void sendVar(ArrayList<String> arrNom, EtatLigne lig){
         for (String nom: arrNom) {
             affTabVar.maj(lig.getLstVar().get(nom));

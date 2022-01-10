@@ -15,7 +15,7 @@ public class AfficheConsole{
     }
 
     public void AjouterIn(String s){
-        this.arrString.add("utilisateur >>" + s);
+        this.arrString.add("user >>" + s);
     }
 
     public void AjouterOut(String s){
@@ -52,6 +52,8 @@ public class AfficheConsole{
                 }
             }
             return sRep;
+          
         }
+        return sRep.toString();
     }
 }

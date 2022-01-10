@@ -29,11 +29,11 @@ public class Main {
         System.out.println("Donnez le chemin absolue de votre fichier .algo");
         //String adresse = "../resources/main/Code.algo";
         String adresse = "../../src/main/resources/Code.algo";
-        metier         = new Interpreteur(adresse);
+        metier         = new Interpreteur(this, adresse);
         ihm            = new CUI(this);
         ihm.afficher();
         String sUser = "-1";
-        while (!sUser.equals("q")){
+        while (sUser != "q"){
             ihm.afficher();
             ihm.proposeChoix();
             affecterVariables(ihm.getArrNom());
@@ -70,9 +70,5 @@ public class Main {
 
     public static void main(String[] args) {
         new Main();
-    }
-
-    public ArrayList<String> changLig(char dir) {
-        return metier.changLig(dir);
     }
 }
