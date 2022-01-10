@@ -11,6 +11,7 @@ public class EtatLigne {
     private boolean[] condition;
     private boolean pointArret;
     private boolean lecture;
+    private String  nomALire;
 
     private final int     numLigne;
     private ArrayList<String> traceAlgo;
@@ -39,6 +40,10 @@ public class EtatLigne {
     public void setCondition(boolean condition) {
         this.condition[0] = true;
         this.condition[1] = condition;
+    }
+
+    public void setNomALire(String nomALire) {
+        this.nomALire = nomALire;
     }
 
     public void setPointArret(boolean pointArret) {

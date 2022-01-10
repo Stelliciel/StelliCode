@@ -41,13 +41,16 @@ public class Interpreteur {
         for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++);
 
         parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
-        while( parcours.derniereLigne().getNumLigne()+1 < fichier.size() ){
+        while( parcours.derniereLigne().getNumLigne()+1 < fichier.size() &&
+                    !parcours.derniereLigne().isLecture()                    ){
             String ligne = fichier.get(cpt);
             System.out.println("Lecture:" + (cpt+1) + "|"+ligne);
             traiter( ligne );
             cpt++;
         }
+    }
 
+    public void rajoutLecture(String nom, String valeur){
 
     }
 
@@ -97,9 +100,15 @@ public class Interpreteur {
 
             parcours.nouvelleEtat(etatLigne);
         }
-        else if (ligne.startsWith("lire") )
+        else if (ligne.contains("lire") )
         {
+            System.out.println("\tLire:"+(cpt+1)+"|"+ligne);
+            String l = ligne.replaceAll("lire| ", "");
+            String var = Fonction.entreParenthese(ligne);
 
+            EtatLigne eL = nouvelleEtatLigne(cpt);
+            eL.setLecture(true);
+            eL.setNomALire(var);
         }
         else if (ligne.contains("si ") )
         {
