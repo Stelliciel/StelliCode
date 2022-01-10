@@ -102,8 +102,8 @@ public class CUI {
             if (ligEnCour != affCode.getTaillePro() - 1) {
                 affConsole.Ajouter(controleur.changLig('f'));
                 if(ligEnCour +1 == numLig1 +30){scroll(10);}
-                majInOut(controleur.getEtatVar(ligEnCour));
                 this.ligEnCour++;
+                majInOut();
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
@@ -180,7 +180,7 @@ public class CUI {
         return ligEnCour;
     }
 
-    private String affLig(int numLig, int ligEncour, String sTabVar){
+    private String affLig(int numLig, int ligEncour,String sTabVar){
         String espace = " ";
         return ("| "+ this.affTabVar.affLig(sTabVar,numLig) + " |" + (this.affCode.affLig(numLig,ligEncour)))+espace.repeat(80-this.affCode.getTaille(numLig))+"|\n";
     }
