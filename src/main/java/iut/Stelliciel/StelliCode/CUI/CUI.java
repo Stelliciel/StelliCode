@@ -170,7 +170,7 @@ public class CUI {
 
     public static File getAdresse() {
         File files = afficherOption();
-        System.out.println("File : " + files);
+        System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a("File : " + files).reset());
         return files;
     }
 
@@ -182,6 +182,7 @@ public class CUI {
                 file.add(item);
 
         StringBuilder sRep = new StringBuilder();
+        sRep.append("Veuillez choisir une option parmit les suivantes :\n");
         for (int i = 1; i-1 <= file.size(); i++) {
             if(i % 5 == 1 )
                 sRep.append('\n');
@@ -190,23 +191,23 @@ public class CUI {
             else
                 sRep.append(i).append(" ").append(CUI.adaptTxt(file.get(i-1).getName().substring(0, file.get(i-1).getName().length()-5))).append("  ");
         }
-        System.out.println(sRep);
         while (true) {
+            System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(sRep).reset());
             String inUser = Main.getInstance().saisie();
-            if (inUser.matches("\\d+")) {
+            if (inUser.matches("^[-+]?\\d+")) {
                 if (Integer.parseInt(inUser) - 1 > file.size()) {
-                    System.out.println("entrer un nombre valide ou -1 pour quitté");
-                } else if (Integer.parseInt(inUser) == -1) {
-                    System.out.println("Vous avez choisie de quitté le programme");
+                    System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a("entrer un nombre valide ou -1 pour quitter").reset());
+                } else if (inUser.equals("-1")) {
+                    System.out.println("Vous avez choisie de quitter le programme");
                     System.exit(0);
                 } else if (Integer.parseInt(inUser) - 1 == file.size()) {
-                    System.out.println("Donnez le chemin absolue de votre fichier .algo");
+                    System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a("Donnez le chemin absolue de votre fichier .algo").reset());
                     inUser = Main.getInstance().saisie();
                     File customDir = new File(inUser);
                     if (customDir.exists() && customDir.isFile() && customDir.getName().endsWith(".algo")) {
                         return customDir;
                     } else {
-                        System.out.println("Le chemin absolue du fichier .algo spécifié n'est pas reconnu");
+                        System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a("Le chemin absolue du fichier .algo spécifié n'est pas reconnu").reset());
                     }
                 } else {
                     for (int i = 0; i<file.size(); i++) {
@@ -216,7 +217,7 @@ public class CUI {
                     }
                 }
             } else {
-                System.out.println("entrer un nombre valide ou -1 pour quitté");
+                System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(inUser + " n'est pas valide ,entrer un nombre valide ou -1 pour quitter").reset());
             }
         }
     }
