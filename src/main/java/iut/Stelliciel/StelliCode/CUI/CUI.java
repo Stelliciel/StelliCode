@@ -43,7 +43,7 @@ public class CUI {
     public static String adaptTxt(String in){
         if(in.length()<10){return  in;}
         else{
-            return in.substring(0,5)+".."+in.substring(in.length()-3,in.length());
+            return in.substring(0,5)+".."+in.substring(in.length()-3);
         }
     }
 
@@ -73,7 +73,7 @@ public class CUI {
                         arrNom.add(lstVar.get(s).getNom());
                     }
                     cpt++;
-                };
+                }
             }
         }else{
             System.out.println("entrer un nombre valide");
@@ -92,7 +92,7 @@ public class CUI {
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
-        //this.majConsole();
+        this.majConsole();
         System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
     }
 
@@ -100,15 +100,17 @@ public class CUI {
         String inUser = Main.saisie();
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
-                //controleur.prochaineLig();
+                affConsole.Ajouter(controleur.changLig('f'));
                 if(ligEnCour +1 == numLig1 +30){scroll(10);}
                 this.ligEnCour++;
+                majInOut();
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
-                //controleur.LignePre();
+                affConsole.Ajouter(controleur.changLig('b'));
                 if(ligEnCour -1 == numLig1 +10 && ligEnCour-1 != 10){scroll(-10);}
-                this.ligEnCour--;}
+                this.ligEnCour--;
+                majInOut();}
         }else if (inUser.substring(4).equals("+ bk")) {
             if (inUser.substring(5).matches("\\D+") || Integer.parseInt(inUser.substring(5)) > affCode.getTaillePro()) {
                 System.out.println("entrer un nombre inférieur au nombre de ligne");}
@@ -116,7 +118,7 @@ public class CUI {
                     //addBK(Integer.parseInt(inUser.substring(5)));
                     // controleur.addBK(Integer.parseInt(inUser.substring(5)));
             }
-        } else if(inUser.substring(0,6).equals("addvar")){
+        } else if(inUser.startsWith("addvar")){
             demandeVars();
         }
 
@@ -129,6 +131,10 @@ public class CUI {
         //    copie det    pp
         //    quiter       entrée
         //trace
+    }
+
+    private void majInOut() {
+        affConsole.Ajouter('i',"rest");
     }
 
     public void sendVar(ArrayList<String> arrNom, EtatLigne lig){

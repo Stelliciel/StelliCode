@@ -16,8 +16,8 @@ public class Interpreteur {
     private final Parcours parcours;
     private String signature;
 
-    public Interpreteur(Main ctrl, String adresseFichier) {
-        this.ctrl           = ctrl;
+    public Interpreteur(String adresseFichier) {
+        this.ctrl           = Main.getInstance();
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
         lstConstantes       = new HashMap<>();
         lstVariables        = new HashMap<>();
@@ -64,44 +64,43 @@ public class Interpreteur {
         }
     }
 
-    private void traiter(int numLigne, String ligne){
+    private void traiter(int numLigne, String ligne) {
 
-        if( ligne.contains("<--") ){
+        if (ligne.contains("<--")) {
             String[] separation = Fonction.affectation(ligne);
 
             /*System.out.println("nom:" + separation[0]);
             System.out.println("valeur:" + separation[1]);*/
 
-            if( separation.length == 3 ) {
+            if (separation.length == 3) {
 //                System.out.println("index:" + separation[2]);
                 setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
-            }
-            else {
+            } else {
                 setVariable(separation[0], separation[1]);
             }
 
-            parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
-        }
-        else if ( ligne.contains("écrire") ) {
-            String ecrire  = Fonction.entreParenthese(ligne);
-            String afficher= Fonction.entreGuillemet(ecrire);
+            parcours.nouvelleEtat(nouvelleEtatLigne(numLigne));
+        } else if (ligne.contains("écrire")) {
+            String ecrire = Fonction.entreParenthese(ligne);
+            String afficher = Fonction.entreGuillemet(ecrire);
 
-            if( ecrire.contains("\",") ){
-                String variable = ecrire.substring( ecrire.indexOf(",")+1 ).trim();
+            if (ecrire.contains("\",")) {
+                String variable = ecrire.substring(ecrire.indexOf(",") + 1).trim();
                 EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
 
-                if (estConstante( variable ))
-                    etatLigne.setTraceAlgo(afficher+getConstante(variable));
+                if (estConstante(variable))
+                    etatLigne.setTraceAlgo(afficher + getConstante(variable));
                 else
-                    etatLigne.setTraceAlgo(afficher+getVariable(variable));
+                    etatLigne.setTraceAlgo(afficher + getVariable(variable));
 
                 parcours.nouvelleEtat(etatLigne);
-            }
-            else {
+            } else {
                 EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
                 etatLigne.setTraceAlgo(afficher);
                 parcours.nouvelleEtat(etatLigne);
             }
+        }else {
+            parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
         }
 
     }
@@ -260,7 +259,7 @@ public class Interpreteur {
         }*/
         return false;
     }
-
+  
     public static String contenu(String element1,String element2,String str)
     {
         return str.substring( str.indexOf(element1), str.lastIndexOf(element2) ).trim();
@@ -292,9 +291,9 @@ public class Interpreteur {
             String[] mots = fichier.get(cpt).split(" ");
 
             switch (mots[0]){
-                case "ALGORITHME" -> { signature = mots[1]; }
-                case "constante:" -> { cpt = ajouterConstante(cpt);}
-                case "variable:"  -> { cpt = ajouterVariables(cpt);}
+                case "ALGORITHME" ->  signature = mots[1];
+                case "constante:" ->  cpt = ajouterConstante(cpt);
+                case "variable:"  ->  cpt = ajouterVariables(cpt);
             }
 
             if( !fichier.get(cpt).equals("DEBUT"))
@@ -492,18 +491,11 @@ public class Interpreteur {
         return fichier;
     }
 
-
-    public static void main(String[] args) {
-
-        Interpreteur t = new Interpreteur(null, "C:\\Users\\vatre\\IdeaProjects\\StelliCode\\src\\main\\resources\\Code.algo");
-
-        ArrayList<EtatLigne> lecteur = t.getParcours().getLecteur();
-
-        for(int cpt = 0; cpt < lecteur.size(); cpt++){
-            EtatLigne e = lecteur.get(cpt);
-            System.out.println( e.getNumLigne() + " " + t.getCode().get(e.getNumLigne()) );
-
-            System.out.println("\nTrace : " + e.getTraceAlgo());
+    public ArrayList<String> changLig(char dir) {
+        if(dir == 'f'){
+            return parcours.next().getTraceAlgo();
+        }else{
+            return parcours.prec().getTraceAlgo();
         }
     }
 }
