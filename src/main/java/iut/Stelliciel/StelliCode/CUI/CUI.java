@@ -5,17 +5,12 @@ import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
 import iut.Stelliciel.StelliCode.metier.EtatLigne;
-import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
-import org.fusesource.jansi.Ansi;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import  java.lang.ProcessBuilder;
-import  java.lang.Process;
-import java.util.Scanner;
+import java.util.Objects;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -87,7 +82,7 @@ public class CUI {
         affichage.append("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             if ( i < Main.getInstance().getCode().size() )
-                affichage.append(this.affLig(i, this.ligEnCour));
+                affichage.append(this.affLig(i, this.ligEnCour, sTabVar));
         }
         affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage.append(this.affConsole);
@@ -99,14 +94,14 @@ public class CUI {
         String inUser = Main.getInstance().saisie();
         if(inUser.equals("m")) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
-                affConsole.Ajouter(controleur.changLig('f'));
+                affConsole.Ajouter(Main.getInstance().changLig('f'));
                 if(ligEnCour +1 == numLig1 +30){scroll(10);}
                 this.ligEnCour++;
                 majInOut();
             }
         }else if(inUser.equals("b")) {
             if(ligEnCour != getLigDebut()){
-                affConsole.Ajouter(controleur.changLig('b'));
+                affConsole.Ajouter(Main.getInstance().changLig('b'));
                 if(ligEnCour -1 == numLig1 +10 && ligEnCour-1 != 10){scroll(-10);}
                 this.ligEnCour--;
                 majInOut();}
@@ -170,7 +165,7 @@ public class CUI {
                 startProcess.waitFor();
             }
         }catch(Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
