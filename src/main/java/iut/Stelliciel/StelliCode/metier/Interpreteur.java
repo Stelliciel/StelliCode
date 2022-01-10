@@ -9,10 +9,14 @@ import java.util.Scanner;
 public class Interpreteur {
 
     private final ArrayList<String> fichier;
+
+    private String signature;
     private final HashMap<String, Variable<Object>> lstConstantes;
     private final HashMap<String, Variable<Object>> lstVariables;
+
     private final Parcours parcours;
-    private String signature;
+    private int   cpt;
+
 
     public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
@@ -20,16 +24,8 @@ public class Interpreteur {
         lstVariables        = new HashMap<>();
         parcours            = new Parcours(null);
 
-//        System.out.println("/*----------------*/\n/* Iniatilisation */\n/*----------------*/");
         initialisationFichier();
 
-       /*System.out.println("Signature : " + signature);
-        lstConstantes.forEach((k,v) -> {
-            System.out.println("Nom de la constante : "+k+"\t || " + v);
-        });
-        lstVariables.forEach((k,v) -> {
-            System.out.println("Nom de la variable  : "+k+"\t || " + v);
-        });*/
 
         lectureFichier();
     }
@@ -37,7 +33,6 @@ public class Interpreteur {
     /*--------------------*/
     /* Lecture du fichier */
     private void lectureFichier() {
-        int cpt;
         for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++) System.out.println("->"+fichier.get(cpt));
 
         parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
@@ -47,15 +42,6 @@ public class Interpreteur {
             double      d1  = Expression.calculer("8+8/7");
 
             traiter(cpt, ligne );
-
-            System.out.println(d1);
-            System.out.println("true1   : " + ou("8+8/7 > 2 OU 8+8 = 16"));
-            System.out.println("true2   : " + ou("3-1 >= 2 OU 8+8 = 16"));
-            System.out.println("true3   : " + ou("3-1 < 2 OU 8+8 < 16"));
-            System.out.println("false4  : " + ou("3*1 <= 2 OU 8+8 > 16"));
-            System.out.println("true5   : " + et("8+8/7 > 8 ET 8+8 = 16"));
-            System.out.println("true6   : " + et("8 < 8 ET 8+8 = 16"));
-
             cpt++;
         }
     }
@@ -65,11 +51,7 @@ public class Interpreteur {
         if (ligne.contains("<--")) {
             String[] separation = Fonction.affectation(ligne);
 
-            /*System.out.println("nom:" + separation[0]);
-            System.out.println("valeur:" + separation[1]);*/
-
             if (separation.length == 3) {
-//                System.out.println("index:" + separation[2]);
                 setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
             } else {
                 setVariable(separation[0], separation[1]);
@@ -77,6 +59,7 @@ public class Interpreteur {
 
             parcours.nouvelleEtat(nouvelleEtatLigne(numLigne));
         } else if (ligne.contains("écrire")) {
+
             String ecrire = Fonction.entreParenthese(ligne);
             String afficher = Fonction.entreGuillemet(ecrire);
 
@@ -99,164 +82,6 @@ public class Interpreteur {
             parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
         }
 
-    }
-    //< > =
-    public boolean ou(String ligne)
-    {
-        //System.out.println("true3   : " + ou("3-1 < 2 OU 8+8 < 16"));
-        String[] tab = ligne.toUpperCase().split("OU");
-        for(String str : tab)
-        {
-            if (str.contains("!=") && !estEgal(str))
-                return true;
-            else if (str.contains("=") && estEgal(str))
-                return true;
-
-            if (str.contains("=<") && !estInferieurSuperieur(">",str))
-                return true;
-            else if (str.contains("<") && estInferieurSuperieur("<",str))
-                return true;
-
-            if (str.contains("=>") && !estInferieurSuperieur("<",str))
-                return true;
-            else if (str.contains(">") && estInferieurSuperieur(">",str))
-                return true;
-
-        }
-        return false;
-    }
-
-    public boolean et(String ligne)
-    {
-        boolean egal = false;
-
-        String[] tab = ligne.toUpperCase().split("ET");
-
-        for(String str : tab)
-        {
-            if (str.contains("!=") && estEgal(str))
-                return false;
-            else if (str.contains("=") && !estEgal(str))
-                return false;
-
-            if (str.contains("<") && estInferieurSuperieur("<",str))
-                return false;
-            else if (str.contains("=>") && !estInferieurSuperieur("<",str))
-                return false;
-
-            if (str.contains(">") && !estInferieurSuperieur(">",str))
-                return false;
-            else if (str.contains("=<") && !estInferieurSuperieur(">",str))
-                return false;
-        }
-        return true;
-    }
-
-    public boolean estInferieurSuperieur(String comparateur, String ligne){
-        String[] tab = ligne.toUpperCase().split(comparateur);
-        System.out.println(comparateur);
-        if (tab[0].matches("([0-9]*[.])?[0-9]+")) {
-            double      d1  = Expression.calculer(tab[0]);
-
-            if (tab[1].matches("([0-9]*[.])?[0-9]+")) {
-                if(comparateur.equals("=<")) {
-                    System.out.println("oui");
-                    return !((Double.compare(d1, Expression.calculer(tab[1]))) > 0);
-                }
-                else if (comparateur.equals("<"))
-                    return (Double.compare(d1, Expression.calculer(tab[1]))) < 0;
-
-                if(comparateur.equals("=>"))
-                    return !((Double.compare(d1, Expression.calculer(tab[1]))) < 0);
-                else if (comparateur.equals(">"))
-                    return (Double.compare(d1, Expression.calculer(tab[1]))) > 0;
-            }
-            else
-            {
-//                Variable var = (Variable) getVariable(tab[1]);
-//                return (Double.compare(d1,Double.parseDouble(var.valToString())) < 0);
-            }
-        }/*else
-        {
-            if (tab[1].matches("([0-9]*[.])?[0-9]+")) {
-                SYAlgorithm ope = new SYAlgorithm();
-                Variable    var = (Variable) getVariable(tab[0]);
-
-                if (comparateur.equals("<"))
-                    return (Double.compare(Double.parseDouble(var.valToString()), ope.doTheShuntingYard(tab[1]))) < 0;
-                if (comparateur.equals(">"))
-                    return (Double.compare(Double.parseDouble(var.valToString()), ope.doTheShuntingYard(tab[1]))) > 0;
-            }
-            else
-            {
-                Variable var0 = (Variable) getVariable(tab[0]);
-                Variable var1 = (Variable) getVariable(tab[1]);
-                return (Double.compare(Double.parseDouble(var0.valToString()),Double.parseDouble(var1.valToString())) < 0);
-            }
-        }*/
-
-        return false;
-    }
-
-    public boolean estEgal(String ligne)
-    {
-        String[] tab = ligne.replaceAll("!=", "=").split("=");
-
-        //est un calcul (dans une chaine)
-        if (tab[0].matches("(\\d+[\\.])?[0-9]+")) {
-            double d1 = Expression.calculer(tab[0]);
-            if (tab[1].matches("(\\d+[\\.])?[0-9]+")) {
-                return (Double.compare(d1, Expression.calculer(tab[1]))) == 0;
-            }/*
-            else
-            {
-                Variable var = (Variable) getVariable(tab[1]);
-                return (Double.compare(d1,Double.parseDouble(var.valToString())) == 0);
-            }*/
-        }
-
-        //est une chaine
-        if(tab[0].contains("\"") || tab[1].contains("\""))
-            return estEgal(tab,"\"");
-
-        //est un charactère
-        if(tab[0].contains("'") || tab[1].contains("'"))
-            return estEgal(tab,"'");
-
-        /*Variable var0 = (Variable) getVariable(tab[0]);
-        Variable var1 = (Variable) getVariable(tab[1]);
-
-        return var0.getVal().equals(var1.getVal());*/
-        return false;
-    }
-
-    private boolean estEgal(String[] tab, String Element)
-    {
-        //"" ou ''
-        if (tab[0].contains(Element)) {
-            tab[0] = contenu(Element, Element, tab[0]);
-            if(tab[1].contains(Element))
-            {
-                tab[1] = contenu(Element, Element, tab[1]);
-                return tab[0].equals(tab[1]);
-            }/*else
-            {
-                //avec une variable
-                Variable var = (Variable) getVariable(tab[1]);
-                return var.getVal().equals(tab[0]);
-            }*/
-        }
-        /*else {
-            tab[1] = contenu(Element, Element, tab[1]);
-            Variable var = (Variable) getVariable(tab[0]);
-            return var.getVal().equals(tab[1]);
-        }*/
-        return false;
-    }
-
-    public static String contenu(String element1,String element2,String str)
-    {
-        return str.substring( str.indexOf(element1), str.lastIndexOf(element2) ).trim();
     }
 
     public EtatLigne getEtatVar(int lig){

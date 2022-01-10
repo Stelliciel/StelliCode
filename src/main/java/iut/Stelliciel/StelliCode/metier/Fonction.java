@@ -6,17 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Fonction {
-    private String affichage="";
 
-
-
-
-
-
-    /*private String enReel(String str)
-    {
-
-    }*/
 
     private String ecrire(String str)
     {
