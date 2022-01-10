@@ -17,10 +17,12 @@ public class Parcours {
 
     public void nouvelleEtat(EtatLigne etatLigne){
         if ( !lecteur.isEmpty() ){
-            ArrayList<String> traceAlgo = lecteur.get( lecteur.size() -1 ).getTraceAlgo();
-
-            if ( traceAlgo != null )
-                for(String ligne : traceAlgo ) etatLigne.setTraceAlgo( ligne );
+            ArrayList<String> traceAlgo = derniereLigne().getTraceAlgo();
+            if ( traceAlgo != null ){
+                for (int cpt=0; cpt < traceAlgo.size(); cpt++){
+                    etatLigne.getTraceAlgo().add( cpt, traceAlgo.get(cpt) );
+                }
+            }
         }
         lecteur.add(etatLigne);
     }
@@ -48,6 +50,10 @@ public class Parcours {
             return lecteur.get(pointeur);
         }
         return null;
+    }
+
+    public EtatLigne derniereLigne(){
+        return lecteur.get( lecteur.size() -1 );
     }
 
 }

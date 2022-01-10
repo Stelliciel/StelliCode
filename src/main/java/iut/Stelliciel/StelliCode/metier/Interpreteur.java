@@ -20,35 +20,42 @@ public class Interpreteur {
 
     public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
+
         lstConstantes       = new HashMap<>();
         lstVariables        = new HashMap<>();
         parcours            = new Parcours();
 
         initialisationFichier();
 
-
         lectureFichier();
+
+        System.out.println("trace:");
+        for(String s: parcours.derniereLigne().getTraceAlgo() ){
+            System.out.println(s.substring(1));
+        }
     }
 
     /*--------------------*/
     /* Lecture du fichier */
     private void lectureFichier() {
-        for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++) System.out.println("->"+fichier.get(cpt));
+        for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++);
 
         parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
-
-        while( cpt < fichier.size() ){
+        while( parcours.derniereLigne().getNumLigne()+1 < fichier.size() ){
             String ligne = fichier.get(cpt);
-            double      d1  = Expression.calculer("8+8/7");
-
-            traiter(cpt, ligne );
+            System.out.println("Lecture:" + (cpt+1) + "|"+ligne);
+            traiter( ligne );
             cpt++;
         }
+
+
     }
 
-    private void traiter(int numLigne, String ligne){
+    private void traiter(String ligne){
 
-        if (ligne.contains("<--")) {
+        if (ligne.contains("<--"))
+        {
+            System.out.println("\tAffectation:"+(cpt+1)+"|"+ligne);
             String[] separation = Fonction.affectation(ligne);
 
             if (separation.length == 3) {
@@ -57,30 +64,98 @@ public class Interpreteur {
                 setVariable(separation[0], separation[1]);
             }
 
-            parcours.nouvelleEtat(nouvelleEtatLigne(numLigne));
-        } else if (ligne.contains("écrire")) {
-
+            parcours.nouvelleEtat(nouvelleEtatLigne(cpt));
+        }
+        else if (ligne.contains("écrire"))
+        {
+            System.out.println("\tEcrire:"+(cpt+1)+"|"+ligne);
             String ecrire = Fonction.entreParenthese(ligne);
-            String afficher = Fonction.entreGuillemet(ecrire);
+            EtatLigne etatLigne = nouvelleEtatLigne(cpt);
 
             if (ecrire.contains("\",")) {
+                String afficher = Fonction.entreGuillemet(ecrire);
                 String variable = ecrire.substring(ecrire.indexOf(",") + 1).trim();
-                EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
 
                 if (estConstante(variable))
-                    etatLigne.setTraceAlgo(afficher + getConstante(variable));
+                    etatLigne.setTraceAlgo("o"+afficher + " " + getConstante(variable));
                 else
-                    etatLigne.setTraceAlgo(afficher + getVariable(variable));
-
-                parcours.nouvelleEtat(etatLigne);
-            } else {
-                EtatLigne etatLigne = nouvelleEtatLigne(numLigne);
-                etatLigne.setTraceAlgo(afficher);
-                parcours.nouvelleEtat(etatLigne);
+                    etatLigne.setTraceAlgo("o"+afficher + " " + getVariable(variable));
             }
-        }else {
-            parcours.nouvelleEtat( nouvelleEtatLigne(numLigne) );
+            else {
+                if ( ecrire.contains("\"")) {
+                    etatLigne.setTraceAlgo("o"+Fonction.entreGuillemet(ecrire));
+                }
+                else{
+                    if (estConstante(ecrire))
+                        etatLigne.setTraceAlgo("o" + getConstante(ecrire));
+                    else
+                        etatLigne.setTraceAlgo("o" + getVariable(ecrire));
+                }
+            }
+
+            parcours.nouvelleEtat(etatLigne);
         }
+        else if (ligne.startsWith("lire") )
+        {
+
+        }
+        else if (ligne.contains("si ") )
+        {
+            System.out.println("\tSi:"+(cpt+1)+"|"+ligne);
+            String condition = ligne.replaceAll("si", "").replaceAll("alors", "").trim();
+            condition = condition.replaceAll(" ", "");
+
+            for(String v : lstConstantes.keySet() ){
+                if ( condition.contains(v) ){
+                    condition = condition.replaceAll(v, lstConstantes.get(v).valToString() );
+                }
+            }
+
+            for(String v : lstVariables.keySet() ){
+                if ( condition.contains(v) ){
+                    condition = condition.replaceAll(v, lstVariables.get(v).getVal().toString() );
+                }
+            }
+
+            boolean b = Expression.calculLogique(condition);
+            EtatLigne eL = nouvelleEtatLigne(cpt);
+            eL.setCondition(b);
+
+            parcours.nouvelleEtat(eL);
+
+
+            if( b ) {
+                int i;
+                for(i = cpt+1; !(this.fichier.get(i).contains("sinon") || this.fichier.get(i).contains("fsi")); i++) {
+                    cpt = i;
+                    traiter(this.fichier.get(i));
+                }
+                while(!(this.fichier.get(i).contains("fsi"))) {
+                    cpt = ++i;
+                }
+            }
+            else {
+                int i;
+                for(i = cpt+1; ! this.fichier.get(i).contains("sinon");i++) cpt=i;
+                System.out.println("si/faux ligne:"+(cpt+1)+"|"+this.fichier.get(cpt));
+                for(i = cpt+1; !(this.fichier.get(i).contains("fsi")); i++) {
+                    cpt = i;
+                    traiter(this.fichier.get(i));
+                }
+            }
+
+            System.out.println("Fin si:" + (cpt) +"|" + fichier.get(cpt));
+
+
+        }
+        else if (ligne.startsWith("tq") )
+        {
+
+        }
+        else {
+            parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
+        }
+
 
     }
 
@@ -190,7 +265,7 @@ public class Interpreteur {
     public int                               getNbChiffre()     { return (this.fichier.size()+"").length(); }
 
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
-    public void addVariable (String nom, String type)               { lstVariables .put(nom, new Variable<>(nom, type) );  }
+    public void addVariable (String nom, String type)               { lstVariables .put(nom, new Variable<>(nom, type) ); }
     public void addTableau  (boolean constante, String nom, String type, String taille) {
         if ( constante )
             lstConstantes.put(nom, new Variable<>(nom,Integer.parseInt(taille),type));
@@ -210,7 +285,7 @@ public class Interpreteur {
     public void setVariable(String nom, String valeur)          {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
-        Interpreteur.set(lstVariables.get(nom), valeur);  }
+        Interpreteur.set(lstVariables.get(nom), valeur);}
     public void setTableau (String nom, int ind, String valeur) {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
@@ -291,16 +366,11 @@ public class Interpreteur {
     public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try{
-            Scanner sc = new Scanner(new FileInputStream(adresse), "UTF8");
+            Scanner sc = new Scanner(new FileInputStream(adresse), "ISO-8859-1");
 
             char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
                 String ligne = sc.nextLine();
-                /*for (char c:ligne.toCharArray()) {
-                    if(c == '?' && charPrecedent == '?'){
-
-                    charPrecedent = c;
-                    }*/
 
                 fichier.add(ligne);
             }
@@ -318,5 +388,9 @@ public class Interpreteur {
         }else{
             return null;
         }
+    }
+
+    public static void main(String[] args) {
+        new Interpreteur(new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
     }
 }
