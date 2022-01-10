@@ -15,6 +15,7 @@ public class EtatLigne {
     private final int     numLigne;
     private ArrayList<String> traceAlgo;
 
+    public int getNumLig(){return this.numLigne;}
     public EtatLigne(String signature, HashMap<String, Variable<Object>> lstConstantes,
                      HashMap<String, Variable<Object>> lstVariables, int numLigne) {
         this.signature     = signature;
