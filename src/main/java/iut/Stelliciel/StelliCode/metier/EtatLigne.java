@@ -15,10 +15,12 @@ public class EtatLigne {
 
     private final int     numLigne;
     private ArrayList<String> traceAlgo;
+    private boolean skip;
 
     public int getNumLig(){return this.numLigne;}
     public EtatLigne(String signature, HashMap<String, Variable<Object>> lstConstantes,
                      HashMap<String, Variable<Object>> lstVariables, int numLigne) {
+        skip = false;
         this.signature     = signature;
         this.lstConstantes = copyVariable(lstConstantes);
         this.lstVariables  = copyVariable(lstVariables);
@@ -83,4 +85,7 @@ public class EtatLigne {
     public HashMap<String,Variable<Object>> getLstVar(){
         return lstVariables;
     }
+
+    public void skip() { this.skip = true; }
+    public boolean estSkipper() { return skip; }
 }

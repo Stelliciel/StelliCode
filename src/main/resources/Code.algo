@@ -8,34 +8,43 @@ variable:
     message: chaine
     cpt: entier
 DEBUT
-    age <-- 5
+    age <-- 8
 
     écrire (age)
+    si age < 6 alors
+        message <-- "enfant"
+    fsi
 
-    écrire ("Boucle de 0 à 9:")
+    si age >= 6 alors
+        message <-- "jeune"
+    fsi
+
+    écrire ("Boucle de 0 à 3:")
     cpt <-- 0
-    tq cpt < 10 alors
+    tq cpt < 3 alors
         écrire (cpt)
         cpt <-- cpt+1
     ftq
 
     écrire ("Votre âge = ", age);
-
-    si age < 18 alors
-     message <-- " mineur"
-    sinon
-     message <-- " majeur"
-    fsi
     écrire ( "vous êtes ", message )
 
     lire (age)
 
-    écrire ("Votre âge = ", age);
-
     si age < 18 alors
-     message <-- " mineur"
+            si age > 12 alors
+                message <-- "mineur"
+            sinon
+                message <-- " enfant"
+            fsi
     sinon
-     message <-- " majeur"
+        si age > 50 alors
+            message <-- " vieux"
+        sinon
+            message <-- " majeur"
+        fsi
     fsi
+
+    écrire ("Votre âge = ", age);
     écrire ( "vous êtes ", message )
 FIN
