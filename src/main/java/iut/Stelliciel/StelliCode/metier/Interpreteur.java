@@ -1,5 +1,7 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import iut.Stelliciel.StelliCode.Main;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class Interpreteur {
 
     private final ArrayList<String> fichier;
+    private final Main ctrl;
 
     private String signature;
     private final HashMap<String, Variable<Object>> lstConstantes;
@@ -21,7 +24,8 @@ public class Interpreteur {
     private boolean attenteLecture;
 
 
-    public Interpreteur(File adresseFichier) {
+    public Interpreteur(Main ctrl, File adresseFichier) {
+        this.ctrl = ctrl;
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
 
         pointeur                 = 0;
@@ -140,6 +144,7 @@ public class Interpreteur {
                 }
             }
             else {
+                pointeur++;
                 while(  !( this.fichier.get(pointeur).startsWith( tab + "sinon") ||
                            this.fichier.get(pointeur).startsWith(tab + "fsi")       )       ) {
                     EtatLigne eTmp = nouvelleEtatLigne( pointeur );
@@ -151,7 +156,7 @@ public class Interpreteur {
                     pointeur++;
                     traiter(this.fichier.get(pointeur));
                 }
-                parcours.nouvelleEtat( nouvelleEtatLigne( pointeur ));
+                //parcours.nouvelleEtat( nouvelleEtatLigne( pointeur ));
             }
 
             System.out.println("Fin si:" + (pointeur) +"|" + fichier.get(pointeur));
@@ -476,13 +481,14 @@ public class Interpreteur {
             return parcours.next().getTraceAlgo();
         }else if(dir == 'b'){
             return parcours.prec().getTraceAlgo();
-        }else{
-            return null;
         }
+
+        return null;
     }
 
-    public static void main(String[] args) {
-        Interpreteur i = new Interpreteur(new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
+
+    /*public static void main(String[] args) {
+        Interpreteur i = new Interpreteur(null, new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
 
         Parcours p = i.getParcours();
 
@@ -542,9 +548,7 @@ public class Interpreteur {
         }
     }
 
-    private static void affiche(Interpreteur i, EtatLigne e) {
-
+    /*private static void affiche(Interpreteur i, EtatLigne e) {
         System.out.println("->" + (e.getNumLigne()+1) + "|" + i.getCode().get(e.getNumLigne() ));
-
-    }
+    }*/
 }

@@ -17,7 +17,6 @@ public class EtatLigne {
     private ArrayList<String> traceAlgo;
     private boolean skip;
 
-    public int getNumLig(){return this.numLigne;}
     public EtatLigne(String signature, HashMap<String, Variable<Object>> lstConstantes,
                      HashMap<String, Variable<Object>> lstVariables, int numLigne) {
         skip = false;
