@@ -1,10 +1,5 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import iut.Stelliciel.StelliCode.Main;
-
-import java.util.ArrayList;
-import java.util.Scanner;
-
 public class Fonction {
 
 
@@ -47,7 +42,7 @@ public class Fonction {
     {
         String contenu = entreParenthese(str);
         String res = "";
-
+        //Changer type si variable
         //res += Interpreteur.getVariable(contenu).getVal();
 
         return res;
@@ -55,15 +50,41 @@ public class Fonction {
 
     private String enEntier(String str)
     {
-        String contenu = entreParenthese(str);
-        String res = "";
+        //Changer type si variable
+        return Integer.parseInt(str)+"";
+    }
 
-        //Si est un entier on caste
-        for(int ind=0;ind<contenu.length();ind++)
-            if(contenu.charAt(ind) != '.' || contenu.charAt(ind) != ',') {
-                res += contenu.charAt(ind);
-            }
-        return res;
+    private String enReel(String str)
+    {
+        //Changer type si variable
+        return Double.parseDouble(str)+"";
+    }
+
+    private String plafond(String str)
+    {
+        return Math.ceil(Double.parseDouble(str))+"";
+    }
+
+    private String plancher(String str)
+    {
+        return Math.floor(Double.parseDouble(str))+"";
+    }
+
+    private String hasard(String str)
+    {
+        return (int)(Math.random()*Integer.parseInt(str))+"";
+    }
+
+    private String ord(String str)
+    {
+        return Integer.parseInt(str)+"";
+    }
+
+    private String car(String str) { return (char)Integer.parseInt(str) + ""; }
+
+    private String arrondis(String str)
+    {
+        return Math.round(Double.parseDouble(str)) +"";
     }
 
     public static String entreParenthese(String str)
