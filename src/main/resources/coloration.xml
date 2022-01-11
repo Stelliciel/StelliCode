@@ -1,41 +1,5 @@
 <?xml version="1.0"?>
 <coloration>
-    <!--
-        <fonction>
-            <couleurTexte nom = "orange" valeurR="240"  valeurG="170"  valeurB="30" />
-            <couleurFond  nom = "white"  valeurR="255"  valeurG="255"  valeurB="255"/>
-            <poids gras = "sans"/>
-        </fonction>
-
-        <variable>
-            <couleurTexte nom = "lightgray" valeurR="175"  valeurG="210"  valeurB="215" />
-            <couleurFond  nom = "blanc"     valeurR="255"  valeurG="255"  valeurB="255" />
-            <poids gras = "avec"/>
-        </variable>
-
-        <ligneEnCour>
-            <couleurTexte nom = "blanc" valeurR="255" valeurG="255" valeurB="255"/>
-            <couleurFond  nom = "red"   valeurR="160" valeurG="20"  valeurB="20" />
-            <poids gras = "sans"/>
-        </ligneEnCour>
-
-        <commentaire>
-            <couleurTexte nom = "green" valeurR="55"  valeurG="150"  valeurB="75" />
-            <couleurFond  nom = "white" valeurR="255" valeurG="255"  valeurB="255"/>
-            <poids gras = "sans"/>
-        </commentaire>
-
-        <primitive>
-            <couleurTexte nom  = "bleu"  valeurR="20"  valeurG="175"  valeurB="220"/>
-            <couleurFond  nom  = "white" valeurR="255" valeurG="255"  valeurB="255"/>
-            <poids        gras = "sans"/>
-        </primitive>
-
-        <methode>
-            <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"/>
-            <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
-            <poids        gras = "sans"/>
-        </methode>-->
     <element type ="defaut">
         <couleurTexte nom  = "black" valeurR="0" valeurG="0" valeurB="0" />
         <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
