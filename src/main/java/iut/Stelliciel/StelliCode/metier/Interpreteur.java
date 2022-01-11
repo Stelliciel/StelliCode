@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class Interpreteur {
 
     private final ArrayList<String> fichier;
+    private final ArrayList<String> code;
 
     private String signature;
     private final HashMap<String, Variable<Object>> lstConstantes;
@@ -23,9 +24,9 @@ public class Interpreteur {
     private boolean attenteLecture;
 
 
-    public Interpreteur(File adresseFichier) {
+    public Interpreteur( File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
-
+        this.code           = Interpreteur.lireCode(adresseFichier);
         pointeur                 = 0;
         attenteLecture      = false;
 
@@ -50,7 +51,6 @@ public class Interpreteur {
         while( pointeur < fichier.size() &&
                     !attenteLecture                                          )  {
             String ligne = fichier.get(pointeur);
-            System.out.println("Lecture:" + (pointeur+1) + "|"+ligne);
             traiter( ligne );
             pointeur++;
         }
@@ -59,7 +59,6 @@ public class Interpreteur {
     private void traiter(String ligne){
         if (ligne.contains("<--"))
         {
-            System.out.println("\tAffectation:"+(pointeur+1)+"|"+ligne);
             String[] separation = Fonction.affectation(ligne);
 
             separation[1] = remplacerValeurVariable(separation[1]);
@@ -74,8 +73,8 @@ public class Interpreteur {
         }
         else if (ligne.contains("écrire"))
         {
-            System.out.println("\tEcrire:"+(pointeur+1)+"|"+ligne);
-            String ecrire = Fonction.entreParenthese(ligne);
+            String s  = this.code.get(pointeur);
+            String ecrire = Fonction.entreParenthese(s);
             EtatLigne etatLigne = nouvelleEtatLigne(pointeur);
 
             if (ecrire.contains("\",")) {
@@ -103,7 +102,6 @@ public class Interpreteur {
         }
         else if (ligne.contains("lire") )
         {
-            System.out.println("\tLire:"+(pointeur+1)+"|"+ligne);
             String l = ligne.replaceAll("lire| ", "");
             String var = Fonction.entreParenthese(ligne);
 
@@ -115,7 +113,6 @@ public class Interpreteur {
         }
         else if (ligne.contains("si ") )
         {
-            System.out.println("\tSi:"+(pointeur+1)+"|"+ligne);
             String condition = ligne.replaceAll("si", "").replaceAll("alors", "").trim();
             condition = condition.replaceAll(" ", "");
 
@@ -154,20 +151,14 @@ public class Interpreteur {
                     pointeur++;
                     traiter(this.fichier.get(pointeur));
                 }
-                //parcours.nouvelleEtat( nouvelleEtatLigne( pointeur ));
             }
-
-            System.out.println("Fin si:" + (pointeur) +"|" + fichier.get(pointeur));
         }
         else if (ligne.contains("tq ") )
         {
-            System.out.println("\tTQ:"+(pointeur+1)+"|"+ligne);
             String condition = ligne.replaceAll("tq|alors| ", "");
             condition = remplacerValeurVariable(condition);
 
             boolean b = Expression.calculLogique(condition);
-
-            System.out.println("\tcondition:"+condition+"->"+b);
 
             EtatLigne e = nouvelleEtatLigne(pointeur);
             e.setCondition(b);
@@ -190,7 +181,6 @@ public class Interpreteur {
             }
             pointeur = numLigne;
             for(int i = pointeur+1; !this.fichier.get(i).contains("ftq");i++){
-                System.out.println("parcoure:"+fichier.get(i));
                 pointeur=i;
                 EtatLigne eTmp = nouvelleEtatLigne( pointeur );
                 eTmp.skip();
@@ -351,7 +341,7 @@ public class Interpreteur {
     /* Gestion des variables */
     public HashMap<String, Variable<Object>> getLstConstantes() { return lstConstantes; }
     public HashMap<String, Variable<Object>> getLstVariables()  { return lstVariables;  }
-    public ArrayList<String>                 getCode()          { return this.fichier;  }
+    public ArrayList<String>                 getCode()          { return this.code;  }
     public int                               getNbChiffre()     { return (this.fichier.size()+"").length(); }
 
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
@@ -458,6 +448,22 @@ public class Interpreteur {
     /*---------------------------*/
 
     public static ArrayList<String> lireFichier(File adresse) {
+        ArrayList<String> fichier = new ArrayList<>();
+        try {
+            Scanner sc = new Scanner(new FileInputStream(adresse));
+
+            char charPrecedent =' ';
+            while ( sc.hasNextLine() ) {
+                String ligne = sc.nextLine();
+
+                fichier.add(ligne);
+            }
+            sc.close();
+        } catch (Exception e){ e.printStackTrace(); }
+
+        return fichier;
+    }
+    public static ArrayList<String> lireCode(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try {
             Scanner sc = new Scanner(new FileInputStream(adresse), StandardCharsets.UTF_8);
