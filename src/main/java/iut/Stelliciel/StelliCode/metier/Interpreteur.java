@@ -2,6 +2,7 @@ package iut.Stelliciel.StelliCode.metier;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -429,11 +430,10 @@ public class Interpreteur {
     /* Fin gestion des variables */
     /*---------------------------*/
 
-
     public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
-        try{
-            Scanner sc = new Scanner(new FileInputStream(adresse), "ISO-8859-1");
+        try {
+            Scanner sc = new Scanner(new FileInputStream(adresse), StandardCharsets.UTF_8);
 
             char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
