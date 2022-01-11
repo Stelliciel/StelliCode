@@ -91,7 +91,7 @@ public class Console {
             ligne = String.format(Locale.US,"%-59s", ligne);
 
             if ( ligneSkipper(cpt) ) {
-                ligne =
+                ligne = "\u001B[35m" + ligne + "\u001B[0m        ";
             }
 
 
@@ -144,7 +144,8 @@ public class Console {
                 else
                     return false;
             }
-
         }
+
+        return false;
     }
 }
