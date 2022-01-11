@@ -45,6 +45,7 @@ public class EtatLigne {
     public void setNomALire(String nomALire) {
         this.nomALire = nomALire;
     }
+    public String getNomALire() { return this.nomALire;}
 
     public void setPointArret(boolean pointArret) {
         this.pointArret = pointArret;

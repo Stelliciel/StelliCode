@@ -19,6 +19,8 @@ DEBUT
         cpt <-- cpt+1
     ftq
 
+    écrire ("Votre âge = ", age);
+
     si age < 18 alors
      message <-- " mineur"
     sinon
@@ -28,7 +30,9 @@ DEBUT
 
     lire (age)
 
-    si age > 18 alors
+    écrire ("Votre âge = ", age);
+
+    si age < 18 alors
      message <-- " mineur"
     sinon
      message <-- " majeur"

@@ -35,8 +35,19 @@ public class Interpreteur {
         lectureFichier();
 
         System.out.println("trace:");
-        for(String s: parcours.derniereLigne().getTraceAlgo() ){
-            System.out.println(s.substring(1));
+        for(String t: parcours.derniereLigne().getTraceAlgo() ){
+            System.out.println(t.substring(1));
+        }
+
+        while( parcours.derniereLigne().isLecture() ){
+            System.out.print("Saisir variable " + parcours.derniereLigne().getNomALire() +": ");
+            Scanner s = new Scanner(System.in);
+            rajoutLecture(parcours.derniereLigne().getNomALire(), s.nextLine());
+
+            System.out.println("trace:");
+            for(String t: parcours.derniereLigne().getTraceAlgo() ){
+                System.out.println(t.substring(1));
+            }
         }
     }
 
@@ -111,9 +122,9 @@ public class Interpreteur {
             String var = Fonction.entreParenthese(ligne);
 
             EtatLigne eL = nouvelleEtatLigne(cpt);
-            eL.setLecture(true);
+            eL.setLecture (true);
             eL.setNomALire(var);
-
+            parcours.nouvelleEtat(eL);
             attenteLecture = true;
         }
         else if (ligne.contains("si ") )
