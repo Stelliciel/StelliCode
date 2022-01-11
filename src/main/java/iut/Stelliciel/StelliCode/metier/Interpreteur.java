@@ -34,22 +34,6 @@ public class Interpreteur {
         initialisationFichier();
 
         lectureFichier();
-
-        System.out.println("trace:");
-        for(String t: parcours.derniereLigne().getTraceAlgo() ){
-            System.out.println(t.substring(1));
-        }
-
-        while( parcours.derniereLigne().isLecture() ){
-            System.out.print("Saisir variable " + parcours.derniereLigne().getNomALire() +": ");
-            Scanner s = new Scanner(System.in);
-            rajoutLecture(parcours.derniereLigne().getNomALire(), s.nextLine());
-
-            System.out.println("trace:");
-            for(String t: parcours.derniereLigne().getTraceAlgo() ){
-                System.out.println(t.substring(1));
-            }
-        }
     }
 
     /*--------------------*/
@@ -192,7 +176,7 @@ public class Interpreteur {
             }
 
             for(int i = cpt+1; !this.fichier.get(i).contains("ftq");i++){
-                System.out.println("pacoure:"+fichier.get(i));
+                System.out.println("parcoure:"+fichier.get(i));
                 cpt=i;
             }
 
