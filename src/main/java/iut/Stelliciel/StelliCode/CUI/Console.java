@@ -24,7 +24,6 @@ public class Console {
         this.ctrl = ctrl;
         this.sc   = new Scanner(System.in);
         this.code = ctrl.getCode();
-        this.parcours = ctrl.getParcours();
         saisie = " ";
         ihm();
     }
@@ -62,7 +61,7 @@ public class Console {
                     System.out.print("Veuillez saisir la valeur de la variable " + e.getNomALire() + " : ");
                     saisie = sc.nextLine();
                 }
-                ctrl.rajoutLecture(e, saisie);
+                //ctrl.rajoutLecture(e, saisie);
             }
 
             System.out.print(">");
@@ -90,12 +89,28 @@ public class Console {
             String ligne = "|" + String.format("%"+ctrl.getNbChiffre()+"s", (cpt+1))  + " " + code.get(cpt);
             ligne = String.format(Locale.US,"%-59s", ligne);
 
+
+            /**
+             *
+             *
+             *
+             *
+             */
             if ( ligneSkipper(cpt) ) {
                 ligne = "\u001B[35m" + ligne + "\u001B[0m        ";
             }
 
 
             if ( cpt == e.getNumLigne() ){
+                /**
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 *
+                 */
                 if ( e.isCondition() ){
                     if ( e.isConditionTrue() )
                         ligne = "\u001B[42m" + ligne + "\u001B[0m        ";
