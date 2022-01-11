@@ -17,9 +17,14 @@ public class Interpreteur {
     private final Parcours parcours;
     private int   cpt;
 
+    private boolean attenteLecture;
+
 
     public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
+
+        cpt                 = 0;
+        attenteLecture      = false;
 
         lstConstantes       = new HashMap<>();
         lstVariables        = new HashMap<>();
@@ -38,20 +43,19 @@ public class Interpreteur {
     /*--------------------*/
     /* Lecture du fichier */
     private void lectureFichier() {
-        for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++);
+        if (cpt == 0 ) {
+            for (cpt=0; !fichier.get(cpt).contains("DEBUT"); cpt++);
 
-        parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
+            parcours.nouvelleEtat( nouvelleEtatLigne(cpt) );
+        }
+
         while( parcours.derniereLigne().getNumLigne()+1 < fichier.size() &&
-                    !parcours.derniereLigne().isLecture()                    ){
+                    !attenteLecture                                          )  {
             String ligne = fichier.get(cpt);
             System.out.println("Lecture:" + (cpt+1) + "|"+ligne);
             traiter( ligne );
             cpt++;
         }
-    }
-
-    public void rajoutLecture(String nom, String valeur){
-
     }
 
     private void traiter(String ligne){
@@ -109,6 +113,8 @@ public class Interpreteur {
             EtatLigne eL = nouvelleEtatLigne(cpt);
             eL.setLecture(true);
             eL.setNomALire(var);
+
+            attenteLecture = true;
         }
         else if (ligne.contains("si ") )
         {
@@ -159,19 +165,18 @@ public class Interpreteur {
 
             System.out.println("\tcondition:"+condition+"->"+b);
 
-            if( b ){
-                int numLigne = cpt;
 
-                while ( b ) {
-                    int i = cpt + 1;
-                    while (!this.fichier.get(i).contains("ftq")) {
-                        traiter(fichier.get(i));
-                        i++;
-                    }
-                    condition = remplacerValeurVariable(fichier.get(numLigne).replaceAll("tq|alors| ", ""));
-                    System.out.println("\tcondition du tq:"+condition);
-                    b = Expression.calculLogique(condition);
+            int numLigne = cpt;
+
+            while ( b ) {
+                int i = cpt + 1;
+                while (!this.fichier.get(i).contains("ftq")) {
+                    traiter(fichier.get(i));
+                    i++;
                 }
+                condition = remplacerValeurVariable(fichier.get(numLigne).replaceAll("tq|alors| ", ""));
+                System.out.println("\tcondition du tq:"+condition);
+                b = Expression.calculLogique(condition);
             }
 
             for(int i = cpt+1; !this.fichier.get(i).contains("ftq");i++){
@@ -188,6 +193,16 @@ public class Interpreteur {
 
     }
 
+    public void rajoutLecture(String nom, String valeur){
+        attenteLecture = false;
+
+        Variable v = parcours.derniereLigne().getLstVariables().get(nom);
+
+        Variable vTemp = get(nom, v.getType(), valeur);
+        v.setVal(vTemp.getVal());
+        setVariable(nom, valeur);
+        lectureFichier();
+    }
 
     public String remplacerValeurVariable(String ligne){
 
