@@ -1,7 +1,9 @@
 package iut.Stelliciel.StelliCode.CUI.affichage;
 
 import iut.Stelliciel.StelliCode.Main;
+import iut.Stelliciel.StelliCode.metier.EtatLigne;
 import iut.Stelliciel.StelliCode.metier.LectureCouleur;
+import iut.Stelliciel.StelliCode.metier.Parcours;
 import org.fusesource.jansi.Ansi;
 
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class AfficheCode {
     public final int COURS_FOND = lectureCouleur.getCouleur("ligneEnCour").getCouleurFond();
     public final int COND_TEXT  = lectureCouleur.getCouleur("conditionBoucles").getCouleurText();
     public final int COM_TEXT   = lectureCouleur.getCouleur("commentaire").getCouleurText();
+    public final int VRAI_COND  = lectureCouleur.getCouleur("condVrai").getCouleurFond();
+    public final int FAUX_COND  = lectureCouleur.getCouleur("condFaux").getCouleurFond();
     public final int PRI_TEXT   = lectureCouleur.getCouleur("primitive").getCouleurText();
 
     public String  coloration(String s,ArrayList<String> lstVar){
@@ -55,27 +59,52 @@ public class AfficheCode {
     }
 
     private Ansi getLig(int num, int ligEnCours) {
-            //si lig en cours
-                //cololig en cour
-            //sinon color blanc
-            //color si etc
+        Parcours parcour = Main.getInstance().getParcour();
+        String s = arrString.get(num);
         if (num < arrString.size()) {
-            //if(skipper)
-                //color lig en gris
-            //}else{
             if (num == ligEnCours) {
-                if (arrString.get(num).equals("")) {
+                //la ligne est la lig en cours
+                if (s.equals("")) {
                     return (ansi().bgRgb(COURS_FOND).a(" ").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
                 }
-                return (ansi().bgRgb(COURS_FOND).a(arrString.get(num)).reset().bgRgb(
+
+                if(parcour.getLecteur().get(num).isCondition()){
+                    //la ligne à une condition (si tq)
+                    if(parcour.getLecteur().get(num).isConditionTrue()){
+                        if (s.contains("//")){return  ansi().bgRgb(VRAI_COND).a(s.substring(0,s.indexOf("//"))).ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
+                        else{return ansi().bgRgb(VRAI_COND).a(s).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT);}
+                    }
+                    else {
+                        if (s.contains("//")){return  ansi().bgRgb(FAUX_COND).a(s.substring(0,s.indexOf("//"))).ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
+                        else{return ansi().bgRgb(FAUX_COND).a(s).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT);}
+                    }
+                }
+                return (ansi().bgRgb(COURS_FOND).a(s).reset().bgRgb(
                         NOR_FOND).fgRgb(NOR_TEXT));
-            } else if (arrString.get(num).equals("")) {
-                return (ansi().bgRgb(NOR_FOND).a(" ").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
             }
-            String lig = coloration(arrString.get(num),lstVar);
+
+            else{
+
+                if (ligneSkipper(num,parcour)){return ansi().bgRgb(COM_TEXT).a(s).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT);}
+                if (s.equals("")) {return (ansi().bgRgb(NOR_FOND).a("TYUI").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));}
+            }
+            String lig = coloration(s,lstVar);
             return (ansi().a(lig).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
         } else
             return (ansi().a(" ").reset().bgRgb(NOR_FOND)).fgRgb(NOR_TEXT);
+    }
+
+    private boolean ligneSkipper(int cpt,Parcours p) {
+        for(EtatLigne e : p.getLecteur() ){
+            if(e.getNumLigne() == cpt){
+                if(e.estSkipper())
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        return false;
     }
 
     public String affLig(int num, int ligEnCours) {

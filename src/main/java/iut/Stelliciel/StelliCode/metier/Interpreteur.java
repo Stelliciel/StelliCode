@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class Interpreteur {
 
     private final ArrayList<String> fichier;
-    private final Main ctrl;
 
     private String signature;
     private final HashMap<String, Variable<Object>> lstConstantes;
@@ -24,8 +23,7 @@ public class Interpreteur {
     private boolean attenteLecture;
 
 
-    public Interpreteur(Main ctrl, File adresseFichier) {
-        this.ctrl = ctrl;
+    public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
 
         pointeur                 = 0;
@@ -462,7 +460,7 @@ public class Interpreteur {
     public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try {
-            Scanner sc = new Scanner(new FileInputStream(adresse), StandardCharsets.ISO_8859_1);
+            Scanner sc = new Scanner(new FileInputStream(adresse), StandardCharsets.UTF_8);
 
             char charPrecedent =' ';
             while ( sc.hasNextLine() ) {

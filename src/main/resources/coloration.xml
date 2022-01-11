@@ -28,17 +28,29 @@
     </element>
 
     <element type = "primitive">
-        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"  couleur="1355740"/>
+        <couleurTexte nom  = "blue" couleur="1355740"/>
         <poids        gras = "true"/>
     </element>
 
     <element type="methode">
-        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220" couleur="1355740"/>
+        <couleurTexte nom  = "blue" couleur="1355740"/>
         <poids        gras = "false"/>
     </element>
 
     <element type="conditionBoucles">
-        <couleurTexte nom  = "purple"  valeurR="255"  valeurG="0" valeurB="255" couleur="16717055"/>
+        <couleurTexte nom  = "purple" couleur="16717055"/>
+        <poids        gras = "true"/>
+    </element>
+
+    <element type="condVrai">
+        <couleurTexte nom  = "black" couleur="0"/>
+        <couleurFond  nom  = "green" couleur="32768"/>
+        <poids        gras = "true"/>
+    </element>
+
+    <element type="condFaux">
+        <couleurTexte nom  = "black" couleur="0"/>
+        <couleurFond  nom  = "red"   couleur="16711680"/>
         <poids        gras = "true"/>
     </element>
 </coloration>

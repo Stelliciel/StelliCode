@@ -3,6 +3,7 @@ package iut.Stelliciel.StelliCode;
 import iut.Stelliciel.StelliCode.CUI.CUI;
 import iut.Stelliciel.StelliCode.metier.Interpreteur;
 import iut.Stelliciel.StelliCode.metier.LectureCouleur;
+import iut.Stelliciel.StelliCode.metier.Parcours;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
@@ -32,6 +33,10 @@ public class Main {
             ihm.proposeChoix();
             affecterVariables(ihm.getArrNom());
         }
+    }
+
+    public Parcours getParcour(){
+        return metier.getParcours();
     }
 
     public void affecterVariables(ArrayList<String> lstNom){
