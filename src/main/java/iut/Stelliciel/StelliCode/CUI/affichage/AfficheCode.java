@@ -5,6 +5,7 @@ import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import org.fusesource.jansi.Ansi;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -23,22 +24,19 @@ public class AfficheCode {
     public final int PRI_TEXT   = lectureCouleur.getCouleur("primitive").getCouleurText();
 
     public String  coloration(String s,ArrayList<String> lstVar){
-        String[] tabFonct = {"\u00e9crire", " lire"," plancher"," plafond"," enChaine"," enReel"," enEntier"," car "," car("," ord("," ord "};
-        String[] tabCond = {" si ", " alors"," sinon "," fsi"," tq "," ftq"," faire"};
+        if (s.contains("//")){return  coloration(s.substring(0,s.indexOf("//")),lstVar)+ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
+        String[] tabFonct = {"\u00e9crire", "lire","plancher","plafond","enChaine","enReel","enEntier","car","ord"};
+        String[] tabCond = {"si", "alors","sinon","fsi","tq","ftq","faire"};
         String sRep = s;
         for (String fonct: tabFonct) {
-            if(sRep.contains(fonct)){
-                sRep = sRep.replaceAll(fonct,ansi().fgRgb(FON_TEXT).a(fonct).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
-            }
+                sRep = sRep.replaceAll("\\b"+fonct+"\\b",ansi().fgRgb(FON_TEXT).a(fonct).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
         }
         for (String cond : tabCond) {
-            if(sRep.contains(cond)){
-                sRep = sRep.replaceAll(cond,ansi().fgRgb(COND_TEXT).a(cond).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
-            }
+            sRep = sRep.replaceAll("\\b"+cond+"\\b",ansi().fgRgb(COND_TEXT).a(cond).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
         }
         if(lstVar != null && ! lstVar.isEmpty()){
             for (String var:lstVar) {
-                sRep = sRep.replaceAll(var,ansi().fgRgb(VAR_TEXT).a(var).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
+                sRep=sRep.replaceAll("\\b"+var+"\\b",ansi().fgRgb(VAR_TEXT).a( var ).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
             }
         }
         return sRep;
@@ -74,7 +72,7 @@ public class AfficheCode {
             } else if (arrString.get(num).equals("")) {
                 return (ansi().bgRgb(NOR_FOND).a(" ").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
             }
-            String lig = coloration(arrString.get(num),null);
+            String lig = coloration(arrString.get(num),lstVar);
             return (ansi().a(lig).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
         } else
             return (ansi().a(" ").reset().bgRgb(NOR_FOND)).fgRgb(NOR_TEXT);
