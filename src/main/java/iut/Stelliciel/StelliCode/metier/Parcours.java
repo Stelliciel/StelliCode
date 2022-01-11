@@ -1,5 +1,6 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 
 public class Parcours {
@@ -7,7 +8,7 @@ public class Parcours {
     private int pointeur;
 
     public Parcours() {
-        this.pointeur = 0;
+        this.pointeur = -1;
         this.lecteur  = new ArrayList<>();
     }
 
@@ -28,32 +29,74 @@ public class Parcours {
     }
 
     public boolean hasNext() {
-        if ( pointeur < lecteur.size() )
+        if ( pointeur < lecteur.size()-1 )
             return true;
 
         return false;
     }
 
     public EtatLigne next(){
-        if ( hasNext() ){
-            pointeur++;
-            return lecteur.get(pointeur);
-        }
-        return null;
+        pointeur++;
+        return lecteur.get(pointeur);
     }
 
-    public EtatLigne getEtat() {return lecteur.get(pointeur); }
+    public EtatLigne getEtat() {
+        if ( pointeur < 0 )
+            return null;
+        return lecteur.get(pointeur); }
+
+
+    public boolean hasPrec() {
+        if( pointeur > 0 )
+            return true;
+
+        return false;
+    }
 
     public EtatLigne prec() {
-        if ( pointeur > 0) {
-            pointeur--;
-            return lecteur.get(pointeur);
+        pointeur--;
+        return lecteur.get(pointeur);
+    }
+
+    public EtatLigne seRendreA(int numLigne){
+        if ( numLigne < getLecteur().get(0).getNumLigne() ) {
+            pointeur = 1;
+            return getEtat();
         }
-        return null;
+
+
+        if ( numLigne > derniereLigne().getNumLigne() ) {
+            pointeur = getLecteur().size()-1;
+            return getEtat();
+        }
+
+        int cpt = 0;
+        while( lecteur.get(cpt).getNumLigne()+1 != numLigne ) {
+            if ( cpt < lecteur.size()-1 )
+                cpt++;
+            else
+                return null;
+        }
+        pointeur = cpt;
+        return getEtat();
     }
 
     public EtatLigne derniereLigne(){
         return lecteur.get( lecteur.size() -1 );
     }
 
+    public void reecrire(EtatLigne e) {
+
+        ArrayList<EtatLigne> nouvLecteur = new ArrayList<>();
+        boolean limite = true;
+        for (EtatLigne eTmp: lecteur){
+            if (limite)
+                nouvLecteur.add(eTmp);
+
+            if ( eTmp == e)
+                limite = false;
+        }
+
+        lecteur = nouvLecteur;
+    }
 }
