@@ -6,7 +6,9 @@ import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Parcours;
 import org.fusesource.jansi.Ansi;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static org.fusesource.jansi.Ansi.ansi;
@@ -84,10 +86,9 @@ public class AfficheCode {
             }
 
             else{
-
+                if (s.equals("")) {return (ansi().bgRgb(NOR_FOND).a(" ").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));}
                 if (ligneSkipper(num,parcour)){return ansi().bgRgb(COM_TEXT).a(s).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT);}
-                if (s.equals("")) {return (ansi().bgRgb(NOR_FOND).a("TYUI").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));}
-            }
+                }
             String lig = coloration(s,lstVar);
             return (ansi().a(lig).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
         } else

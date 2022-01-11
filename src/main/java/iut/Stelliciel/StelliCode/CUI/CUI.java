@@ -93,7 +93,7 @@ public class CUI {
         }
         affichage+=("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage+=(this.affConsole);
-        //this.majConsole();
+        this.majConsole();
         System.out.println(ansi().bgRgb(affCode.NOR_FOND).fgRgb(affCode.NOR_TEXT).a(affichage).reset());
     }
 
