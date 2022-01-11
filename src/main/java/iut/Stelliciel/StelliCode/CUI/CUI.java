@@ -69,6 +69,7 @@ public class CUI {
                 for (String s: lstVar.keySet() ) {
                     if (cpt == Integer.parseInt(inUser)-1) {
                         arrNom.add(lstVar.get(s).getNom());
+                        affCode.setLstVar(arrNom);
                     }
                     cpt++;
                 }
@@ -84,21 +85,21 @@ public class CUI {
 
     public void afficher(){
         String sTabVar = affTabVar.toString();
-        StringBuilder affichage = new StringBuilder();
-        affichage.append("________________________________________________________________________________________________________________\n");
+        String affichage = "";
+        affichage+=("________________________________________________________________________________________________________________\n");
         for (int i = this.numLig1; i < this.numLig1+40; i++) {
             if ( i < Main.getInstance().getCode().size() )
-                affichage.append(this.affLig(i, this.ligEnCour, sTabVar));
+                affichage+=(this.affLig(i, this.ligEnCour, sTabVar));
         }
-        affichage.append("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
-        affichage.append(this.affConsole);
+        affichage+=("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
+        affichage+=(this.affConsole);
         this.majConsole();
-        System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(affichage.toString()).reset());
+        System.out.println(ansi().bgRgb(affCode.NOR_FOND).fgRgb(affCode.NOR_TEXT).a(affichage).reset());
     }
 
     public void proposeChoix(){
         String inUser = Main.getInstance().saisie();
-        if(inUser.equals("m")) {
+        if(inUser.isEmpty()) {
             if (ligEnCour != affCode.getTaillePro() - 1) {
                 this.ligEnCour ++;
                 affConsole.Ajouter(Main.getInstance().changLig('f'));
@@ -152,7 +153,7 @@ public class CUI {
         int cpt =0;
         for (String s:affCode.getArrString()) {
             if (s.equals("DEBUT")){
-                return  cpt+1;}
+                return  cpt;}
             cpt++;
         }
         return -1;

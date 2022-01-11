@@ -1,50 +1,44 @@
 <?xml version="1.0"?>
 <coloration>
     <element type ="defaut">
-        <couleurTexte nom  = "black" valeurR="0" valeurG="0" valeurB="0" />
-        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurTexte nom  = "black"  couleur="0"/>
+        <couleurFond  nom  = "white"  couleur="16777215"/>
         <poids        gras = "false"/>
     </element>
 
     <element type ="fonction">
-        <couleurTexte nom  = "orange" valeurR="150" valeurG="105" valeurB="15" />
-        <couleurFond  nom  = "white"  valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurTexte nom  = "orange"  couleur="9857295"/>
         <poids        gras = "false"/>
     </element>
 
     <element type ="variable">
-        <couleurTexte nom  = "lightgray" valeurR="0"   valeurG="0"   valeurB="0"/>
-        <couleurFond  nom  = "white"     valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurTexte nom  = "green" couleur="32768"/>
         <poids        gras = "false"/>
     </element>
 
     <element type = "ligneEnCour">
-        <couleurTexte nom  = "black" valeurR="0"   valeurG="0"   valeurB="0" />
-        <couleurFond  nom  = "cyan"  valeurR="100" valeurG="245" valeurB="235" />
+        <couleurTexte nom  = "black" couleur="0"/>
+        <couleurFond  nom  = "cyan"  couleur="6616555"/>
         <poids        gras = "false"/>
     </element>
 
     <element type ="commentaire">
-        <couleurTexte nom  ="green"  valeurR="55"  valeurG="150" valeurB="75"/>
-        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurTexte nom  ="grey" couleur="3642955"/>
         <poids        gras = "false"/>
     </element>
 
     <element type = "primitive">
-        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220" />
-        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255" />
+        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"  couleur="1355740"/>
         <poids        gras = "true"/>
     </element>
 
     <element type="methode">
-        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220"/>
-        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurTexte nom  = "blue"  valeurR="20"  valeurG="175" valeurB="220" couleur="1355740"/>
         <poids        gras = "false"/>
     </element>
 
     <element type="conditionBoucles">
-        <couleurTexte nom  = "purple"  valeurR="255"  valeurG="0" valeurB="255"/>
-        <couleurFond  nom  = "white" valeurR="255" valeurG="255" valeurB="255"/>
+        <couleurTexte nom  = "purple"  valeurR="255"  valeurG="0" valeurB="255" couleur="16717055"/>
         <poids        gras = "true"/>
     </element>
 </coloration>
