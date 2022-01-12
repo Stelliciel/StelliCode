@@ -1,7 +1,5 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import iut.Stelliciel.StelliCode.Main;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -24,10 +22,10 @@ public class Interpreteur {
     private boolean attenteLecture;
 
 
-    public Interpreteur( File adresseFichier) {
+    public Interpreteur(File adresseFichier) {
         this.fichier        = Interpreteur.lireFichier(adresseFichier);
         this.code           = Interpreteur.lireCode(adresseFichier);
-        pointeur                 = 0;
+        pointeur            = 0;
         attenteLecture      = false;
 
         lstConstantes       = new HashMap<>();
@@ -63,8 +61,8 @@ public class Interpreteur {
 
             separation[1] = remplacerValeurVariable(separation[1]);
 
-            if (separation.length == 3) {
-                setTableau(separation[0], Integer.parseInt(separation[2]), separation[1]);
+            if (separation.length == 5) {
+                setTableau(separation[0], Integer.parseInt(separation[2]), Integer.parseInt(separation[3]), Integer.parseInt(separation[4]), separation[1]);
             } else {
                 setVariable(separation[0], separation[1]);
             }
@@ -127,7 +125,7 @@ public class Interpreteur {
             parcours.nouvelleEtat(eL);
             if( b ) {
                 pointeur++;
-                while(  !(this.fichier.get(pointeur).startsWith( tab + "sinon") ||
+                while(!(this.fichier.get(pointeur).startsWith( tab + "sinon") ||
                                        this.fichier.get(pointeur).startsWith(tab + "fsi"))) {
 
                     traiter(this.fichier.get(pointeur));
@@ -228,7 +226,6 @@ public class Interpreteur {
     }
 
     public String remplacerValeurVariable(String ligne){
-
         for(String v : lstConstantes.keySet() ){
             if ( ligne.contains(v) ){
                 ligne = ligne.replaceAll(v, lstConstantes.get(v).valToString() );
@@ -304,22 +301,19 @@ public class Interpreteur {
             String type = mots[1];
 
             if ( type.contains("tableau") ){
-                String tailleTab = type.substring(type.indexOf('[')+1,type.indexOf(']'));
+                String[] tailleTab = Fonction.affectation(type);
                 String typeTab   = "";
-                if (type.contains("entier")    ) typeTab  = "entier";
-                if (type.contains("reel")      ) typeTab  = "reel";
-                if (type.contains("boolean")   ) typeTab = "boolean";
-                if (type.contains("caracteres") ) typeTab = "caractere";
-                if (type.contains("chaine")    ) typeTab = "chaine";
+                if (type.contains("entier")   ) typeTab  = "entier";
+                if (type.contains("reel")     ) typeTab  = "reel";
+                if (type.contains("boolean")  ) typeTab = "boolean";
+                if (type.contains("caractere")) typeTab = "caractere";
+                if (type.contains("chaine")   ) typeTab = "chaine";
 
-                if ( lstConstantes.containsKey(tailleTab) ) {
-                    addTableau(false,variables[0],typeTab,String.valueOf(lstConstantes.get(tailleTab).getVal()));
-                }
-                else {
-                    addTableau(false,variables[0],typeTab, tailleTab);
-                }
-            }
-            else {
+                addTableau(variables[0],typeTab,
+                        lstConstantes.containsKey(tailleTab[2])?String.valueOf(lstConstantes.get(tailleTab[2]).getVal()):tailleTab[2],
+                        lstConstantes.containsKey(tailleTab[3])?String.valueOf(lstConstantes.get(tailleTab[3]).getVal()):tailleTab[3]!=null?tailleTab[3]:"0",
+                        lstConstantes.containsKey(tailleTab[4])?String.valueOf(lstConstantes.get(tailleTab[4]).getVal()):tailleTab[4]!=null?tailleTab[4]:"0");
+            } else {
                 for ( String nom : variables ){
                     addVariable(nom, type.replaceAll(" ", ""));
                 }
@@ -351,23 +345,23 @@ public class Interpreteur {
 
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
     public void addVariable (String nom, String type)               { lstVariables .put(nom, new Variable<>(nom, type) ); }
-    public void addTableau  (boolean constante, String nom, String type, String taille) {
-        if ( constante )
-            lstConstantes.put(nom, new Variable<>(nom,Integer.parseInt(taille),type));
-        else
-            lstVariables.put(nom, new Variable<>(nom,Integer.parseInt(taille),type));
+
+    public void addTableau (String nom, String type, String taille, String taille2, String taille3) {
+        lstVariables.put(nom,
+                new Variable<>(nom,
+                        Integer.parseInt(taille),
+                        Integer.parseInt(taille2),
+                        Integer.parseInt(taille3),
+                        type));
     }
 
     public Object getConstante (String nom) { return  lstConstantes.get(nom).getVal(); }
     public Object getVariable  (String nom) { return  lstVariables .get(nom).getVal(); }
-    public Object getIndTableau(String nom, int ind) {
-        if( estConstante(nom) )
-            return lstConstantes.get(nom).getIndTab(ind);
-        else
-            return lstVariables.get(nom).getIndTab(ind);
+    public Object getIndTableau(String nom, int ind, int ind2, int ind3) {
+        return lstVariables.get(nom).getIndTab(ind, ind2, ind3);
     }
 
-    public void setVariable(String nom, String valeur)          {
+    public void setVariable(String nom, String valeur) {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
         else if ( valeur.contains("'"))
@@ -380,17 +374,14 @@ public class Interpreteur {
         }
         Interpreteur.set(lstVariables.get(nom), valeur);
     }
-    public void setTableau (String nom, int ind, String valeur) {
+
+
+    public void setTableau (String nom, int ind, int ind2, int ind3, String valeur) {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
-        Variable<Object> v;
-        if ( estConstante(nom) )
-            v = lstConstantes.get(nom);
-        else
-            v = lstVariables.get(nom);
+        Variable<Object> v = lstVariables.get(nom);
 
-        v.setIndTab(ind, convertitValeur(v.getType(),valeur) );
-        System.out.println("Changement ind : " + v.getIndTab(ind) );
+        v.setIndTab(ind, ind2, ind3, convertitValeur(v.getType(),valeur) );
     }
 
     private static Object convertitValeur(String type, String valeur){
@@ -404,7 +395,7 @@ public class Interpreteur {
     }
     private static boolean estConstante(String nom){ return nom.equals(nom.toUpperCase()); }
 
-    public static void             set(Variable<Object> var, String valeur)   {
+    public static void set(Variable<Object> var, String valeur)   {
         switch (var.getType()){
             case "entier"    -> {
                 int val;

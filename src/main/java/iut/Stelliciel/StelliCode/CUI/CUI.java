@@ -6,17 +6,11 @@ import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
 import iut.Stelliciel.StelliCode.metier.EtatLigne;
-import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Variable;
-import org.fusesource.jansi.Ansi;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
-import  java.lang.ProcessBuilder;
-import  java.lang.Process;
-import java.util.Scanner;
 import java.util.Objects;
 
 import static org.fusesource.jansi.Ansi.ansi;

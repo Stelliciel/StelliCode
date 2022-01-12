@@ -1,10 +1,12 @@
 package iut.Stelliciel.StelliCode;
 
 import iut.Stelliciel.StelliCode.CUI.Console;
-import iut.Stelliciel.StelliCode.metier.*;
+import iut.Stelliciel.StelliCode.metier.EtatLigne;
+import iut.Stelliciel.StelliCode.metier.Interpreteur;
+import iut.Stelliciel.StelliCode.metier.Parcours;
+import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -22,6 +24,7 @@ public class Main {
         instance = this;
         AnsiConsole.systemInstall();
         metier         = new Interpreteur(new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
+
         Console console = new Console(this);
     }
 

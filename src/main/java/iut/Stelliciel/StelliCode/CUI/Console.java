@@ -6,12 +6,11 @@ import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Parcours;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
-import static org.fusesource.jansi.Ansi.ansi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Scanner;
+import java.io.File;
+import java.util.*;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 public class Console {
     private final Main ctrl;
@@ -33,6 +32,8 @@ public class Console {
     public final int COM_TEXT   = LectureCouleur.getCouleur("commentaire").getCouleurText();
     public final int VRAI_COND  = LectureCouleur.getCouleur("condVrai").getCouleurFond();
     public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
+    public final int LIRE_TEXT  = LectureCouleur.getCouleur("lire").getCouleurText();
+    public final int ECRIRE_TEXT= LectureCouleur.getCouleur("ecrire").getCouleurText();
 
     public static final int TAILLE_LARGEUR = 84;
 
@@ -277,9 +278,11 @@ public class Console {
 
     public String  coloration(String s,ArrayList<String> lstVar){
         if (s.contains("//")){return  coloration(s.substring(0,s.indexOf("//")),lstVar)+ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
-        String[] tabFonct = {"\u00e9crire", "lire","plancher","plafond","enChaine13","enReel","enEntier","car","ord"};
+        String[] tabFonct = {"plancher","plafond","enChaine13","enReel","enEntier","car","ord"};
         String[] tabCond = {"si", "alors","sinon","fsi","tq","ftq","faire"};
         String sRep = s;
+        sRep = sRep.replaceAll("\\blire\\b",ansi().fgRgb(LIRE_TEXT).a("lire").fgRgb(NOR_TEXT).toString());
+        sRep = sRep.replaceAll("\\b\u00e9crire\\b",ansi().fgRgb(ECRIRE_TEXT).a("\u00e9crire").fgRgb(NOR_TEXT).toString());
         for (String fonct: tabFonct) {
             sRep = sRep.replaceAll("\\b"+fonct+"\\b",ansi().fgRgb(FON_TEXT).a(fonct).fgRgb(NOR_TEXT).toString());
         }
@@ -303,5 +306,60 @@ public class Console {
         }
 
         return false;
+    }
+
+    public static File getAdresse() {
+        Console.majConsole();
+        File files = afficherOption();
+        System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a("File : " + files).reset());
+        return files;
+    }
+
+    private static File afficherOption() {
+        ArrayList<File> file = new ArrayList<>();
+        File[] dir = Objects.requireNonNull((new File("../../src/main/resources")).listFiles());
+        for (File item : dir)
+            if (item.isFile() && item.getName().endsWith(".algo"))
+                file.add(item);
+
+        StringBuilder sRep = new StringBuilder();
+        sRep.append("Veuillez choisir une option parmit les suivantes :\n");
+        for (int i = 1; i - 1 <= file.size(); i++) {
+            if (i % 5 == 1)
+                sRep.append('\n');
+            if (i - 1 == file.size())
+                sRep.append(i).append(" ").append(Console.adaptTxt("autre")).append("  ");
+            else
+                sRep.append(i).append(" ").append(Console.adaptTxt(file.get(i - 1).getName().substring(0, file.get(i - 1).getName().length() - 5))).append("  ");
+        }
+        while (true) {
+            System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a(sRep).reset());
+            String inUser = Main.getInstance().saisie();
+            if (inUser.matches("^[-+]?\\d+")) {
+                if (Integer.parseInt(inUser) - 1 > file.size()) {
+                    System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a("entrer un nombre valide ou -1 pour quitter").reset());
+                } else if (inUser.equals("-1")) {
+                    System.out.println("Vous avez choisie de quitter le programme");
+                    System.exit(0);
+                } else if (Integer.parseInt(inUser) - 1 == file.size()) {
+                    System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a("Donnez le chemin absolue de votre fichier .algo").reset());
+                    inUser = Main.getInstance().saisie();
+                    File customDir = new File(inUser);
+                    if (customDir.exists() && customDir.isFile() && customDir.getName().endsWith(".algo")) {
+                        return customDir;
+                    } else {
+                        System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a("Le chemin absolue du fichier .algo spécifié n'est pas reconnu").reset());
+                    }
+                } else {
+                    for (int i = 0; i < file.size(); i++) {
+                        if (i == Integer.parseInt(inUser) - 1) {
+                            return file.get(i).getAbsoluteFile();
+                        }
+                    }
+                }
+            } else {
+                System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a(inUser + " n'est pas valide ,entrer un nombre valide ou -1 pour quitter").reset());
+            }
+        }
     }
 }
