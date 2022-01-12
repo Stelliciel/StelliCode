@@ -8,6 +8,9 @@ import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -54,6 +57,56 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         return sc.nextLine();
+    }
+
+    /* Créer le fichier .var */
+    public void traceVariable(ArrayList<String> lstVar) {
+        HashMap<String, Variable<Object>> lst = new HashMap<>();
+        ArrayList<EtatLigne> lecteur = getParcours().getLecteur();
+        HashMap<String, Variable<Object>> lstTmp = lecteur.get(0).getLstVariables();
+
+        for(String nom : lstVar ){
+            if ( !lstTmp.get(nom).estTableau() )
+                lst.put( nom, lstTmp.get(nom) );
+        }
+
+        try
+        {
+            PrintWriter pw = new PrintWriter(new OutputStreamWriter(
+                    new FileOutputStream(metier.getSignature() + ".var"), "UTF8" ));
+
+            pw.println( "|" + String.format("%-15s", "Nom")          + "|"
+                            + String.format("%-15s", "Valeur")       + "|"
+                            + String.format("%-12s", "Numero Ligne") + "|"    );
+
+
+            for (int cpt = 1; cpt < lecteur.size(); cpt++ ){
+                lstTmp = lecteur.get(cpt).getLstVariables();
+
+                int numLigne = lecteur.get(cpt).getNumLigne()+1;
+
+                for(String nom : lstTmp.keySet()){
+                    if (lst.containsKey(nom)){
+                        String valeur = lstTmp.get(nom).getVal()+"";
+                        String valActuel = lst.get(nom).getVal() +"";
+                        if ( !valActuel.equals(valeur) ) {
+                            lst.replace(nom, lstTmp.get(nom));
+                            pw.println( traceVar(nom, valeur, numLigne+"")  );
+                        }
+
+                    }
+                }
+            }
+            pw.close();
+        }
+        catch (Exception e){ e.printStackTrace(); }
+    }
+
+    private String traceVar( String nom, String valeur, String numLigne ){
+        String trace = "|" + String.format("%-15s", nom) + "|"
+                         + String.format("%-15s", valeur)+ "|" + String.format("%-12s", numLigne) + "|";
+
+        return trace;
     }
 }
 

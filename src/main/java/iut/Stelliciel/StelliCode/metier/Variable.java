@@ -95,7 +95,7 @@ public class Variable<V>
     /**
      * @return Return si la variable est un tableau
      */
-    private boolean estTableau() {
+    public boolean estTableau() {
         return this.tabValeur != null;
     }
 
