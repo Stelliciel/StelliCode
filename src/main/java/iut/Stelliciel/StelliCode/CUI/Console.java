@@ -119,7 +119,7 @@ public class Console {
                 demandeVars();
             }
             else if ( saisie.startsWith("TRACE") ){
-
+                ctrl.traceVariable( tabVar.getLstVar() );
             }
 
             afficher(e);
@@ -133,6 +133,11 @@ public class Console {
                 }
 
                 ctrl.rajoutLecture(e, saisie);
+
+                if (parcours.hasNext() ){
+                    e = parcours.next();
+                }
+                afficher(e);
             }
 
             System.out.print(">");
@@ -212,6 +217,7 @@ public class Console {
                     }
                     tabVar.rajouterVar(nom, lstVar.get(nom));
                     lstNomVar.remove(nom);
+                    System.out.println(String.format("%-"+ TAILLE_LARGEUR +"s","| Quelles variables voulez vous suivre? ( q pour quitter )" ) + "|");
                 }
             }else{
                 System.out.println( String.format("%-" + TAILLE_LARGEUR +"s", "| Entrer un nombre valide") +"|");
@@ -228,7 +234,7 @@ public class Console {
     }
 
     public void afficher(EtatLigne e){
-        //Console.majConsole();
+        Console.majConsole();
         trait();
         tabVar.maj(e.getLstVariables());
         ArrayList<String> tab = tabVar.getTabVar();

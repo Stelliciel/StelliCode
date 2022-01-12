@@ -219,6 +219,8 @@ public class Interpreteur {
         e.setTraceAlgo("i"+nom+": "+valeur);
 
 
+
+
         Variable v = e.getLstVariables().get(nom);
 
         Variable vTemp = get(nom, v.getType(), valeur);
@@ -229,6 +231,7 @@ public class Interpreteur {
 
 
         parcours.reecrire(e);
+        lstVariables = e.getLstVariables();
         pointeur = e.getNumLigne()+1;
         lectureFichier();
     }
@@ -459,6 +462,8 @@ public class Interpreteur {
     }
     /* Fin gestion des variables */
     /*---------------------------*/
+
+    public String getSignature() { return  signature; }
 
     public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
