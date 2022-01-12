@@ -28,7 +28,6 @@ public class AfficheTab {
     }
 
     public void rajouterVar(String nom, Variable<Object> v){
-        Console.majConsole();
         System.out.println("Rajout de " + nom);
         listeVar.put(nom, ""+v.getVal());
     }
