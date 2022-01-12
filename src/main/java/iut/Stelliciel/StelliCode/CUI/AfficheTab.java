@@ -42,12 +42,13 @@ public class AfficheTab {
     public ArrayList<String> getTabVar(){
         ArrayList<String> lstLigne = new ArrayList<>();
 
-        lstLigne.add( String.format("%-14s", "Nom") + "|" + String.format("%-15s", "Valeur") );
+        lstLigne.add( String.format("%-10s", "| Nom")  + String.format("%-10s", "| Valeur") );
 
         listeVar.forEach( (k,v) -> {
             String valeur = "v";
             valeur = valeur.replaceAll("v",listeVar.get(k)) ;
-            String ligne = String.format("%-14s", Console.adaptTxt(k)) + "|" + String.format("%-15s", valeur );
+            String ligne = String.format("%-10s",  Console.adaptTxt("|"+k)) +
+                                  String.format("%-10s", Console.adaptTxt("|"+valeur) );
             lstLigne.add(ligne);
         });
 

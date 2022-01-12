@@ -16,6 +16,26 @@ public class Expression {
         //System.out.println(Expression.calculer("2*3+4/(5+6)"));
         System.out.println(Expression.calculLogique("2<6 et A != a"));
         System.out.println(Expression.calculLogique("A == A"));
+        System.out.println(Expression.calculLogique("vrai == 2<6"));
+        System.out.println(Expression.calculer("11 div 5"));
+        System.out.println(Expression.calculer("11 / 5"));
+        System.out.println(Expression.calculer("11 mod 5"));
+    }
+
+    public static boolean estUneExpressionLogique(String expression){
+        expression = expression.replaceAll("false", "faux");
+        expression = expression.replaceAll("true", "vrai");
+        Pattern pattern = Pattern.compile("((vrai)|(faux)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
+        Matcher matcher = pattern.matcher(expression);
+
+        return matcher.find();
+    }
+
+    public static boolean estUneExpression(String expression){
+        Pattern pattern = Pattern.compile("(([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
+        Matcher matcher = pattern.matcher(expression);
+
+        return matcher.find();
     }
 
     public static boolean calculLogique(String expression) {
@@ -32,8 +52,9 @@ public class Expression {
 
         expression = expression.replaceAll("\\s+","");
 
-
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
+        expression = expression.replaceAll("false", "faux");
+        expression = expression.replaceAll("true", "vrai");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
         Matcher matcher = pattern.matcher(expression);
 
         int cpt = 0;
@@ -89,9 +110,16 @@ public class Expression {
         Stack<Double> pile = new Stack<>();
         Stack<Boolean> pileSortie = new Stack<>();
         for(String expr : sortie){
-            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+|([a-z])|([A-Z])") ){
+            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+|([a-z])|(vrai)|(faux)|([A-Z])") ){
                 if ( expr.matches("([a-z])|([A-Z])"))
                     pile.push((int) expr.charAt(0) * 1.0);
+                else if ( expr.matches("(vrai)|(faux)")){
+                    if ( expr.matches("(vrai)"))
+                        pileSortie.push( true );
+                    else if ( expr.matches("(faux)") )
+                        pileSortie.push( false );
+
+                }
                 else
                     pile.push(Double.parseDouble(expr));
             }
@@ -152,9 +180,10 @@ public class Expression {
         Map<String, Integer> operators = new HashMap<>();
         operators.put("-", 0);
         operators.put("+", 0);
-        operators.put("%", 1);
+        operators.put("div", 1);
+        operators.put("mod", 1);
         operators.put("/", 1);
-        operators.put("*", 1);
+        operators.put("×", 1);
         operators.put("^", 2);
         operators.put("\\/¯", 2);
 
@@ -165,7 +194,7 @@ public class Expression {
             expression = "0" + expression;
         }
 
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([\\+\\-\\*\\/\\(\\)\\^])|(\\\\/¯))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
         Matcher matcher = pattern.matcher(expression);
 
         int cpt = 0;
@@ -227,16 +256,19 @@ public class Expression {
                         double op1 = pile.pop();
                         double op2 = pile.pop();
                         switch (expr) {
+                            case "div":
+                                pile.push((double)((int)(op2 / op1)));
+                                break;
                             case "+":
                                 pile.push(op2 + op1);
                                 break;
                             case "-":
                                 pile.push(op2 - op1);
                                 break;
-                            case "%":
+                            case "mod":
                                 pile.push(op2 % op1);
                                 break;
-                            case "*":
+                            case "×":
                                 pile.push(op2 * op1);
                                 break;
                             case "/":

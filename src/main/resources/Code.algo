@@ -8,11 +8,14 @@ variable:
     message: chaine
     cpt: entier
     grandMessage: chaine
+    verif : boolean
 DEBUT
-    age <-- 8
+    age <-- 5+5
 
     écrire (age)
-    si age < 6 alors
+
+    verif <-- age < 18
+    si verif alors
         message <-- "enfant"
     fsi
 
