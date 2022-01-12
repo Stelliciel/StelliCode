@@ -1,11 +1,68 @@
 package iut.Stelliciel.StelliCode.metier;
 
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Fonction {
 
 
-    public static String ajourdhui() {
+
+
+    public static boolean estUnePrimitive(String s) {
+        Pattern pattern = Pattern.compile("(enChaine)|(enEntier)|(enReel)|(plafond)|(plancher)|" +
+                "(hasard)|(ord)|(car)|(arrondi)|(ajourdhui)|(jour)|(mois)|(annee)");
+        Matcher matcher = pattern.matcher(s);
+
+        return matcher.find();
+    }
+
+    public static String primitive(String s) {
+        String prim = "";
+        String valeur = Fonction.entreParenthese(s);
+        if ( s.contains("enChaine") ){
+            prim = Fonction.enChaine( valeur );
+        }
+        else if ( s.contains("enEntier") ) {
+            prim = Fonction.enEntier( valeur );
+        }
+        else if ( s.contains("enReel") ) {
+            prim = Fonction.enReel( valeur );
+        }
+        else if ( s.contains("plafond") ) {
+            prim = Fonction.plafond( valeur );
+        }
+        else if ( s.contains("plancher") ) {
+            prim = Fonction.plancher( valeur );
+        }
+        else if ( s.contains("hasard") ) {
+            prim = Fonction.hasard( valeur );
+        }
+        else if ( s.contains("ord") ) {
+            prim = Fonction.ord( valeur );
+        }
+        else if ( s.contains("car") ) {
+            prim = Fonction.car( valeur );
+        }
+        else if ( s.contains("arrondi") ) {
+            prim = Fonction.arrondi( valeur );
+        }
+        else if ( s.contains("aujourdhui") ) {
+            prim = Fonction.aujourdhui();
+        }
+        else if ( s.contains("annee") ) {
+            prim = Fonction.ord( valeur );
+        }
+        else if ( s.contains("mois") ) {
+            prim = Fonction.car( valeur );
+        }
+        else if ( s.contains("jour") ) {
+            prim = Fonction.jour( valeur );
+        }
+        return prim;
+    }
+
+    public static String aujourdhui() {
         String date = LocalDate.now()+"";
         String jour = date.substring( date.indexOf("-")+1 );
         jour = jour.substring(jour.indexOf("-")+1);
@@ -13,7 +70,7 @@ public class Fonction {
         mois = mois.substring(0, mois.indexOf("-") );
 
         date = jour + "/"+mois+"/"+date.substring(0,date.indexOf("-"));
-        return date;
+        return "\""+date+"\"";
     }
 
     public static String annee (String date){
@@ -31,58 +88,55 @@ public class Fonction {
         return date.substring(0,date.indexOf("/"));
     }
 
-    private String enChaine(String str)
+    private static String enChaine(String str)
     {
         String contenu = entreParenthese(str);
-        String res = "";
-        //Changer type si variable
-        //res += Interpreteur.getVariable(contenu).getVal();
 
-        return res;
+        return contenu;
     }
 
-    private String enEntier(String str)
+    private static String enEntier(String str)
     {
         //Changer type si variable
         return Integer.parseInt(str)+"";
     }
 
-    private String enReel(String str)
+    private static String enReel(String str)
     {
         //Changer type si variable
         return Double.parseDouble(str)+"";
     }
 
-    private String plafond(String str)
+    private static String plafond(String str)
     {
         return Math.ceil(Double.parseDouble(str))+"";
     }
 
-    private String plancher(String str)
+    private static String plancher(String str)
     {
         return Math.floor(Double.parseDouble(str))+"";
     }
 
-    private String hasard(String str)
+    private static String hasard(String str)
     {
         return (int)(Math.random()*Integer.parseInt(str))+"";
     }
 
-    private String ord(String str)
+    private static String ord(String str)
     {
         return Integer.parseInt(str)+"";
     }
 
-    private String car(String str) { return (char)Integer.parseInt(str) + ""; }
+    private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
 
-    private String arrondis(String str)
+    private static String arrondi(String str)
     {
         return Math.round(Double.parseDouble(str)) +"";
     }
 
     public static String entreParenthese(String str)
     {
-        return str.substring( str.indexOf("(")+1, str.indexOf(")") ).trim();
+        return str.substring( str.indexOf("(")+1, str.indexOf(")") );
     }
 
     public static String entreGuillemet(String str)
@@ -93,7 +147,6 @@ public class Fonction {
     public static String[] affectation(String ligne) {
         ligne = ligne.replaceAll(" ", "");
         if (!ligne.contains("[")) {
-            System.out.println("here");
             return ligne.split("<--");
         }
         String[] affectation = new String[5];
@@ -114,7 +167,7 @@ public class Fonction {
 
 
     public static void main(String[] args) {
-        String date = Fonction.ajourdhui();
+        String date = Fonction.aujourdhui();
         System.out.println( date );
         System.out.println( Fonction.jour(date) );
         System.out.println( Fonction.mois(date) );

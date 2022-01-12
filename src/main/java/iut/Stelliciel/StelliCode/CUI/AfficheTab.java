@@ -52,7 +52,6 @@ public class AfficheTab {
             lstLigne.add(ligne);
         });
 
-
         return  lstLigne;
     }
 }

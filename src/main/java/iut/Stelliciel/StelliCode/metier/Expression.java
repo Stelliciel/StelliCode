@@ -11,9 +11,6 @@ import java.util.regex.Pattern;
 public class Expression {
 
     public static void main(String[] args) {
-        //System.out.println(Expression.calculer("52+2/(3-8)^5^2*\\/¯25"));
-        //System.out.println(Expression.calculer("\\/¯25"));
-        //System.out.println(Expression.calculer("2*3+4/(5+6)"));
         System.out.println(Expression.calculLogique("2<6 et A != a"));
         System.out.println(Expression.calculLogique("A == A"));
         System.out.println(Expression.calculLogique("vrai == 2<6"));
