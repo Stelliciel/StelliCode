@@ -3,54 +3,44 @@
     <element type ="defaut">
         <couleurTexte nom  = "black"  couleur="0"/>
         <couleurFond  nom  = "white"  couleur="16777215"/>
-        <poids        gras = "false"/>
     </element>
 
     <element type ="fonction">
         <couleurTexte nom  = "orange"  couleur="9857295"/>
-        <poids        gras = "true"/>
     </element>
 
     <element type ="variable">
         <couleurTexte nom  = "green" couleur="32768"/>
-        <poids        gras = "true"/>
     </element>
 
     <element type = "ligneEnCour">
         <couleurTexte nom  = "black" couleur="0"/>
         <couleurFond  nom  = "cyan"  couleur="6616555"/>
-        <poids        gras = "false"/>
     </element>
 
     <element type ="commentaire">
         <couleurTexte nom  ="grey" couleur="8355711"/>
-        <poids        gras = "false"/>
-    </element>
-
-    <element type = "primitive">
-        <couleurTexte nom  = "blue" couleur="1355740"/>
-        <poids        gras = "true"/>
-    </element>
-
-    <element type="methode">
-        <couleurTexte nom  = "blue" couleur="1355740"/>
-        <poids        gras = "false"/>
     </element>
 
     <element type="conditionBoucles">
-        <couleurTexte nom  = "purple" couleur="16717055"/>
-        <poids        gras = "true"/>
+        <couleurTexte nom  = "purple" couleur="9055202"/>
+    </element>
+
+    <element type="lire">
+        <couleurTexte nom  = "purple" couleur="9440319"/>
+    </element>
+
+    <element type="ecrire">
+        <couleurTexte nom  = "blue" couleur="1777100"/>
     </element>
 
     <element type="condVrai">
         <couleurTexte nom  = "black" couleur="0"/>
         <couleurFond  nom  = "green" couleur="32768"/>
-        <poids        gras = "true"/>
     </element>
 
     <element type="condFaux">
         <couleurTexte nom  = "black" couleur="0"/>
         <couleurFond  nom  = "red"   couleur="16711680"/>
-        <poids        gras = "true"/>
     </element>
 </coloration>
