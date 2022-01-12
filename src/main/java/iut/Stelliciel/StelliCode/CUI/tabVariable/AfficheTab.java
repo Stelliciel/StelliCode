@@ -15,10 +15,10 @@ public class AfficheTab {
     /** constructeur d'un tableau de variable vide
      */
     public AfficheTab(){
-        this.listeVar = new HashMap<>(1);
+        this.listeVar = new HashMap<>();
     }
 
-    /**verifie si la variable est déja dans la liste si c'est le cas modifie la valeur sinon l'ajoute
+    /**verifie si la variable est dans la liste si c'est le cas modifie la valeur
      * @param var nouvelle variable
      */
     public void maj(Variable var){

@@ -59,9 +59,7 @@ public class EtatLigne {
     public HashMap<String, Variable<Object>> getLstConstantes() {
         return lstConstantes;
     }
-    public HashMap<String, Variable<Object>> getLstVariables() {
-        return lstVariables;
-    }
+    public HashMap<String, Variable<Object>> getLstVariables()  { return lstVariables; }
     public String getSignature() {
         return signature;
     }

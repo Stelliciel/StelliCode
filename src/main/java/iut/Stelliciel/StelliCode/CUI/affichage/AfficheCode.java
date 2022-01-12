@@ -59,7 +59,7 @@ public class AfficheCode {
     }
 
     private Ansi getLig(int num, int ligEnCours) {
-        Parcours parcour = Main.getInstance().getParcour();
+        Parcours parcour = Main.getInstance().getParcours();
         String s = arrString.get(num);
         if (num < arrString.size()) {
             if (num == ligEnCours) {

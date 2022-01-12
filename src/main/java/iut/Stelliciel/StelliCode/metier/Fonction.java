@@ -94,7 +94,7 @@ public class Fonction {
 
     public static String entreGuillemet(String str)
     {
-        return str.substring( str.indexOf("\"")+1, str.lastIndexOf("\"") ).trim();
+        return str.substring( str.indexOf("\"")+1, str.lastIndexOf("\"") );
     }
 
 
