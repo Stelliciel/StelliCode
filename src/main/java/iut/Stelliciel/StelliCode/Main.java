@@ -22,8 +22,8 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        //metier         = new Interpreteur(new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
-        metier         = new Interpreteur(new File("C:\\Users\\Gaspard\\IdeaProjects\\StelliCode\\src\\main\\resources\\Code.algo"));
+        metier         = new Interpreteur(new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
+        //metier         = new Interpreteur(new File("C:\\Users\\Gaspard\\IdeaProjects\\StelliCode\\src\\main\\resources\\Code.algo"));
         //ihm            = new CUI();
         Console console = new Console(this);
         /*ihm.afficher();

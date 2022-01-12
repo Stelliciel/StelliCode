@@ -73,6 +73,7 @@ public class Interpreteur {
         }
         else if (ligne.contains("écrire"))
         {
+            System.out.println("affectation");
             String s  = this.code.get(pointeur);
             String ecrire = Fonction.entreParenthese(s);
             EtatLigne etatLigne = nouvelleEtatLigne(pointeur);
@@ -209,7 +210,7 @@ public class Interpreteur {
         attenteLecture = false;
         String nom = e.getNomALire();
         ArrayList<String> traceAlgo = e.getTraceAlgo();
-        if ( traceAlgo.get( traceAlgo.size()-1).charAt(0) == 'i' )
+        if (  traceAlgo.size() > 0 &&traceAlgo.get( traceAlgo.size()-1).charAt(0) == 'i' )
             traceAlgo.remove( traceAlgo.size()-1);
         e.setTraceAlgo("i"+nom+": "+valeur);
 
