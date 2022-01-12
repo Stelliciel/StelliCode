@@ -69,7 +69,7 @@ public class Interpreteur {
 
             parcours.nouvelleEtat(nouvelleEtatLigne(pointeur));
         }
-        else if (ligne.contains("\u00e9crire"))
+        else if (ligne.contains("\u00e9crire") || ligne.contains("écrire") )
         {
             String s  = this.code.get(pointeur);
             String ecrire = Fonction.entreParenthese(s);
