@@ -60,7 +60,7 @@ public class Parcours {
 
     public EtatLigne seRendreA(int numLigne){
         if ( numLigne < getLecteur().get(0).getNumLigne() ) {
-            pointeur = 1;
+            pointeur = 0;
             return getEtat();
         }
 

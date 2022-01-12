@@ -2,11 +2,14 @@ package iut.Stelliciel.StelliCode.CUI;
 
 import iut.Stelliciel.StelliCode.Main;
 import iut.Stelliciel.StelliCode.metier.EtatLigne;
+import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Parcours;
+import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.AnsiConsole;
+import static org.fusesource.jansi.Ansi.ansi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -18,16 +21,42 @@ public class Console {
     private Parcours parcours;
 
     private String saisie;
+    private AfficheTab tabVar;
+
+    private final LectureCouleur lectureCouleur = new LectureCouleur();
+    public final int NOR_FOND   = LectureCouleur.getCouleur("defaut").getCouleurFond();
+    public final int NOR_TEXT   = LectureCouleur.getCouleur("defaut").getCouleurText();
+    public final int FON_TEXT   = LectureCouleur.getCouleur("fonction").getCouleurText();
+    public final int VAR_TEXT   = LectureCouleur.getCouleur("variable").getCouleurText();
+    public final int COURS_FOND = LectureCouleur.getCouleur("ligneEnCour").getCouleurFond();
+    public final int COND_TEXT  = LectureCouleur.getCouleur("conditionBoucles").getCouleurText();
+    public final int COM_TEXT   = LectureCouleur.getCouleur("commentaire").getCouleurText();
+    public final int VRAI_COND  = LectureCouleur.getCouleur("condVrai").getCouleurFond();
+    public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
+    public final int PRI_TEXT   = LectureCouleur.getCouleur("primitive").getCouleurText();
+
+    public static final int TAILLE_LARGEUR = 90;
 
 
     public Console(Main ctrl){
         this.ctrl = ctrl;
         this.sc   = new Scanner(System.in);
         this.code = ctrl.getCode();
+        this.parcours = ctrl.getParcours();
         saisie = " ";
+        this.tabVar = new AfficheTab(ctrl);
         ihm();
     }
 
+    public Ansi colorie(String ligne, int couleurLettre, int couleurFond){
+        if ( couleurFond == -1 ) {
+            return ansi().fgRgb(couleurLettre).a(ligne).fgRgb(NOR_TEXT).bgRgb(NOR_FOND);
+        }
+        else if ( couleurLettre == -1 ){
+            return ansi().bgRgb(couleurFond).a(ligne).fgRgb(NOR_TEXT).bgRgb(NOR_FOND);
+        }
+        return ansi().bgRgb(couleurFond).fgRgb(couleurLettre).a(ligne).fgRgb(NOR_TEXT).bgRgb(NOR_FOND);
+    }
 
     public void ihm(){
         EtatLigne e = parcours.next();
@@ -49,100 +78,170 @@ public class Console {
                 if ( parcours.seRendreA( Integer.parseInt(saisie.replaceAll("L", ""))) != null ) {
                     e = parcours.seRendreA( Integer.parseInt(saisie.replaceAll("L", "")) );
                 }
-
+            }
+            else if ( saisie.startsWith("addvar") ){
+                demandeVars();
             }
 
             afficher(e);
             if ( e.isLecture() ){
-                System.out.print("Veuillez saisir la valeur de la variable " + e.getNomALire() + " : ");
+                System.out.print("| Saisir la valeur de " + e.getNomALire() + " : ");
                 saisie = sc.nextLine();
 
                 while (saisie.equals("") ){
-                    System.out.print("Veuillez saisir la valeur de la variable " + e.getNomALire() + " : ");
+                    System.out.print("| Erreur saisie de " + e.getNomALire() + " : ");
                     saisie = sc.nextLine();
                 }
-                //ctrl.rajoutLecture(e, saisie);
+                ctrl.rajoutLecture(e, saisie);
             }
+
 
             System.out.print(">");
             saisie = sc.nextLine();
 
             System.out.print("+");
-            for (int cpt=0; cpt<79; cpt++)
+            for (int cpt=0; cpt<TAILLE_LARGEUR-1; cpt++)
                 System.out.print("-");
-            System.out.print("+");
-
-            System.out.println();
+            System.out.println("+");
 
         }
     }
 
-
-    public void afficher(EtatLigne e){
-        System.out.print("+");
-        for (int cpt=0; cpt<79; cpt++)
-            System.out.print("-");
-        System.out.print("+");
-
-        System.out.println();
-        for (int cpt =0; cpt < code.size(); cpt++){
-            String ligne = "|" + String.format("%"+ctrl.getNbChiffre()+"s", (cpt+1))  + " " + code.get(cpt);
-            ligne = String.format(Locale.US,"%-59s", ligne);
-
-
-            /**
-             *
-             *
-             *
-             *
-             */
-            if ( ligneSkipper(cpt) ) {
-                ligne = "\u001B[35m" + ligne + "\u001B[0m        ";
+    public String afficherListeNomVar(ArrayList<String> lst){
+        String liste = "";
+        String ligne = "";
+        int numVar = 1;
+        for(String nom : lst){
+            ligne += numVar+")"+CUI.adaptTxt(nom)+"  ";
+            numVar ++;
+            if(numVar % 5 == 1 ){
+                liste += String.format("%-"+ TAILLE_LARGEUR +"s","|"+ ligne) + "|\n";
+                ligne = "";
             }
+        }
+        if ( numVar % 5 != 1 )
+            liste += String.format("%-"+ TAILLE_LARGEUR +"s","|"+ ligne) + "|\n";
+        return  liste;
+    }
 
+    public void demandeVars(){
+        System.out.println(String.format("%-"+ TAILLE_LARGEUR +"s","| Quelles variables voulez vous suivre? ( q pour quitter )" ) + "|");
+        ArrayList<String> lstNomVar = new ArrayList<>();
+        HashMap<String , Variable<Object>> lstVar = ctrl.getVariables();
 
-            if ( cpt == e.getNumLigne() ){
-                /**
-                 *
-                 *
-                 *
-                 *
-                 *
-                 *
-                 *
-                 */
-                if ( e.isCondition() ){
-                    if ( e.isConditionTrue() )
-                        ligne = "\u001B[42m" + ligne + "\u001B[0m        ";
-                    else
-                        ligne = "\u001B[41m" + ligne + "\u001B[0m";
+        lstVar.forEach( (k,v) ->lstNomVar.add(k));
+
+        saisie = "";
+
+        while ( !saisie.equals("q") ){
+            System.out.print(afficherListeNomVar(lstNomVar));
+            System.out.print("|>");
+            saisie = sc.nextLine();
+            if(saisie.matches("\\d+")){
+                if(Integer.parseInt(saisie)-1 >=lstVar.size()){
+                    System.out.println( String.format("%-" + TAILLE_LARGEUR +"s", "| Entrer un nombre valide") +"|");
                 }
-                else
-                    ligne = "\u001B[46m" + ligne + "\u001B[0m";
+                else{
+                    String nom = "";
+                    int cpt=0;
+                    for (String s: lstNomVar ) {
+                        if (cpt == Integer.parseInt(saisie)-1) {
+                            nom = s;
+                        }
+                        cpt++;
+                    }
+                    tabVar.rajouterVar(nom, lstVar.get(nom));
+                    lstNomVar.remove(nom);
+                }
+            }else{
+                System.out.println( String.format("%-" + TAILLE_LARGEUR +"s", "| Entrer un nombre valide") +"|");
             }
-
-            System.out.println( String.format(Locale.US,"%-60s", ligne + "|").replace ( (char) 8239 , ' ' ) );
         }
 
+    }
+
+    private void trait(){
+        System.out.print("+");
+        for (int cpt=0; cpt<TAILLE_LARGEUR-1; cpt++)
+            System.out.print("-");
+        System.out.println("+");
+    }
+
+    public void afficher(EtatLigne e){
+        trait();
+        tabVar.maj(e.getLstVariables());
+        ArrayList<String> tab = tabVar.getTabVar();
+
+        int  departNumLigne;
+        if ( e.getNumLigne() < 20 )
+            departNumLigne = 0;
+        else{
+            departNumLigne = e.getNumLigne()/20*20;
+            if ( code.size() < departNumLigne + 40  )
+                departNumLigne = code.size() - 40;
+        }
+
+        for (int cpt = departNumLigne;  cpt < departNumLigne+40 && cpt < code.size(); cpt++){
+            String num = "|" + String.format("%"+ctrl.getNbChiffre()+"s", (cpt+1))  + " ";;
+            String ligne =  String.format("%-60s", code.get(cpt) );
+            String ligneVar;
+            if ( departNumLigne == 0 ){
+                if (cpt < tab.size() )
+                    ligneVar = tab.get(cpt);
+                else
+                    ligneVar = String.format("%30s", " ");
+            }
+            else {
+                if ( cpt - departNumLigne < tab.size() )
+                    ligneVar = tab.get(cpt - departNumLigne);
+                else
+                    ligneVar = String.format("%30s", " ");
+            }
+
+            if ( ligneSkipper(cpt) && cpt <= e.getNumLigne() ) {
+                //ligne = "\u001B[35m" + ligne + "\u001B[0m";
+                ligne = colorie(ligne, COM_TEXT, -1).toString();
+            }
+
+            if ( cpt == e.getNumLigne() ){
+                if ( e.isCondition() ){
+                    if ( e.isConditionTrue() ){
+                        //ligne = "\u001B[42m" + ligne + "\u001B[0m";
+                        ligne = colorie(ligne, -1, VRAI_COND).toString();
+                    }
+                    else{
+                        //ligne = "\u001B[41m" + ligne + "\u001B[0m";
+                        ligne = colorie(ligne, -1, FAUX_COND).toString();
+                    }
+                }
+                else{
+                    //ligne = "\u001B[46m" + ligne + "\u001B[0m";
+                    ligne = colorie(ligne, -1, COURS_FOND).toString();
+                }
+            }
+
+            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", ligne )+ "|" );
+        }
+
+        trait();
+
+        /*----------- */
+        /*| CONSOLE | */
         if(e.getTraceAlgo() != null && e.getTraceAlgo().size() > 0 ){
             System.out.println("-----------");
             System.out.println("| CONSOLE |");
-            System.out.print("+");
-            for (int cpt=0; cpt<79; cpt++)
-                System.out.print("-");
-            System.out.print("+");
 
-            System.out.println();
+            trait();
 
             int cpt;
 
-            for ( cpt = e.getTraceAlgo().size()-4; cpt > e.getTraceAlgo().size(); cpt++){
-                if ( cpt >=0 ) {
+            for ( cpt = e.getTraceAlgo().size()-3; cpt < e.getTraceAlgo().size(); cpt++){
+                if ( cpt >= 0 ) {
                     if ( e.getTraceAlgo().get(cpt).charAt(0) == 'o'){
-                        System.out.println( String.format("%80s", e.getTraceAlgo().get(cpt).substring(1)) );
+                        System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|"+ e.getTraceAlgo().get(cpt).substring(1)) +"|" );
                     }
                     else
-                        System.out.println( String.format("%80s", "\t~>" +e.getTraceAlgo().get(cpt).substring(1)) );
+                        System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|"+"    ~>" +e.getTraceAlgo().get(cpt).substring(1)) +"|" );
                 }
             }
         }
@@ -156,8 +255,6 @@ public class Console {
             if(e.getNumLigne() == cpt){
                 if(e.estSkipper())
                     return true;
-                else
-                    return false;
             }
         }
 
