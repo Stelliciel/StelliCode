@@ -371,6 +371,8 @@ public class Interpreteur {
     public void setVariable(String nom, String valeur)          {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
+        if ( valeur.contains("'"))
+            valeur = valeur.replaceAll("'", "");
         Interpreteur.set(lstVariables.get(nom), valeur);}
     public void setTableau (String nom, int ind, String valeur) {
         if ( valeur.contains("\""))
