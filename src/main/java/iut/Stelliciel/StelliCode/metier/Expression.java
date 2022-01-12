@@ -19,6 +19,23 @@ public class Expression {
         System.out.println(Expression.calculLogique("vrai == 2<6"));
         System.out.println(Expression.calculer("11 div 5"));
         System.out.println(Expression.calculer("11 / 5"));
+        System.out.println(Expression.calculer("11 mod 5"));
+    }
+
+    public static boolean estUneExpressionLogique(String expression){
+        expression = expression.replaceAll("false", "faux");
+        expression = expression.replaceAll("true", "vrai");
+        Pattern pattern = Pattern.compile("((vrai)|(faux)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
+        Matcher matcher = pattern.matcher(expression);
+
+        return matcher.find();
+    }
+
+    public static boolean estUneExpression(String expression){
+        Pattern pattern = Pattern.compile("(([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
+        Matcher matcher = pattern.matcher(expression);
+
+        return matcher.find();
     }
 
     public static boolean calculLogique(String expression) {
@@ -35,7 +52,8 @@ public class Expression {
 
         expression = expression.replaceAll("\\s+","");
 
-
+        expression = expression.replaceAll("false", "faux");
+        expression = expression.replaceAll("true", "vrai");
         Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
         Matcher matcher = pattern.matcher(expression);
 
@@ -239,7 +257,7 @@ public class Expression {
                         double op2 = pile.pop();
                         switch (expr) {
                             case "div":
-                                pile.push((int)(op2 / op1)*1.1);
+                                pile.push((double)((int)(op2 / op1)));
                                 break;
                             case "+":
                                 pile.push(op2 + op1);

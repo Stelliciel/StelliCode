@@ -116,8 +116,8 @@ public class Interpreteur {
             String condition = ligne.replaceAll("si", "").replaceAll("alors", "").trim();
             condition = condition.replaceAll(" ", "");
 
-            condition = remplacerValeurVariable(condition);
 
+            condition = remplacerValeurVariable(condition);
             String tab = ligne.substring(0, ligne.indexOf("s") );
 
             boolean b = Expression.calculLogique(condition);
@@ -179,7 +179,6 @@ public class Interpreteur {
                     traiter(fichier.get(i));
                 }
                 condition = remplacerValeurVariable(fichier.get(numLigne).replaceAll("tq|alors| ", ""));
-                System.out.println("\tcondition du tq:"+condition);
                 b = Expression.calculLogique(condition);
                 EtatLigne e2 = nouvelleEtatLigne(numLigne);
                 e2.setCondition(b);
@@ -371,9 +370,16 @@ public class Interpreteur {
     public void setVariable(String nom, String valeur)          {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
-        if ( valeur.contains("'"))
+        else if ( valeur.contains("'"))
             valeur = valeur.replaceAll("'", "");
-        Interpreteur.set(lstVariables.get(nom), valeur);}
+        else if ( Expression.estUneExpressionLogique(valeur) ){
+            valeur = Expression.calculLogique(valeur ) +"";
+        }
+        else if ( Expression.estUneExpression(valeur) ){
+            valeur = Expression.calculer(valeur) + "";
+        }
+        Interpreteur.set(lstVariables.get(nom), valeur);
+    }
     public void setTableau (String nom, int ind, String valeur) {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);

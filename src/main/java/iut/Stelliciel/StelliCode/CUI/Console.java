@@ -33,9 +33,8 @@ public class Console {
     public final int COM_TEXT   = LectureCouleur.getCouleur("commentaire").getCouleurText();
     public final int VRAI_COND  = LectureCouleur.getCouleur("condVrai").getCouleurFond();
     public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
-    public final int PRI_TEXT   = LectureCouleur.getCouleur("primitive").getCouleurText();
 
-    public static final int TAILLE_LARGEUR = 94;
+    public static final int TAILLE_LARGEUR = 84;
 
 
     public Console(Main ctrl){
@@ -222,13 +221,13 @@ public class Console {
                 if (cpt < tab.size() )
                     ligneVar = tab.get(cpt);
                 else
-                    ligneVar = String.format("%30s", " ");
+                    ligneVar = String.format("%20s", " ");
             }
             else {
                 if ( cpt - departNumLigne < tab.size() )
                     ligneVar = tab.get(cpt - departNumLigne);
                 else
-                    ligneVar = String.format("%30s", " ");
+                    ligneVar = String.format("%20s", " ");
             }
 
             if ( cpt == e.getNumLigne() ){

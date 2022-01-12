@@ -113,7 +113,7 @@ public class Variable<V>
      */
     public Object getVal(){
         if (estTableau())
-            return tabValeur;
+            return type;
         else
             return this.valeur;
     }
