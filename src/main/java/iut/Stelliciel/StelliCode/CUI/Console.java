@@ -74,7 +74,7 @@ public class Console {
         EtatLigne e = parcours.next();
         afficher(e);
 
-        while ( !saisie.equals("-1") ){
+        while ( !saisie.equals("exit") ){
 
             if ( saisie.equals("") ) {
                 if (parcours.hasNext() ){
@@ -121,6 +121,11 @@ public class Console {
             else if ( saisie.startsWith("TRACE") ){
                 ctrl.traceVariable( tabVar.getLstVar() );
             }
+            else if (saisie.startsWith("DET var")){
+                String nomVal = saisie.substring(saisie.indexOf("<")+1, saisie.indexOf(">") );
+                if ( e.getLstVariables().containsKey(nomVal) )
+                    detailler(e, nomVal);
+            }
 
             afficher(e);
 
@@ -145,6 +150,75 @@ public class Console {
 
             trait();
         }
+    }
+
+    private void detailler(EtatLigne e, String nomVal) {
+        Console.majConsole();
+        if ( e.getLstVariables().get(nomVal).estTableau() ) {
+            Object[][][] tabValeur = e.getLstVariables().get(nomVal).getTabValeur();
+            System.out.println(nomVal);
+
+            if (tabValeur[0][0].length > 0)
+                System.out.println(ecrireTab(3, tabValeur));
+            else if (tabValeur[0].length > 0)
+                System.out.println(ecrireTab(2, tabValeur));
+            else
+                System.out.println(ecrireTab(1, tabValeur));
+
+
+        }
+        else{
+            System.out.println(nomVal + " = " + e.getLstVariables().get(nomVal).getVal());
+        }
+        saisie = sc.nextLine();
+    }
+
+    private String ecrireTab(int i, Object[][][] tabValeur) {
+        String s = "";
+        if ( i == 1 ){
+            for(int cpt = 0 ; cpt < tabValeur.length; cpt++ )
+                s += "["+cpt+"]="+tabValeur[cpt][0][0]+"\n";
+            return s;
+        }
+        if (i == 2) {
+            for (int cpt = 0; cpt < tabValeur[0].length; cpt++){
+                s+= String.format("%-10s", cpt) +"|";
+            }
+
+            for(int cpt1 = 0 ; cpt1 < tabValeur.length; cpt1++ ){
+                s+= cpt1+"|";
+                for(int cpt2 = 0 ; cpt2 < tabValeur[0].length; cpt2++ ){
+                    s += String.format("%-10s", tabValeur[cpt1][cpt2])+"|";
+                }
+
+                s+= "\n";
+            }
+
+            return s;
+        }
+        if (i == 3) {
+
+
+            for(int cpt1 = 0 ; cpt1 < tabValeur.length; cpt1++ )
+            {
+                s+= "tab["+cpt1+"][?][?]\n";
+                for (int cpt = 0; cpt < tabValeur[0][0].length; cpt++){
+                    s+= String.format("%-10s", cpt) +"|";
+                }
+                for(int cpt2 = 0 ; cpt2 < tabValeur[0].length; cpt2++ )
+                {
+                    s+= cpt2+"|";
+                    for(int cpt3=0; cpt3 < tabValeur[0][0].length; cpt3++){
+                        s += String.format("%-10s", tabValeur[cpt1][cpt2][cpt3])+"|";
+                    }
+                    s+= "\n";
+                }
+            }
+
+            return s;
+        }
+
+        return s;
     }
 
     public String afficherListeNomVar(ArrayList<String> lst){

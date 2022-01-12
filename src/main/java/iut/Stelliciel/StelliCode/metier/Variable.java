@@ -112,6 +112,11 @@ public class Variable<V>
     }
 
     /**
+     * @return le tableau de Valeur
+     */
+    public Object[][][] getTabValeur() { return this.tabValeur;}
+
+    /**
      * @return la valeur de la variable
      */
     public Object getVal(){
