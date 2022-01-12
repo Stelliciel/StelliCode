@@ -1,41 +1,34 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import java.time.LocalDate;
+
 public class Fonction {
 
 
-    private String ecrire(String str)
-    {
-        boolean parenthese = false;
-        boolean ecrire     = false;
-        StringBuilder res  = new StringBuilder();
+    public static String ajourdhui() {
+        String date = LocalDate.now()+"";
+        String jour = date.substring( date.indexOf("-")+1 );
+        jour = jour.substring(jour.indexOf("-")+1);
+        String mois = date.substring( date.indexOf("-")+1 );
+        mois = mois.substring(0, mois.indexOf("-") );
 
-        for(int ind=7;ind<str.length();ind++)
-        {
-            char car = str.charAt(ind);
-            //contenu entre ""
-            if (car == '\"')
-                ecrire = !ecrire;
+        date = jour + "/"+mois+"/"+date.substring(0,date.indexOf("-"));
+        return date;
+    }
 
-            //écrire ( "vous êtes ", message )
-            if(ecrire)
-                res.append(car);
+    public static String annee (String date){
+        String annee = date.substring( date.indexOf("/")+1 );
+        annee = annee.substring(annee.indexOf("/")+1);
 
-            //Traiter variable  "", message
-            if ( car != ' ' && car != ',')
-            {
-                StringBuilder var = new StringBuilder();
-                while (car != ' ') {
-                    var.append(car);
-                    car = str.charAt(ind);
-                    ind++;
-                }
-
-                //res += var.getVar().getVal();
-            }
-        }
-
-        return "ooooo"+res.toString();
-
+        return annee;
+    }
+    public static String mois (String date){
+        String mois = date.substring( date.indexOf("/")+1 );
+        mois = mois.substring(0, mois.indexOf("/") );
+        return  mois;
+    }
+    public static String jour (String date){
+        return date.substring(0,date.indexOf("/"));
     }
 
     private String enChaine(String str)
@@ -115,15 +108,10 @@ public class Fonction {
 
 
     public static void main(String[] args) {
-        String[] test = affectation("tab[1] <-- 5");
-        System.out.println("taille:" + test.length);
-        for(String t : test ) System.out.println(t);
-
-        test = affectation( "s <-- \"chaine\"");
-        System.out.println("taille:" + test.length);
-        for(String t : test ) System.out.println(t);
-
-
-        System.out.println( Fonction.entreGuillemet( "\"chaine\""));
+        String date = Fonction.ajourdhui();
+        System.out.println( date );
+        System.out.println( Fonction.jour(date) );
+        System.out.println( Fonction.mois(date) );
+        System.out.println( Fonction.annee(date) );
     }
 }
