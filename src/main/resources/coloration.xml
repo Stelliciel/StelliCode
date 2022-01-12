@@ -23,7 +23,7 @@
     </element>
 
     <element type ="commentaire">
-        <couleurTexte nom  ="grey" couleur="3642955"/>
+        <couleurTexte nom  ="grey" couleur="8355711"/>
         <poids        gras = "false"/>
     </element>
 

@@ -45,7 +45,7 @@ public class Interpreteur {
         if (pointeur == 0 ) {
             for (pointeur=0; !fichier.get(pointeur).contains("DEBUT"); pointeur++);
 
-            parcours.nouvelleEtat( nouvelleEtatLigne(pointeur) );
+            parcours.nouvelleEtat( nouvelleEtatLigne(pointeur++) );
         }
 
         while( pointeur < fichier.size() &&
@@ -82,9 +82,9 @@ public class Interpreteur {
                 String variable = ecrire.substring(ecrire.indexOf(",") + 1).trim();
 
                 if (estConstante(variable))
-                    etatLigne.setTraceAlgo("o"+afficher + " " + getConstante(variable));
+                    etatLigne.setTraceAlgo("o"+afficher + getConstante(variable));
                 else
-                    etatLigne.setTraceAlgo("o"+afficher + " " + getVariable(variable));
+                    etatLigne.setTraceAlgo("o"+afficher + getVariable(variable));
             }
             else {
                 if ( ecrire.contains("\"")) {
@@ -126,17 +126,22 @@ public class Interpreteur {
 
             parcours.nouvelleEtat(eL);
             if( b ) {
+                pointeur++;
                 while(  !(this.fichier.get(pointeur).startsWith( tab + "sinon") ||
                                        this.fichier.get(pointeur).startsWith(tab + "fsi"))) {
-                    pointeur++;
+
                     traiter(this.fichier.get(pointeur));
+                    pointeur++;
                 }
                 while(!(this.fichier.get(pointeur).startsWith(tab + "fsi"))) {
+
                     EtatLigne eTmp = nouvelleEtatLigne( pointeur );
                     eTmp.skip();
                     parcours.nouvelleEtat(eTmp);
                     pointeur++;
                 }
+                if ( this.fichier.get(pointeur).startsWith(tab + "fsi"))
+                    parcours.nouvelleEtat(nouvelleEtatLigne(pointeur));
             }
             else {
                 pointeur++;
@@ -147,6 +152,7 @@ public class Interpreteur {
                     parcours.nouvelleEtat(eTmp);
                     pointeur++;
                 }
+                parcours.nouvelleEtat(nouvelleEtatLigne(pointeur));
                 while(!(this.fichier.get(pointeur).startsWith(tab + "fsi"))) {
                     pointeur++;
                     traiter(this.fichier.get(pointeur));
