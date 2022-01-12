@@ -32,6 +32,13 @@ public class AfficheTab {
         listeVar.put(nom, ""+v.getVal());
     }
 
+    public ArrayList<String> getLstVar(){
+        ArrayList<String> lstVar = new ArrayList<>();
+
+        listeVar.forEach( (k,v) ->lstVar.add(k));
+        return lstVar;
+    }
+
     public ArrayList<String> getTabVar(){
         ArrayList<String> lstLigne = new ArrayList<>();
 

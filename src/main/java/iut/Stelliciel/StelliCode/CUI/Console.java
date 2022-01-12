@@ -253,7 +253,7 @@ public class Console {
                 }
             }
 
-            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", coloration(ligne,getVariables()) )+ "|" );
+            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", coloration(ligne,tabVar.getLstVar()) )+ "|" );
         }
         trait();
 
