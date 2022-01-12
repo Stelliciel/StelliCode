@@ -89,8 +89,10 @@ public class Console {
             else if ( saisie.startsWith("addvar") ){
                 demandeVars();
             }
+            //else if ( saisie.)
 
             afficher(e);
+
             if ( e.isLecture() ){
                 System.out.print("| Saisir la valeur de " + e.getNomALire() + " : ");
                 saisie = sc.nextLine();
@@ -99,6 +101,7 @@ public class Console {
                     System.out.print("| Erreur saisie de " + e.getNomALire() + " : ");
                     saisie = sc.nextLine();
                 }
+                System.out.println(e.getLstVariables());
                 ctrl.rajoutLecture(e, saisie);
             }
 
@@ -315,7 +318,7 @@ public class Console {
         return files;
     }
 
-    private static File afficherOption() {
+    public static File afficherOption() {
         ArrayList<File> file = new ArrayList<>();
         File[] dir = Objects.requireNonNull((new File("../../src/main/resources")).listFiles());
         for (File item : dir)

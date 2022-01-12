@@ -7,6 +7,7 @@ import iut.Stelliciel.StelliCode.metier.Parcours;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -23,9 +24,13 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        metier         = new Interpreteur(new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
+        metier         = new Interpreteur( Console.afficherOption() );
 
         Console console = new Console(this);
+    }
+
+    public static Main getInstance() {
+        return instance;
     }
 
 
@@ -43,6 +48,12 @@ public class Main {
 
     public void rajoutLecture(EtatLigne e, String saisie) {
         metier.rajoutLecture(e, saisie);
+    }
+
+    public String saisie() {
+        Scanner sc = new Scanner(System.in);
+
+        return sc.nextLine();
     }
 }
 

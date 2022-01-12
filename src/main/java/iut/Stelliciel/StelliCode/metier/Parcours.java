@@ -82,6 +82,8 @@ public class Parcours {
     }
 
     public EtatLigne derniereLigne(){
+        if ( lecteur.isEmpty() )
+            return null;
         return lecteur.get( lecteur.size() -1 );
     }
 

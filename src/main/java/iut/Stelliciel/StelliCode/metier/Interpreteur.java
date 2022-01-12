@@ -13,8 +13,8 @@ public class Interpreteur {
     private final ArrayList<String> code;
 
     private String signature;
-    private final HashMap<String, Variable<Object>> lstConstantes;
-    private final HashMap<String, Variable<Object>> lstVariables;
+    private HashMap<String, Variable<Object>> lstConstantes;
+    private HashMap<String, Variable<Object>> lstVariables;
 
     private final Parcours parcours;
     private int   pointeur;
@@ -43,7 +43,7 @@ public class Interpreteur {
         if (pointeur == 0 ) {
             for (pointeur=0; !fichier.get(pointeur).contains("DEBUT"); pointeur++);
 
-            parcours.nouvelleEtat( nouvelleEtatLigne(pointeur++) );
+            parcours.nouvelleEtat( new EtatLigne(signature, lstConstantes, lstVariables, pointeur++) );
         }
 
         while( pointeur < fichier.size() &&
@@ -60,6 +60,10 @@ public class Interpreteur {
             String[] separation = Fonction.affectation(ligne);
 
             separation[1] = remplacerValeurVariable(separation[1]);
+
+            if ( Fonction.estUnePrimitive(separation[1]) ){
+                separation[1] = Fonction.primitive(separation[1]);
+            }
 
             if (separation.length == 5) {
                 setTableau(separation[0], Integer.parseInt(separation[2]), Integer.parseInt(separation[3]), Integer.parseInt(separation[4]), separation[1]);
@@ -205,22 +209,27 @@ public class Interpreteur {
     public void rajoutLecture(EtatLigne e, String valeur){
         attenteLecture = false;
         String nom = e.getNomALire();
+
         ArrayList<String> traceAlgo = e.getTraceAlgo();
         if (  traceAlgo.size() > 0 &&traceAlgo.get( traceAlgo.size()-1).charAt(0) == 'i' )
             traceAlgo.remove( traceAlgo.size()-1);
         e.setTraceAlgo("i"+nom+": "+valeur);
 
+        System.out.println("Ligne " + e.getNumLigne());
+        System.out.println( "Je suis là "+ e.getLstVariables() );
+        lstVariables  = e.getLstVariables();
+        lstConstantes = e.getLstConstantes();
+
         Variable v = e.getLstVariables().get(nom);
 
         Variable vTemp = get(nom, v.getType(), valeur);
 
-
         v.setVal(vTemp.getVal());
         setVariable(nom, valeur);
 
+
+
         parcours.reecrire(e);
-
-
         pointeur = e.getNumLigne()+1;
         lectureFichier();
     }
@@ -484,80 +493,4 @@ public class Interpreteur {
 
         return fichier;
     }
-
-    public ArrayList<String> changLig(char dir) {
-        if(dir == 'f'){
-            return parcours.next().getTraceAlgo();
-        }else if(dir == 'b'){
-            return parcours.prec().getTraceAlgo();
-        }
-
-        return null;
-    }
-
-
-    /*public static void main(String[] args) {
-        Interpreteur i = new Interpreteur(null, new File("C:\\Stelliciel\\StelliCode\\src\\main\\resources\\Code.algo"));
-
-        Parcours p = i.getParcours();
-
-        EtatLigne e = p.next();
-
-        Scanner sc = new Scanner(System.in);
-        String saisie = sc.nextLine();
-
-        while ( !saisie.equals("-1") ){
-
-            if ( saisie.equals("" ) ) {
-                if (p.hasNext() ){
-                    e = p.next();
-                    while (e.estSkipper() && p.hasNext() ){
-                        System.out.println("\t"+(e.getNumLigne()+1)+" est skipper");
-                        e = p.next();
-                    }
-                }
-            }
-           else if ( saisie.equals("b") ) {
-               if( p.hasPrec() ) {
-                   e = p.prec();
-               }
-            }
-           else if ( saisie.startsWith("L") ){
-               if ( p.seRendreA( Integer.parseInt(saisie.replaceAll("L", ""))) != null ) {
-                   e = p.seRendreA( Integer.parseInt(saisie.replaceAll("L", "")) );
-               }
-
-            }
-
-           affiche(i, e);
-           if ( e.isLecture() ){
-                System.out.print("Veuillez saisir la valeur de la variable " + e.getNomALire() + ":");
-                saisie = sc.nextLine();
-                i.rajoutLecture(e, saisie);
-           }
-
-
-
-            if(e.getTraceAlgo() != null && e.getTraceAlgo().size() > 0 ){
-                System.out.println("\tconsole :");
-                for(String t : e.getTraceAlgo()){
-                    if ( t.charAt(0) == 'o'){
-                        System.out.println("\t\t"+t.substring(1));
-                    }
-                    else
-                        System.out.println("\t\t\t~>"+t.substring(1));
-                }
-
-            }
-
-
-
-            System.out.print("in:");
-            saisie = sc.nextLine();
-        }
-    }
-
-    /*private static void affiche(Interpreteur i, EtatLigne e) {
-        System.out.println("->" + (e.getNumLigne()+1) + "|" + i.getCode().get(e.getNumLigne() ));
-    }*/
 }

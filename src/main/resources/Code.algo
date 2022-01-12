@@ -9,7 +9,21 @@ variable:
     cpt: entier
     grandMessage: chaine
     verif : boolean
+    j1: entier
+    j2: entier
+    date: chaine
 DEBUT
+    lire (j1)
+    date <-- aujourdhui()
+    j2   <-- jour(date)
+
+    si j1 < j2 alors
+        écrire("passé")
+    sinon
+        écrire("futur")
+    fsi
+
+
     age <-- 5+5
 
     écrire (age)
