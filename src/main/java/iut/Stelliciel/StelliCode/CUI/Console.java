@@ -32,7 +32,8 @@ public class Console {
     public final int COM_TEXT   = LectureCouleur.getCouleur("commentaire").getCouleurText();
     public final int VRAI_COND  = LectureCouleur.getCouleur("condVrai").getCouleurFond();
     public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
-    public final int PRI_TEXT   = LectureCouleur.getCouleur("primitive").getCouleurText();
+    public final int LIRE_TEXT  = LectureCouleur.getCouleur("lire").getCouleurText();
+    public final int ECRIRE_TEXT= LectureCouleur.getCouleur("ecrire").getCouleurText();
 
     public static final int TAILLE_LARGEUR = 94;
 
@@ -277,9 +278,11 @@ public class Console {
 
     public String  coloration(String s,ArrayList<String> lstVar){
         if (s.contains("//")){return  coloration(s.substring(0,s.indexOf("//")),lstVar)+ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
-        String[] tabFonct = {"\u00e9crire", "lire","plancher","plafond","enChaine13","enReel","enEntier","car","ord"};
+        String[] tabFonct = {"plancher","plafond","enChaine13","enReel","enEntier","car","ord"};
         String[] tabCond = {"si", "alors","sinon","fsi","tq","ftq","faire"};
         String sRep = s;
+        sRep = sRep.replaceAll("\\blire\\b",ansi().fgRgb(LIRE_TEXT).a("lire").fgRgb(NOR_TEXT).toString());
+        sRep = sRep.replaceAll("\\b\u00e9crire\\b",ansi().fgRgb(ECRIRE_TEXT).a("\u00e9crire").fgRgb(NOR_TEXT).toString());
         for (String fonct: tabFonct) {
             sRep = sRep.replaceAll("\\b"+fonct+"\\b",ansi().fgRgb(FON_TEXT).a(fonct).fgRgb(NOR_TEXT).toString());
         }
