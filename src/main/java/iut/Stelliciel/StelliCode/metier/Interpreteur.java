@@ -64,6 +64,9 @@ public class Interpreteur {
             if ( Fonction.estUnePrimitive(separation[1]) ){
                 separation[1] = Fonction.primitive(separation[1]);
             }
+            if ( separation[1].contains("©") || separation[1].contains("(c)")){
+                separation[1] = Fonction.concatener(separation[1]);
+            }
 
             if (separation.length == 5) {
                 setTableau(separation[0], Integer.parseInt(separation[2]), Integer.parseInt(separation[3]), Integer.parseInt(separation[4]), separation[1]);
@@ -215,10 +218,6 @@ public class Interpreteur {
             traceAlgo.remove( traceAlgo.size()-1);
         e.setTraceAlgo("i"+nom+": "+valeur);
 
-        System.out.println("Ligne " + e.getNumLigne());
-        System.out.println( "Je suis là "+ e.getLstVariables() );
-        lstVariables  = e.getLstVariables();
-        lstConstantes = e.getLstConstantes();
 
         Variable v = e.getLstVariables().get(nom);
 

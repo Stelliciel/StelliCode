@@ -92,13 +92,21 @@ public class Parcours {
         ArrayList<EtatLigne> nouvLecteur = new ArrayList<>();
         boolean limite = true;
         for (EtatLigne eTmp: lecteur){
-            if (limite)
-                nouvLecteur.add(eTmp);
-
-            if ( eTmp == e)
+            if ( eTmp == e){
                 limite = false;
-        }
+            }
+            if (limite){
+                nouvLecteur.add(eTmp);
+            }
 
+
+        }
+        EtatLigne eTmp = new EtatLigne(e.getSignature(), e.getLstConstantes(), e.getLstVariables(),e.getNumLigne());
+        eTmp.setLecture(true);
+        eTmp.setNomALire(e.getNomALire());
+        for(String ligne : e.getTraceAlgo() )
+            eTmp.setTraceAlgo(ligne);
+        nouvLecteur.add(  eTmp );
         lecteur = nouvLecteur;
     }
 }

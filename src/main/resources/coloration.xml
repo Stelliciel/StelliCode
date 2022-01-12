@@ -43,4 +43,8 @@
         <couleurTexte nom  = "black" couleur="0"/>
         <couleurFond  nom  = "red"   couleur="16711680"/>
     </element>
+
+    <element type="breakPoint">
+        <couleurTexte nom  = "red" couleur="16711680"/>
+    </element>
 </coloration>
