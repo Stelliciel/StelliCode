@@ -1,3 +1,4 @@
+/*
 package iut.Stelliciel.StelliCode.CUI.affichage;
 
 import iut.Stelliciel.StelliCode.Main;
@@ -6,7 +7,9 @@ import iut.Stelliciel.StelliCode.metier.LectureCouleur;
 import iut.Stelliciel.StelliCode.metier.Parcours;
 import org.fusesource.jansi.Ansi;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static org.fusesource.jansi.Ansi.ansi;
@@ -26,25 +29,6 @@ public class AfficheCode {
     public final int VRAI_COND  = lectureCouleur.getCouleur("condVrai").getCouleurFond();
     public final int FAUX_COND  = lectureCouleur.getCouleur("condFaux").getCouleurFond();
     public final int PRI_TEXT   = lectureCouleur.getCouleur("primitive").getCouleurText();
-
-    public String  coloration(String s,ArrayList<String> lstVar){
-        if (s.contains("//")){return  coloration(s.substring(0,s.indexOf("//")),lstVar)+ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
-        String[] tabFonct = {"\u00e9crire", "lire","plancher","plafond","enChaine","enReel","enEntier","car","ord"};
-        String[] tabCond = {"si", "alors","sinon","fsi","tq","ftq","faire"};
-        String sRep = s;
-        for (String fonct: tabFonct) {
-                sRep = sRep.replaceAll("\\b"+fonct+"\\b",ansi().fgRgb(FON_TEXT).a(fonct).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
-        }
-        for (String cond : tabCond) {
-            sRep = sRep.replaceAll("\\b"+cond+"\\b",ansi().fgRgb(COND_TEXT).a(cond).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
-        }
-        if(lstVar != null && ! lstVar.isEmpty()){
-            for (String var:lstVar) {
-                sRep=sRep.replaceAll("\\b"+var+"\\b",ansi().fgRgb(VAR_TEXT).a( var ).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).toString());
-            }
-        }
-        return sRep;
-    }
 
     public void setLstVar(ArrayList<String> lstVar){this.lstVar = lstVar;}
 
@@ -84,11 +68,10 @@ public class AfficheCode {
             }
 
             else{
-
+                if (s.equals("")) {return (ansi().bgRgb(NOR_FOND).a(" ").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));}
                 if (ligneSkipper(num,parcour)){return ansi().bgRgb(COM_TEXT).a(s).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT);}
-                if (s.equals("")) {return (ansi().bgRgb(NOR_FOND).a("TYUI").reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));}
-            }
-            String lig = coloration(s,lstVar);
+                }
+            //String lig = coloration(s,lstVar);
             return (ansi().a(lig).reset().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
         } else
             return (ansi().a(" ").reset().bgRgb(NOR_FOND)).fgRgb(NOR_TEXT);
@@ -122,3 +105,4 @@ public class AfficheCode {
         return arrString;
     }
 }
+*/
