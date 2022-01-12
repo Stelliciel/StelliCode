@@ -34,8 +34,11 @@ public class Console {
     public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
     public final int LIRE_TEXT  = LectureCouleur.getCouleur("lire").getCouleurText();
     public final int ECRIRE_TEXT= LectureCouleur.getCouleur("ecrire").getCouleurText();
+    public final int BK_TEXT    = LectureCouleur.getCouleur("breakPoint").getCouleurText();
 
     public static final int TAILLE_LARGEUR = 84;
+
+    private ArrayList<Integer> lstPointArret;
 
 
     public Console(Main ctrl){
@@ -45,6 +48,8 @@ public class Console {
         this.parcours = ctrl.getParcours();
         saisie = " ";
         this.tabVar = new AfficheTab(ctrl);
+        this.lstPointArret = new ArrayList<Integer>();
+
         ihm();
     }
 
@@ -81,39 +86,59 @@ public class Console {
                     e = parcours.prec();
                 }
             }
-            else if ( saisie.startsWith("L") ){
-                if ( parcours.seRendreA( Integer.parseInt(saisie.replaceAll("L", ""))) != null ) {
-                    e = parcours.seRendreA( Integer.parseInt(saisie.replaceAll("L", "")) );
+            else if ( saisie.startsWith("L")  ){
+                if ( saisie.length() > 1 && saisie.substring(1).matches("\\d+") )
+                    if ( parcours.seRendreA( Integer.parseInt(saisie.replaceAll("L", ""))) != null ) {
+                        e = parcours.seRendreA( Integer.parseInt(saisie.replaceAll("L", "")) );
+                    }
+            }
+            else if ( saisie.contains("bk") ) {
+                String[] tab = saisie.split(" ");
+
+                if ( tab.length == 3 && tab[2].matches("\\d+") ) {
+                    switch ( tab[0] ){
+                        case "+" -> {
+                            if ( !lstPointArret.contains( Integer.parseInt(tab[2]) ) )
+                                lstPointArret.add(Integer.parseInt(tab[2]) );
+                        }
+                        case "-" -> {
+                            if ( lstPointArret.contains( Integer.parseInt(tab[2]) ) )
+                                lstPointArret.remove( lstPointArret.indexOf(Integer.parseInt(tab[2]) ) );
+                        }
+                    }
+                }
+                else if ( tab[0].equals("go") ){
+                    int numLigne;
+                    for(numLigne=0; lstPointArret.get(numLigne) < e.getNumLigne(); numLigne++ );
+
+
+                    e = parcours.seRendreA( lstPointArret.get(numLigne) ) ;
                 }
             }
             else if ( saisie.startsWith("addvar") ){
                 demandeVars();
             }
-            //else if ( saisie.)
+            else if ( saisie.startsWith("TRACE") ){
+
+            }
 
             afficher(e);
 
             if ( e.isLecture() ){
                 System.out.print("| Saisir la valeur de " + e.getNomALire() + " : ");
                 saisie = sc.nextLine();
-
                 while (saisie.equals("") ){
                     System.out.print("| Erreur saisie de " + e.getNomALire() + " : ");
                     saisie = sc.nextLine();
                 }
-                System.out.println(e.getLstVariables());
+
                 ctrl.rajoutLecture(e, saisie);
             }
-
 
             System.out.print(">");
             saisie = sc.nextLine();
 
-            System.out.print("+");
-            for (int cpt=0; cpt<TAILLE_LARGEUR-1; cpt++)
-                System.out.print("-");
-            System.out.println("+");
-
+            trait();
         }
     }
 
@@ -203,7 +228,7 @@ public class Console {
     }
 
     public void afficher(EtatLigne e){
-        Console.majConsole();
+        //Console.majConsole();
         trait();
         tabVar.maj(e.getLstVariables());
         ArrayList<String> tab = tabVar.getTabVar();
@@ -218,7 +243,14 @@ public class Console {
         }
 
         for (int cpt = departNumLigne;  cpt < departNumLigne+40 && cpt < code.size(); cpt++){
-            String num = "|" + String.format("%"+ctrl.getNbChiffre()+"s", (cpt+1))  + " ";;
+            String num =  String.format("%"+ctrl.getNbChiffre()+"s", (cpt+1));
+            for ( Integer i : lstPointArret )
+                if ( i == cpt+1 ){
+                    num =  colorie(num, BK_TEXT, -1).toString() ;
+                }
+
+            num = "|" + String.format("%"+ctrl.getNbChiffre()+"s", num) + " ";
+
             String ligne =  String.format("%-60s", code.get(cpt) );
             String ligneVar;
             if ( departNumLigne == 0 ){
@@ -274,7 +306,7 @@ public class Console {
             }
         }
 
-        System.out.println(ansi().reset());
+        //System.out.print(ansi().reset());
 
 
     }

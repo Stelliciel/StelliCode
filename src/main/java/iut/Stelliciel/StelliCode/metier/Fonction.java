@@ -173,4 +173,14 @@ public class Fonction {
         System.out.println( Fonction.mois(date) );
         System.out.println( Fonction.annee(date) );
     }
+
+    public static String concatener(String s) {
+        String[] tab = s.split("(©)|(\\(c\\))");
+        String chaine = "";
+
+        for(String t : tab ) {
+            chaine += Fonction.entreGuillemet(t.trim());
+        }
+        return "\"" + chaine + "\"";
+    }
 }
