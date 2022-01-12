@@ -74,7 +74,7 @@ public class EtatLigne {
     private HashMap<String, Variable<Object>> copyVariable(HashMap<String, Variable<Object>> lst){
         HashMap<String, Variable<Object>> newLst = new HashMap<>();
 
-        lst.forEach((k,v) -> { newLst.put(k, Variable.copy(v) ); });
+        lst.forEach((k,v) -> {newLst.put(k, Variable.copy(v) );});
 
         return newLst;
     }

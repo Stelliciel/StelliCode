@@ -97,20 +97,26 @@ public class Fonction {
         return str.substring( str.indexOf("\"")+1, str.lastIndexOf("\"") );
     }
 
-
     public static String[] affectation(String ligne) {
-
-        if ( ligne.contains("[") ){
-            String[] affectation = new String[3];
-            ligne = ligne.replaceAll(" ", "");
-            affectation[0] = ligne.substring(0,ligne.indexOf("["));
-            affectation[1] = ligne.substring(ligne.indexOf("<--")+3 );
-            affectation[2] = ligne.substring(ligne.indexOf("[")+1, ligne.indexOf("]"));
-
-            return affectation;
+        ligne = ligne.replaceAll(" ", "");
+        if (!ligne.contains("[")) {
+            System.out.println("here");
+            return ligne.split("<--");
         }
-        else
-            return ligne.replaceAll(" ", "").split("<--");
+        String[] affectation = new String[5];
+        affectation[0] = ligne.substring(0,ligne.indexOf("["));
+        affectation[1] = ligne.substring(ligne.indexOf("<--")+3 );
+        affectation[2] = ligne.substring(ligne.indexOf("[")+1, ligne.indexOf("]"));
+        affectation[3] = "0";
+        affectation[4] = "0";
+        if (ligne.matches("^*\\[*]\\[*]*")) {
+            affectation[3] = ligne.substring(ligne.indexOf("[", ligne.indexOf("[")) + 1, ligne.indexOf("]", ligne.indexOf("]")));
+        }
+        if (ligne.matches("^*\\[*]\\[*]\\[*]*")) {
+            affectation[4] = ligne.substring(ligne.indexOf("[", ligne.indexOf(ligne.indexOf("[")))+1, ligne.indexOf("]",ligne.indexOf(ligne.indexOf("]"))));
+        }
+        System.out.println(affectation[0] + " | " + affectation[1] + " | " + affectation[2] + " | " + affectation[3] + " | " + affectation[4]);
+        return affectation;
     }
 
 
