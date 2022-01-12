@@ -231,29 +231,26 @@ public class Console {
                     ligneVar = String.format("%30s", " ");
             }
 
-            if ( ligneSkipper(cpt) && cpt <= e.getNumLigne() ) {
-                //ligne = "\u001B[35m" + ligne + "\u001B[0m";
-                ligne = colorie(ligne, COM_TEXT, -1).toString();
-            }
-
             if ( cpt == e.getNumLigne() ){
                 if ( e.isCondition() ){
                     if ( e.isConditionTrue() ){
-                        //ligne = "\u001B[42m" + ligne + "\u001B[0m";
                         ligne = colorie(ligne, NOR_TEXT, VRAI_COND).toString();
                     }
                     else{
-                        //ligne = "\u001B[41m" + ligne + "\u001B[0m";
                         ligne = colorie(ligne, NOR_TEXT, FAUX_COND).toString();
                     }
                 }
                 else{
-                    //ligne = "\u001B[46m" + ligne + "\u001B[0m";
                     ligne = colorie(ligne, NOR_TEXT, COURS_FOND).toString();
                 }
             }
+            else  if ( ligneSkipper(cpt) && cpt <= e.getNumLigne() ) {
+                ligne = colorie(ligne, COM_TEXT, -1).toString();
+            }
+            else
+                ligne = coloration(ligne, tabVar.getLstVar());
 
-            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", coloration(ligne,tabVar.getLstVar()) )+ "|" );
+            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", ligne )+ "|" );
         }
         trait();
 

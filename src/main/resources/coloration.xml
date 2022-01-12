@@ -8,12 +8,12 @@
 
     <element type ="fonction">
         <couleurTexte nom  = "orange"  couleur="9857295"/>
-        <poids        gras = "false"/>
+        <poids        gras = "true"/>
     </element>
 
     <element type ="variable">
         <couleurTexte nom  = "green" couleur="32768"/>
-        <poids        gras = "false"/>
+        <poids        gras = "true"/>
     </element>
 
     <element type = "ligneEnCour">
