@@ -1,6 +1,7 @@
+/*
 package iut.Stelliciel.StelliCode.CUI;
 
-import iut.Stelliciel.StelliCode.CUI.affichage.AfficheCode;
+//import iut.Stelliciel.StelliCode.CUI.affichage.AfficheCode;
 import iut.Stelliciel.StelliCode.CUI.console.AfficheConsole;
 import iut.Stelliciel.StelliCode.CUI.tabVariable.AfficheTab;
 import iut.Stelliciel.StelliCode.Main;
@@ -23,7 +24,7 @@ import static org.fusesource.jansi.Ansi.ansi;
 public class CUI {
     private final AfficheTab affTabVar;
     private final AfficheConsole affConsole;
-    private final AfficheCode affCode;
+    //private final AfficheCode affCode;
 
     private int numLig1;
     private int ligEnCour;
@@ -32,17 +33,10 @@ public class CUI {
     public CUI(){
         this.affTabVar   = new AfficheTab    ();
         this.affConsole  = new AfficheConsole();
-        this.affCode     = new AfficheCode   (Main.getInstance().getCode(),Main.getInstance().getNbChiffre());
+        //this.affCode     = new AfficheCode   (Main.getInstance().getCode(),Main.getInstance().getNbChiffre());
         this.numLig1     = 0;
         this.ligEnCour   = getLigDebut();
         this.arrNom      = new ArrayList<>();
-    }
-
-    public static String adaptTxt(String in){
-        if(in.length()<10){return  in;}
-        else{
-            return in.substring(0,5)+".."+in.substring(in.length()-3);
-        }
     }
 
     public void demandeVars(){
@@ -50,12 +44,14 @@ public class CUI {
         System.out.println("Quelles variables voulez vous suivre?");
         HashMap<String ,Variable<Object>> lstVar = Main.getInstance().getVariables();
         StringBuilder sRep = new StringBuilder();
-        /*A MODIFIER*/
+        */
+/*A MODIFIER*//*
+
         int numVar = 1;
         for(String nom : lstVar.keySet()){
             if(numVar % 5 == 1 )
                 sRep.append('\n');
-            sRep.append(numVar).append(" ").append(CUI.adaptTxt(nom)).append("  ");
+            sRep.append(numVar).append(" ").append(Console.adaptTxt(nom)).append("  ");
             numVar ++;
         }
         System.out.println(sRep);
@@ -69,7 +65,7 @@ public class CUI {
                 for (String s: lstVar.keySet() ) {
                     if (cpt == Integer.parseInt(inUser)-1) {
                         arrNom.add(lstVar.get(s).getNom());
-                        affCode.setLstVar(arrNom);
+                        //affCode.setLstVar(arrNom);
                     }
                     cpt++;
                 }
@@ -93,8 +89,8 @@ public class CUI {
         }
         affichage+=("_______________________________________________________________________________________________________________|\n                                                                                                                \nconsole                                                                                                         \n________________________________________________________________________________________________________________\n");
         affichage+=(this.affConsole);
-        this.majConsole();
-        System.out.println(ansi().bgRgb(affCode.NOR_FOND).fgRgb(affCode.NOR_TEXT).a(affichage).reset());
+        Console.majConsole();
+        //System.out.println(ansi().bgRgb(affCode.NOR_FOND).fgRgb(affCode.NOR_TEXT).a(affichage).reset());
     }
 
     public void proposeChoix(){
@@ -159,25 +155,6 @@ public class CUI {
         return -1;
     }
 
-    public void majConsole(){
-        try{
-            String operatingSystem = System.getProperty("os.name").toLowerCase();
-
-            if(operatingSystem.contains("win")){
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.inheritIO().start();
-                startProcess.waitFor();
-            } else {
-                ProcessBuilder pb = new ProcessBuilder("clear");
-                Process startProcess = pb.inheritIO().start();
-
-                startProcess.waitFor();
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
     public int getLigEnCour() {
         return ligEnCour;
     }
@@ -206,9 +183,9 @@ public class CUI {
             if(i % 5 == 1 )
                 sRep.append('\n');
             if (i-1==file.size())
-                sRep.append(i).append(" ").append(CUI.adaptTxt("autre")).append("  ");
+                sRep.append(i).append(" ").append(Console.adaptTxt("autre")).append("  ");
             else
-                sRep.append(i).append(" ").append(CUI.adaptTxt(file.get(i-1).getName().substring(0, file.get(i-1).getName().length()-5))).append("  ");
+                sRep.append(i).append(" ").append(Console.adaptTxt(file.get(i-1).getName().substring(0, file.get(i-1).getName().length()-5))).append("  ");
         }
         while (true) {
             System.out.println(ansi().bgRgb(255,255,255).fgRgb(0,0,0).a(sRep).reset());
@@ -242,3 +219,4 @@ public class CUI {
     }
 }
 
+*/

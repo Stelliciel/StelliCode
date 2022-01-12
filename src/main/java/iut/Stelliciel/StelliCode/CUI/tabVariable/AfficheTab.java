@@ -1,6 +1,7 @@
 package iut.Stelliciel.StelliCode.CUI.tabVariable;
 
-import iut.Stelliciel.StelliCode.CUI.CUI;
+//import iut.Stelliciel.StelliCode.CUI.CUI;
+import iut.Stelliciel.StelliCode.CUI.Console;
 import iut.Stelliciel.StelliCode.metier.Variable;
 
 import java.util.ArrayList;
@@ -33,8 +34,8 @@ public class AfficheTab {
     public String toString(){
         StringBuilder sRep = new StringBuilder("     nom    |  valeur   \n");
         for(String nom : listeVar.keySet()){
-            sRep.append(String.format("%-12s", CUI.adaptTxt(nom))+"|"
-                       +String.format("%-11s", CUI.adaptTxt(listeVar.get(nom).valToString()))+'\n');
+            sRep.append(String.format("%-12s", Console.adaptTxt(nom))+"|"
+                       +String.format("%-11s", Console.adaptTxt(listeVar.get(nom).valToString()))+'\n');
         }
         System.out.println(sRep.toString());
         return sRep.toString();

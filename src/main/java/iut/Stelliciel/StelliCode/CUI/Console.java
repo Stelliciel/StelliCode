@@ -35,7 +35,7 @@ public class Console {
     public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
     public final int PRI_TEXT   = LectureCouleur.getCouleur("primitive").getCouleurText();
 
-    public static final int TAILLE_LARGEUR = 90;
+    public static final int TAILLE_LARGEUR = 94;
 
 
     public Console(Main ctrl){
@@ -46,6 +46,13 @@ public class Console {
         saisie = " ";
         this.tabVar = new AfficheTab(ctrl);
         ihm();
+    }
+
+    public static String adaptTxt(String in){
+        if(in.length()<10){return  in;}
+        else{
+            return in.substring(0,5)+".."+in.substring(in.length()-3);
+        }
     }
 
     public Ansi colorie(String ligne, int couleurLettre, int couleurFond){
@@ -112,7 +119,7 @@ public class Console {
         String ligne = "";
         int numVar = 1;
         for(String nom : lst){
-            ligne += numVar+")"+CUI.adaptTxt(nom)+"  ";
+            ligne += numVar+")"+Console.adaptTxt(nom)+"  ";
             numVar ++;
             if(numVar % 5 == 1 ){
                 liste += String.format("%-"+ TAILLE_LARGEUR +"s","|"+ ligne) + "|\n";
@@ -124,12 +131,37 @@ public class Console {
         return  liste;
     }
 
-    public void demandeVars(){
-        System.out.println(String.format("%-"+ TAILLE_LARGEUR +"s","| Quelles variables voulez vous suivre? ( q pour quitter )" ) + "|");
+    public static void majConsole(){
+        try{
+            String operatingSystem = System.getProperty("os.name").toLowerCase();
+
+            if(operatingSystem.contains("win")){
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
+            } else {
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private ArrayList<String> getVariables(){
         ArrayList<String> lstNomVar = new ArrayList<>();
         HashMap<String , Variable<Object>> lstVar = ctrl.getVariables();
 
         lstVar.forEach( (k,v) ->lstNomVar.add(k));
+        return lstNomVar;
+    }
+
+    public void demandeVars(){
+        System.out.println(String.format("%-"+ TAILLE_LARGEUR +"s","| Quelles variables voulez vous suivre? ( q pour quitter )" ) + "|");
+        ArrayList<String> lstNomVar = getVariables();
+        HashMap<String , Variable<Object>> lstVar = ctrl.getVariables();
 
         saisie = "";
 
@@ -161,17 +193,18 @@ public class Console {
     }
 
     private void trait(){
-        System.out.print("+");
+        System.out.print(ansi().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).a("+"));
         for (int cpt=0; cpt<TAILLE_LARGEUR-1; cpt++)
             System.out.print("-");
         System.out.println("+");
     }
 
     public void afficher(EtatLigne e){
+        Console.majConsole();
         trait();
         tabVar.maj(e.getLstVariables());
         ArrayList<String> tab = tabVar.getTabVar();
-
+        //System.out.println(ansi().bgRgb(NOR_FOND).fgRgb(NOR_TEXT));
         int  departNumLigne;
         if ( e.getNumLigne() < 20 )
             departNumLigne = 0;
@@ -207,29 +240,28 @@ public class Console {
                 if ( e.isCondition() ){
                     if ( e.isConditionTrue() ){
                         //ligne = "\u001B[42m" + ligne + "\u001B[0m";
-                        ligne = colorie(ligne, -1, VRAI_COND).toString();
+                        ligne = colorie(ligne, NOR_TEXT, VRAI_COND).toString();
                     }
                     else{
                         //ligne = "\u001B[41m" + ligne + "\u001B[0m";
-                        ligne = colorie(ligne, -1, FAUX_COND).toString();
+                        ligne = colorie(ligne, NOR_TEXT, FAUX_COND).toString();
                     }
                 }
                 else{
                     //ligne = "\u001B[46m" + ligne + "\u001B[0m";
-                    ligne = colorie(ligne, -1, COURS_FOND).toString();
+                    ligne = colorie(ligne, NOR_TEXT, COURS_FOND).toString();
                 }
             }
 
-            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", ligne )+ "|" );
+            System.out.println( ligneVar + num + String.format(Locale.US,"%-60s", coloration(ligne,getVariables()) )+ "|" );
         }
-
         trait();
 
         /*----------- */
         /*| CONSOLE | */
         if(e.getTraceAlgo() != null && e.getTraceAlgo().size() > 0 ){
-            System.out.println("-----------");
-            System.out.println("| CONSOLE |");
+            //System.out.println("-----------");
+            System.out.println("| CONSOLE |                                                                                   |");
 
             trait();
 
@@ -245,9 +277,28 @@ public class Console {
                 }
             }
         }
+        System.out.println(ansi().reset());
 
 
+    }
 
+    public String  coloration(String s,ArrayList<String> lstVar){
+        if (s.contains("//")){return  coloration(s.substring(0,s.indexOf("//")),lstVar)+ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
+        String[] tabFonct = {"\u00e9crire", "lire","plancher","plafond","enChaine13","enReel","enEntier","car","ord"};
+        String[] tabCond = {"si", "alors","sinon","fsi","tq","ftq","faire"};
+        String sRep = s;
+        for (String fonct: tabFonct) {
+            sRep = sRep.replaceAll("\\b"+fonct+"\\b",ansi().fgRgb(FON_TEXT).a(fonct).fgRgb(NOR_TEXT).toString());
+        }
+        for (String cond : tabCond) {
+            sRep = sRep.replaceAll("\\b"+cond+"\\b",ansi().fgRgb(COND_TEXT).a(cond).fgRgb(NOR_TEXT).toString());
+        }
+        if(lstVar != null && ! lstVar.isEmpty()){
+            for (String var:lstVar) {
+                sRep=sRep.replaceAll("\\b"+var+"\\b",ansi().fgRgb(VAR_TEXT).a( var ).fgRgb(NOR_TEXT).toString());
+            }
+        }
+        return sRep;
     }
 
     private boolean ligneSkipper(int cpt) {

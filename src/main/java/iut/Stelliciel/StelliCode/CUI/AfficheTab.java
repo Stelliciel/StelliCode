@@ -40,8 +40,7 @@ public class AfficheTab {
         listeVar.forEach( (k,v) -> {
             String valeur = "v";
             valeur = valeur.replaceAll("v",listeVar.get(k)) ;
-            System.out.println("\n\n" + listeVar.get(k));
-            String ligne = String.format("%-14s", CUI.adaptTxt(k)) + "|" + String.format("%-15s", valeur );
+            String ligne = String.format("%-14s", Console.adaptTxt(k)) + "|" + String.format("%-15s", valeur );
             lstLigne.add(ligne);
         });
 
