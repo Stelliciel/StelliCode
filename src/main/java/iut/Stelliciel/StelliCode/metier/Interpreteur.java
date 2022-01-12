@@ -73,7 +73,6 @@ public class Interpreteur {
         }
         else if (ligne.contains("écrire"))
         {
-            System.out.println("affectation");
             String s  = this.code.get(pointeur);
             String ecrire = Fonction.entreParenthese(s);
             EtatLigne etatLigne = nouvelleEtatLigne(pointeur);

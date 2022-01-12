@@ -257,23 +257,17 @@ public class Console {
         /*----------- */
         /*| CONSOLE | */
         System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "| CONSOLE") +"|" );
+
         trait();
-        System.out.println(e.getTraceAlgo());
+
         int cpt;
         for ( cpt = e.getTraceAlgo().size()-3; cpt < e.getTraceAlgo().size(); cpt++){
             if ( cpt >= 0 ) {
-                System.out.println("oui");
-                String sortie = colorie(e.getTraceAlgo().get(cpt).substring(1), NOR_TEXT,NOR_FOND).toString();
                 if ( e.getTraceAlgo().get(cpt).charAt(0) == 'o'){
-                    System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|"+ sortie ) +"|" );
+                    System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|"+ e.getTraceAlgo().get(cpt).substring(1)) +"|" );
                 }
-                else if ( e.getTraceAlgo().get(cpt).charAt(0) == 'i')
-                    System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|"+"    ~>" +sortie) +"|" );
-
-            }
-            else{
-                System.out.println("exe");
-                System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|") +"|" );
+                else
+                    System.out.println( String.format("%-" +TAILLE_LARGEUR + "s", "|"+"    ~>" +e.getTraceAlgo().get(cpt).substring(1)) +"|" );
             }
         }
 
