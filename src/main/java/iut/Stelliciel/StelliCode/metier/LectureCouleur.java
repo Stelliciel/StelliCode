@@ -40,7 +40,6 @@ public class LectureCouleur {
 
             List<Element> lstCouleurTexte = e.getChildren("couleurTexte");
             List<Element> lstCouleurFond  = e.getChildren("couleurFond" );
-            List<Element> lstPoids        = e.getChildren("poids"       );
 
             for (Element t : lstCouleurTexte) {
                 lstCouleur.get(lstCouleur.size()-1).setCoulTxt (t.getAttributeValue("nom"));
@@ -50,10 +49,6 @@ public class LectureCouleur {
             for (Element f : lstCouleurFond) {
                 lstCouleur.get(lstCouleur.size()-1).setCoulFond(f.getAttributeValue("nom"));
                 lstCouleur.get(lstCouleur.size()-1).setCouleurFond(Integer.parseInt(f.getAttributeValue("couleur")));
-            }
-
-            for (Element p:lstPoids) {
-                lstCouleur.get(lstCouleur.size()-1).setGras(Boolean.parseBoolean(p.getAttributeValue("gras")));
             }
         }
     }
