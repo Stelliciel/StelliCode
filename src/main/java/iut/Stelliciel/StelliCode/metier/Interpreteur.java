@@ -284,7 +284,7 @@ public class Interpreteur {
     }
 
     /**
-     * test
+     * Return le parcours
      * @return parcours
      */
     public Parcours getParcours() { return parcours; }
@@ -374,14 +374,46 @@ public class Interpreteur {
 
     /*-----------------------*/
     /* Gestion des variables */
-    public HashMap<String, Variable<Object>> getLstConstantes() { return lstConstantes; }
+    /**
+     * Return la liste de variables
+     * @return hashMap la liste de variable
+     */
     public HashMap<String, Variable<Object>> getLstVariables()  { return lstVariables;  }
+    /**
+     * Return la liste des lignes du fichier .algo lu
+     * @return liste des lignes du fichier .algo lu
+     */
     public ArrayList<String>                 getCode()          { return this.code;  }
+
+    /**
+     * Retourne le nombre de chiffre de la derniere ligne
+     * @return le nombre de chiffre de la derniere ligne
+     */
     public int                               getNbChiffre()     { return (this.fichier.size()+"").length(); }
 
+    /**
+     * Rajoute une constante dans la liste de constantes
+     * @param nom
+     * @param type
+     * @param valeur
+     */
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
+
+    /**
+     * Rajoute une variable dans la liste de variables
+     * @param nom
+     * @param type
+     */
     public void addVariable (String nom, String type)               { lstVariables .put(nom, new Variable<>(nom, type) ); }
 
+    /**
+     * Rajoute un tableau dans la liste de variables
+     * @param nom
+     * @param type
+     * @param taille
+     * @param taille2
+     * @param taille3
+     */
     public void addTableau (String nom, String type, String taille, String taille2, String taille3) {
         lstVariables.put(nom,
                 new Variable<>(nom,
@@ -391,17 +423,50 @@ public class Interpreteur {
                         type));
     }
 
+    /**
+     * Recupere une constante selon le nom
+     * @param nom
+     * @return
+     */
     public Object getConstante (String nom) { return  lstConstantes.get(nom).getVal(); }
+
+    /**
+     * Recupere une variable
+     * @param nom
+     * @return
+     */
     public Object getVariable  (String nom) { return  lstVariables .get(nom).getVal(); }
+
+    /**
+     * Recupere la valeur d'un tableau selon les index
+     * @param nom
+     * @param ind
+     * @param ind2
+     * @param ind3
+     * @return
+     */
     public Object getIndTableau(String nom, int ind, int ind2, int ind3) {
         return lstVariables.get(nom).getIndTab(ind, ind2, ind3);
     }
 
+    /**
+     * Change la variable
+     * @param nom
+     * @param valeur
+     */
     public void setVariable(String nom, String valeur) {
         valeur = traitementValeur(valeur);
         Interpreteur.set(lstVariables.get(nom), valeur);
     }
 
+    /**
+     * Change la valeur d'un tableau
+     * @param nom
+     * @param ind
+     * @param ind2
+     * @param ind3
+     * @param valeur
+     */
     public void setTableau (String nom, int ind, int ind2, int ind3, String valeur) {
         valeur = traitementValeur(valeur);
         System.out.println("nom :" +nom);
@@ -442,6 +507,11 @@ public class Interpreteur {
     }
     private static boolean estConstante(String nom){ return nom.equals(nom.toUpperCase()); }
 
+    /**
+     * Change la valeur d'une variable en fonction de son type
+     * @param var
+     * @param valeur
+     */
     public static void set(Variable<Object> var, String valeur)   {
         switch (var.getType()){
             case "entier"    -> {
@@ -468,6 +538,14 @@ public class Interpreteur {
             }
         }
     }
+
+    /**
+     * Créer une variable
+     * @param nom
+     * @param type
+     * @param valeur
+     * @return Variable
+     */
     public static Variable<Object> get(String nom, String type, String valeur){
         Variable<Object> var = null;
         switch (type){
@@ -499,8 +577,17 @@ public class Interpreteur {
     /* Fin gestion des variables */
     /*---------------------------*/
 
+    /**
+     * Retourne la signature du fichier lu
+     * @return signature
+     */
     public String getSignature() { return  signature; }
 
+    /**
+     * Lit le fichier .algo sans encodage UTF-8
+     * @param adresse
+     * @return ArrayList<String>
+     */
     public static ArrayList<String> lireFichier(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try {
@@ -517,6 +604,12 @@ public class Interpreteur {
 
         return fichier;
     }
+
+    /**
+     * Lit le fichier .algo avec encodage UTF8
+     * @param adresse
+     * @return
+     */
     public static ArrayList<String> lireCode(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
         try {
