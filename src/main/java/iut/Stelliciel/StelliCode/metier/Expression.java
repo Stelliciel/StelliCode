@@ -112,9 +112,6 @@ public class Expression {
             sortie.add(pileOp.pop());
         }
 
-        for(String s: sortie){
-            System.out.println(s);
-        }
 
 
         Stack<Double> pile = new Stack<>();

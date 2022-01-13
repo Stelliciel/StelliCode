@@ -21,7 +21,6 @@ public class LectureCouleur {
     public LectureCouleur()
     {
         Document document;
-        //File fichierXML = new File("src/main/resources/coloration.xml");
         File fichierXML = new File("../../src/main/resources/coloration.xml");
         SAXBuilder sxb  = new SAXBuilder();
         lstCouleur      = new ArrayList<>();

@@ -139,10 +139,7 @@ public class Parcours {
 
         }
         EtatLigne eTmp = new EtatLigne(e.getSignature(), e.getLstConstantes(), e.getLstVariables(),e.getNumLigne());
-        /*System.out.println("REECRIRE:");
-        e.getLstVariables().forEach( (k,v) -> {
-            System.out.println( k + " "+ v);
-        });*/
+
 
         eTmp.setLecture(true);
         eTmp.setNomALire(e.getNomALire());

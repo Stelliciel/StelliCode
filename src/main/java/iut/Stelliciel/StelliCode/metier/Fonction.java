@@ -117,7 +117,6 @@ public class Fonction {
      * @return String, le jour d'une date
      */
     public static String jour (String date){
-        System.out.println(date);
         return date.substring(0,date.indexOf("/"));
     }
 
@@ -216,7 +215,6 @@ public class Fonction {
      */
     public static String entreParenthese(String str)
     {
-        System.out.println("C :" + str);
         return str.substring( str.indexOf("(")+1, str.indexOf(")") );
     }
     /**

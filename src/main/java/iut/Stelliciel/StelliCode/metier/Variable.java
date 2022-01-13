@@ -56,7 +56,6 @@ public class Variable<V>
      * @param valeur la nouvelle valeur
      */
     public void setIndTab(int ind, int ind2, int ind3, V valeur) {
-        System.out.println(valeur);
         tabValeur[ind][ind2][ind3] = valeur;
     }
 

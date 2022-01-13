@@ -70,11 +70,8 @@ public class Interpreteur {
         if (ligne.contains("<--")) {
             String[] separation = Fonction.affectation(ligne);
 
-            System.out.println("\t\t\t" + separation[0] + " | " + separation[1]);
-
             separation[1] = remplacerValeurVariable(separation[1]);
 
-            System.out.println("\t\t\t" + separation[0] + " | " + separation[1]);
 
             if ( Fonction.estUnePrimitive(separation[1]) ){
                 separation[1] = Fonction.primitive(separation[1]);
@@ -263,14 +260,8 @@ public class Interpreteur {
         for(String v : lstVariables.keySet() ){
             if ( ligne.contains(v) ){
                 if (lstVariables.get(v).estTableau()) {
-                    System.out.println("here");
                     String[] tabInd = Fonction.separerInd(ligne);
-//                    Matcher nom = Pattern.compile(v+"\\["+tabInd[0]+"]"+(!Objects.equals(tabInd[1], "0") ?"\\["+tabInd[1]+"]":"")+(!Objects.equals(tabInd[2], "0") ?"\\["+tabInd[2]+"]":"")).;
-//                    System.out.println("nom : "+nom);
-                    System.out.println(tabInd[0] + " | " + tabInd[1] + " | " + tabInd[2]);
-                    System.out.println("listvar : " + lstVariables.get(v).getIndTab(Integer.parseInt(tabInd[0]), Integer.parseInt(tabInd[1]), Integer.parseInt(tabInd[2]))+"");
                     ligne = ligne.replaceAll(v+"\\["+tabInd[0]+"]"+(!Objects.equals(tabInd[1], "0") ?"\\["+tabInd[1]+"]":"")+(!Objects.equals(tabInd[2], "0") ?"\\["+tabInd[2]+"]":""), lstVariables.get(v).getIndTab(Integer.parseInt(tabInd[0]), Integer.parseInt(tabInd[1]), Integer.parseInt(tabInd[2]))+"");
-                    System.out.println(ligne);
                 }
                 else
                     ligne = ligne.replaceAll(v, lstVariables.get(v).getVal() + "");
@@ -469,11 +460,8 @@ public class Interpreteur {
      */
     public void setTableau (String nom, int ind, int ind2, int ind3, String valeur) {
         valeur = traitementValeur(valeur);
-        System.out.println("nom :" +nom);
-        System.out.println("valeur:" +valeur);
         Variable<Object> v = lstVariables.get(nom);
-        System.out.println(v);
-//        System.out.println(v.estTableau());
+
         v.setIndTab(ind, ind2, ind3, convertitValeur(v.getType(),valeur) );
     }
 
@@ -493,7 +481,6 @@ public class Interpreteur {
     }
 
     private static Object convertitValeur(String type, String valeur){
-        System.out.println("convertit : " + type + " | " +valeur);
         switch (type){
             case "entier"    -> {
                 if ( valeur.contains(".") )
