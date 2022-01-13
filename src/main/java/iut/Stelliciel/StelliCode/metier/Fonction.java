@@ -152,17 +152,45 @@ public class Fonction {
         String[] affectation = new String[5];
         affectation[0] = ligne.substring(0,ligne.indexOf("["));
         affectation[1] = ligne.substring(ligne.indexOf("<--")+3 );
-        affectation[2] = ligne.substring(ligne.indexOf("[")+1, ligne.indexOf("]"));
-        affectation[3] = "0";
-        affectation[4] = "0";
+        String[] tab = Fonction.separerInd(ligne);
+        affectation[2] = tab[0];
+        affectation[3] = tab[1];
+        affectation[4] = tab[2];
+
         if (ligne.matches("^*\\[*]\\[*]*")) {
             affectation[3] = ligne.substring(ligne.indexOf("[", ligne.indexOf("[")) + 1, ligne.indexOf("]", ligne.indexOf("]")));
         }
         if (ligne.matches("^*\\[*]\\[*]\\[*]*")) {
             affectation[4] = ligne.substring(ligne.indexOf("[", ligne.indexOf(ligne.indexOf("[")))+1, ligne.indexOf("]",ligne.indexOf(ligne.indexOf("]"))));
+        }return affectation;
+    }
+
+    public static String[] separerInd( String ligne ){
+        String[] tab = new String[3];
+        String tmp     = ligne;
+        String    ind = tmp.substring(ligne.indexOf("[")+1, ligne.indexOf("]"));
+        tab[0] = ind;
+        tmp = tmp.substring( tmp.indexOf("]")+1 );
+
+        if ( tmp.contains("[")){
+            ind = tmp.substring(tmp.indexOf("[")+1, tmp.indexOf("]"));
+            tab[1] = ind;
+            tmp = tmp.substring( tmp.indexOf("]")+1 );
+
+            if(tmp.contains("[")) {
+                ind = tmp.substring(tmp.indexOf("[")+1, tmp.indexOf("]"));
+                tab[2] = ind;
+            }
+            else
+                tab[2] = "0";
+
         }
-        System.out.println(affectation[0] + " | " + affectation[1] + " | " + affectation[2] + " | " + affectation[3] + " | " + affectation[4]);
-        return affectation;
+        else{
+            tab[1] ="0";
+            tab[2] ="0";
+        }
+
+        return tab;
     }
 
 

@@ -1,5 +1,7 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -310,9 +312,9 @@ public class Interpreteur {
             String[] mots = ligne.split(":");
             String[] variables = mots[0].replaceAll(" ", "").split(",");
             String type = mots[1];
-
             if ( type.contains("tableau") ){
-                String[] tailleTab = Fonction.affectation(type);
+                type = remplacerValeurVariable(type);
+                String[] tailleTab = Fonction.separerInd(type);
                 String typeTab   = "";
                 if (type.contains("entier")   ) typeTab  = "entier";
                 if (type.contains("reel")     ) typeTab  = "reel";
@@ -321,9 +323,12 @@ public class Interpreteur {
                 if (type.contains("chaine")   ) typeTab = "chaine";
 
                 addTableau(variables[0],typeTab,
-                        lstConstantes.containsKey(tailleTab[2])?String.valueOf(lstConstantes.get(tailleTab[2]).getVal()):tailleTab[2],
-                        lstConstantes.containsKey(tailleTab[3])?String.valueOf(lstConstantes.get(tailleTab[3]).getVal()):tailleTab[3]!=null?tailleTab[3]:"0",
-                        lstConstantes.containsKey(tailleTab[4])?String.valueOf(lstConstantes.get(tailleTab[4]).getVal()):tailleTab[4]!=null?tailleTab[4]:"0");
+                        lstConstantes.containsKey(
+                                tailleTab[0])?String.valueOf(lstConstantes.get(tailleTab[0]).getVal()):tailleTab[0],
+                        lstConstantes.containsKey(
+                                tailleTab[1])?String.valueOf(lstConstantes.get(tailleTab[1]).getVal()):tailleTab[1]!=null?tailleTab[1]:"0",
+                        lstConstantes.containsKey(
+                                tailleTab[2])?String.valueOf(lstConstantes.get(tailleTab[2]).getVal()):tailleTab[2]!=null?tailleTab[2]:"0");
             } else {
                 for ( String nom : variables ){
                     addVariable(nom, type.replaceAll(" ", ""));
@@ -373,6 +378,19 @@ public class Interpreteur {
     }
 
     public void setVariable(String nom, String valeur) {
+        valeur = traitementValeur(valeur);
+        Interpreteur.set(lstVariables.get(nom), valeur);
+    }
+
+    public void setTableau (String nom, int ind, int ind2, int ind3, String valeur) {
+        valeur = traitementValeur(valeur);
+        Variable<Object> v = lstVariables.get(nom);
+        System.out.println(v.estTableau());
+        v.setIndTab(ind, ind2, ind3, convertitValeur(v.getType(),valeur) );
+    }
+
+    @NotNull
+    private String traitementValeur(String valeur) {
         if ( valeur.contains("\""))
             valeur = Fonction.entreGuillemet(valeur);
         else if ( valeur.contains("'"))
@@ -383,16 +401,7 @@ public class Interpreteur {
         else if ( Expression.estUneExpression(valeur) ){
             valeur = Expression.calculer(valeur) + "";
         }
-        Interpreteur.set(lstVariables.get(nom), valeur);
-    }
-
-
-    public void setTableau (String nom, int ind, int ind2, int ind3, String valeur) {
-        if ( valeur.contains("\""))
-            valeur = Fonction.entreGuillemet(valeur);
-        Variable<Object> v = lstVariables.get(nom);
-
-        v.setIndTab(ind, ind2, ind3, convertitValeur(v.getType(),valeur) );
+        return valeur;
     }
 
     private static Object convertitValeur(String type, String valeur){
