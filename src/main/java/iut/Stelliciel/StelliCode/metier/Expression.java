@@ -8,12 +8,19 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Stelliciel
+ * @version 1
+ */
 public class Expression {
-
     public static void main(String[] args) {
         System.out.println(Expression.calculLogique("5.8>=6 ou 5=+/=5"));
     }
-
+    /**
+     * retourne si la String est une expression logique
+     * @param expression String
+     * @return boolean, vrai si la String est une expression logique
+     */
     public static boolean estUneExpressionLogique(String expression){
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
@@ -23,6 +30,11 @@ public class Expression {
         return matcher.find();
     }
 
+    /**
+     * retourne si c'est un calcul
+     * @param expression
+     * @return boolean,vrai si c'est un calcul
+     */
     public static boolean estUneExpression(String expression){
         Pattern pattern = Pattern.compile("(([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
         Matcher matcher = pattern.matcher(expression);
@@ -30,6 +42,11 @@ public class Expression {
         return matcher.find();
     }
 
+    /**
+     * calcul les expressions booleenne
+     * @param expression
+     * @return boolean, renvoie le résultat
+     */
     public static boolean calculLogique(String expression) {
         Map<String, Integer> operators = new HashMap<>();
         operators.put("<",  4);
@@ -177,6 +194,11 @@ public class Expression {
         return pileSortie.peek();
     }
 
+    /**
+     * effectue le calcul et renvoie le résultat
+     * @param expression
+     * @return boolean, renvoie le résultat
+     */
     public static double calculer(String expression) {
         Map<String, Integer> operators = new HashMap<>();
         operators.put("-", 0);
