@@ -4,8 +4,17 @@ import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Stelliciel
+ * @version 1
+ */
 public class Fonction {
 
+    /**
+     * retourne si la String est une primitive
+     * @param s String
+     * @return boolean, vrai si la String est une primitive
+     */
     public static boolean estUnePrimitive(String s) {
         Pattern pattern = Pattern.compile("(enChaine)|(enEntier)|(enReel)|(plafond)|(plancher)|" +
                 "(hasard)|(ord)|(car)|(arrondi)|(ajourdhui)|(jour)|(mois)|(annee)");
@@ -14,6 +23,11 @@ public class Fonction {
         return matcher.find();
     }
 
+    /**
+     * cherche la primitive utilisé et renvoie le résultat de celle-ci
+     * @param s, la primitive
+     * @return String, renvoie le résultat de la primitive
+     */
     public static String primitive(String s) {
         String prim = "";
         String valeur = Fonction.entreParenthese(s);
@@ -58,7 +72,11 @@ public class Fonction {
         }
         return prim;
     }
-    //fonctionne
+
+    /**
+     * renvoie la date d'aujourd'hui
+     * @return String, la date d'aujourd'hui
+     */
     public static String aujourdhui() {
         String date = LocalDate.now()+"";
         String jour = date.substring( date.indexOf("-")+1 );
@@ -69,82 +87,153 @@ public class Fonction {
         date = jour + "/"+mois+"/"+date.substring(0,date.indexOf("-"));
         return "\""+date+"\"";
     }
-    //fonctionne pas
+
+    /**
+     * retourne l'année d'une date
+     * @param date, au format mm/jj/aaaa
+     * @return String, l'année d'une date
+     */
     public static String annee (String date){
         String annee = date.substring( date.indexOf("/")+1 );
         annee = annee.substring(annee.indexOf("/")+1);
 
         return annee;
     }
-    //fonctionne pas
+
+    /**
+     * retourne le mois d'une date
+     * @param date, au format mm/jj/aaaa
+     * @return String, le mois d'une date
+     */
     public static String mois (String date){
         String mois = date.substring( date.indexOf("/")+1 );
         mois = mois.substring(0, mois.indexOf("/") );
         return  mois;
     }
-    //fonctionne
+
+    /**
+     * retourne le jour d'une date
+     * @param date, au format mm/jj/aaaa
+     * @return String, le jour d'une date
+     */
     public static String jour (String date){
         System.out.println(date);
         return date.substring(0,date.indexOf("/"));
     }
-    //fonctionne pas
+
+    /**
+     * convertie en une chaine un réel ou entier
+     * @param str
+     * @return String, une chaine un réel ou entier
+     */
     private static String enChaine(String str)
     {
         String contenu = entreParenthese(str);
 
         return contenu;
     }
-    //fonctionne
+
+    /**
+     * convertie en un entier une chaine
+     * @param str
+     * @return String, un entier une chaine
+     */
     private static String enEntier(String str)
     {
         //Changer type si variable
         return Integer.parseInt(str)+"";
     }
-    //fonctionne
+    /**
+     * convertie en un réel une chaine
+     * @param str
+     * @return String, un réel une chaine
+     */
     private static String enReel(String str)
     {
         //Changer type si variable
         return Double.parseDouble(str)+"";
     }
-    //fonctionne
+
+    /**
+     * arrondi au supérieur un réel
+     * @param str
+     * @return String ,arrondi au supérieur un réel
+     */
     private static String plafond(String str)
     {
         return Math.ceil(Double.parseDouble(str))+"";
     }
-    //fonctionne
+    /**
+     * arrondi a l'inférieur un réel
+     * @param str
+     * @return String, arrondi a l'inférieur un réel
+     */
     private static String plancher(String str)
     {
         return Math.floor(Double.parseDouble(str))+"";
     }
-    //fonctionne
+
+    /**
+     * Renvoie nombre aléatoire de 0 au nombre passé en paramètre
+     * @param str, nombre passé en paramètre
+     * @return String, nombre aléatoire de 0 au nombre passé en paramètre
+     */
     private static String hasard(String str)
     {
         return (int)(Math.random()*Integer.parseInt(str))+"";
     }
-    //fonctionne
+
+    /**
+     * retourne code ascii d'un caractère
+     * @param str, caractère
+     * @return String, code ascii d'un caractère
+     */
     private static String ord(String str)
     {
         return (int)(str.charAt(0))+"";
     }
-    //fonctionne
+    /**
+     * retourne un caractère avec son code ascii
+     * @param str, code ascii
+     * @return String, un caractère avec son code ascii
+     */
     private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
-    //fonctionne
+
+    /**
+     * arrondi le reel en parametre
+     * @param str, le reel
+     * @return String, le nombre arrondi
+     */
     private static String arrondi(String str)
     {
         return Math.round(Double.parseDouble(str)) +"";
     }
 
+    /**
+     * retourne le contenu entre des parenthèses
+     * @param str
+     * @return String, contenu entre des parenthèses
+     */
     public static String entreParenthese(String str)
     {
         System.out.println("C :" + str);
         return str.substring( str.indexOf("(")+1, str.indexOf(")") );
     }
-
+    /**
+     * retourne le contenu entre guillement
+     * @param str
+     * @return String, contenu entre des parenthèses
+     */
     public static String entreGuillemet(String str)
     {
         return str.substring( str.indexOf("\"")+1, str.lastIndexOf("\"") );
     }
 
+    /**
+     * permet d'affecter une variable
+     * @param ligne
+     * @return String[], partie séparé par <--
+     */
     public static String[] affectation(String ligne) {
 //        ligne = ligne.replaceAll(" ", "");
         if (!ligne.split("<--")[0].contains("[")) {
@@ -172,6 +261,11 @@ public class Fonction {
         return affectation;
     }
 
+    /**
+     * Retourne les index dans les crochets des tableaux
+     * @param ligne
+     * @return
+     */
     public static String[] separerInd( String ligne ){
         String[] tab = new String[3];
         String tmp     = ligne;
@@ -205,6 +299,11 @@ public class Fonction {
         System.out.println( Fonction.jour(Fonction.aujourdhui()));
     }
 
+    /**
+     * Permet de concatener chaines de caractère
+     * @param s
+     * @return String, chaines de caractère concatener
+     */
     public static String concatener(String s) {
         String[] tab = s.split("(©)|(\\(c\\))");
         String chaine = "";
