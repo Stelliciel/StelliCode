@@ -173,6 +173,7 @@ public class Console {
             }
 
 
+
         }
         else{
             aff = nomVal + " = " + e.getLstVariables().get(nomVal).getVal();

@@ -195,6 +195,34 @@ public class Fonction {
         return tab;
     }
 
+    public static String[] separerInd( String ligne ){
+        String[] tab = new String[3];
+        String tmp     = ligne;
+        String    ind = tmp.substring(ligne.indexOf("[")+1, ligne.indexOf("]"));
+        tab[0] = ind;
+        tmp = tmp.substring( tmp.indexOf("]")+1 );
+
+        if ( tmp.contains("[")){
+            ind = tmp.substring(tmp.indexOf("[")+1, tmp.indexOf("]"));
+            tab[1] = ind;
+            tmp = tmp.substring( tmp.indexOf("]")+1 );
+
+            if(tmp.contains("[")) {
+                ind = tmp.substring(tmp.indexOf("[")+1, tmp.indexOf("]"));
+                tab[2] = ind;
+            }
+            else
+                tab[2] = "0";
+
+        }
+        else{
+            tab[1] ="0";
+            tab[2] ="0";
+        }
+
+        return tab;
+    }
+
 
     public static void main(String[] args) {
         String date = Fonction.aujourdhui();
