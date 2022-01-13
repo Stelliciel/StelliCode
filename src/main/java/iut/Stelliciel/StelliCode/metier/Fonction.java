@@ -6,9 +6,6 @@ import java.util.regex.Pattern;
 
 public class Fonction {
 
-
-
-
     public static boolean estUnePrimitive(String s) {
         Pattern pattern = Pattern.compile("(enChaine)|(enEntier)|(enReel)|(plafond)|(plancher)|" +
                 "(hasard)|(ord)|(car)|(arrondi)|(ajourdhui)|(jour)|(mois)|(annee)");
@@ -124,7 +121,7 @@ public class Fonction {
 
     private static String ord(String str)
     {
-        return Integer.parseInt(str)+"";
+        return (int)(str.charAt(0))+"";
     }
 
     private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
@@ -197,12 +194,6 @@ public class Fonction {
 
 
     public static void main(String[] args) {
-        String date = Fonction.aujourdhui();
-        System.out.println( date );
-        date = date.replaceAll("\"", "");
-        System.out.println( Fonction.jour(date) );
-        System.out.println( Fonction.mois(date) );
-        System.out.println( Fonction.annee(date) );
     }
 
     public static String concatener(String s) {

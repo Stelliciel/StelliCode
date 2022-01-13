@@ -16,7 +16,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
-    private final Interpreteur metier;
+    private Interpreteur metier;
+    private Console      console;
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static Main instance;
 
@@ -27,9 +28,12 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        metier         = new Interpreteur( Console.afficherOption() );
+        String saisie = "";
 
-        Console console = new Console(this);
+        while (true) {
+            this.metier  = new Interpreteur(Console.afficherOption());
+            this.console = new Console(this);
+        }
     }
 
     public static Main getInstance() {
@@ -73,7 +77,7 @@ public class Main {
         try
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                    new FileOutputStream(metier.getSignature() + ".var"), "UTF8" ));
+                    new FileOutputStream("../../src/main/resources/"+metier.getSignature() + ".var"), "UTF8" ));
 
             pw.println( "|" + String.format("%-15s", "Nom")          + "|"
                             + String.format("%-15s", "Valeur")       + "|"
