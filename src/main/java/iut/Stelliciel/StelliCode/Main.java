@@ -37,7 +37,7 @@ public class Main {
 
         while (true) {
             this.metier  = new Interpreteur(Console.afficherOption());
-            this.console = new Console(this);
+            this.console = new Console();
         }
     }
 

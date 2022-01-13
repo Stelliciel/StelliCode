@@ -84,6 +84,7 @@ public class Fonction {
     }
     //fonctionne
     public static String jour (String date){
+        System.out.println(date);
         return date.substring(0,date.indexOf("/"));
     }
     //fonctionne pas
@@ -196,6 +197,7 @@ public class Fonction {
 
 
     public static void main(String[] args) {
+        System.out.println( Fonction.jour(Fonction.aujourdhui()));
     }
 
     public static String concatener(String s) {
