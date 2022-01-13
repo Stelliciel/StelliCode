@@ -14,6 +14,10 @@ import java.util.*;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
+/**
+ * @author "Stelliciel"
+ * @version 1.0.0
+ */
 public class Console {
     private Scanner sc;
     private ArrayList<String> code;
@@ -22,25 +26,27 @@ public class Console {
     private String saisie;
     private AfficheTab tabVar;
 
-    private final LectureCouleur lectureCouleur = new LectureCouleur();
-    public final int NOR_FOND   = LectureCouleur.getCouleur("defaut").getCouleurFond();
-    public final int NOR_TEXT   = LectureCouleur.getCouleur("defaut").getCouleurText();
-    public final int FON_TEXT   = LectureCouleur.getCouleur("fonction").getCouleurText();
-    public final int VAR_TEXT   = LectureCouleur.getCouleur("variable").getCouleurText();
-    public final int COURS_FOND = LectureCouleur.getCouleur("ligneEnCour").getCouleurFond();
-    public final int COND_TEXT  = LectureCouleur.getCouleur("conditionBoucles").getCouleurText();
-    public final int COM_TEXT   = LectureCouleur.getCouleur("commentaire").getCouleurText();
-    public final int VRAI_COND  = LectureCouleur.getCouleur("condVrai").getCouleurFond();
-    public final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
-    public final int LIRE_TEXT  = LectureCouleur.getCouleur("lire").getCouleurText();
-    public final int ECRIRE_TEXT= LectureCouleur.getCouleur("ecrire").getCouleurText();
-    public final int BK_TEXT    = LectureCouleur.getCouleur("breakPoint").getCouleurText();
+    //liste des couleur selon ce qui va etre à colorisé
+    private final int NOR_FOND   = LectureCouleur.getCouleur("defaut").getCouleurFond();
+    private final int NOR_TEXT   = LectureCouleur.getCouleur("defaut").getCouleurText();
+    private final int FON_TEXT   = LectureCouleur.getCouleur("fonction").getCouleurText();
+    private final int VAR_TEXT   = LectureCouleur.getCouleur("variable").getCouleurText();
+    private final int COURS_FOND = LectureCouleur.getCouleur("ligneEnCour").getCouleurFond();
+    private final int COND_TEXT  = LectureCouleur.getCouleur("conditionBoucles").getCouleurText();
+    private final int COM_TEXT   = LectureCouleur.getCouleur("commentaire").getCouleurText();
+    private final int VRAI_COND  = LectureCouleur.getCouleur("condVrai").getCouleurFond();
+    private final int FAUX_COND  = LectureCouleur.getCouleur("condFaux").getCouleurFond();
+    private final int LIRE_TEXT  = LectureCouleur.getCouleur("lire").getCouleurText();
+    private final int ECRIRE_TEXT= LectureCouleur.getCouleur("ecrire").getCouleurText();
+    private final int BK_TEXT    = LectureCouleur.getCouleur("breakPoint").getCouleurText();
 
-    public static final int TAILLE_LARGEUR = 84;
+    private static final int TAILLE_LARGEUR = 84;
 
     private ArrayList<Integer> lstPointArret;
 
-
+    /**
+     * constructeur de la classe console
+     */
     public Console(){
         this.sc   = new Scanner(System.in);
         this.code = Main.getInstance().getCode();
@@ -52,6 +58,11 @@ public class Console {
         ihm();
     }
 
+    /**
+     *  adapte n'importe quel string a rentrer dans une case de taille 10
+     * @param in string à adapter
+     * @return String, sous forme "01234..789"
+     */
     public static String adaptTxt(String in){
         if(in.length()<10){return  in;}
         else{
@@ -59,7 +70,14 @@ public class Console {
         }
     }
 
-    public Ansi colorie(String ligne, int couleurLettre, int couleurFond){
+    /**
+     * renvois l'ansi de la ligne coloré avec les couleur en parametre
+     * @param ligne String, la ligne à colorer
+     * @param couleurLettre int, la valeur pour colorer le texte
+     * @param couleurFond int, la valeur pour colorer le fond
+     * @return Ansi, la ligne coloré
+     */
+    private Ansi colorie(String ligne, int couleurLettre, int couleurFond){
         if ( couleurFond == -1 ) {
             return ansi().fgRgb(couleurLettre).a(ligne).fgRgb(NOR_TEXT).bgRgb(NOR_FOND);
         }
@@ -69,7 +87,11 @@ public class Console {
         return ansi().bgRgb(couleurFond).fgRgb(couleurLettre).a(ligne).fgRgb(NOR_TEXT).bgRgb(NOR_FOND);
     }
 
-    public String ihm(){
+
+    /**
+     * la méthode qui gere les saisies utilisateur
+     */
+    private void ihm(){
         EtatLigne e = parcours.next();
         afficher(e);
 
@@ -154,6 +176,11 @@ public class Console {
         return "q";
     }
 
+    /**
+     * affiche le détail d'une variable
+     * @param e {@link EtatLigne}, l'état de la ligne actuelle
+     * @param nomVal String, le nom de la variable à détailler
+     */
     private void detailler(EtatLigne e, String nomVal) {
         Console.majConsole();
         String aff = "";
@@ -193,6 +220,12 @@ public class Console {
         }
     }
 
+    /**
+     * écris le détail d'un tableau
+     * @param i, int, taille réel du tableau
+     * @param tabValeur {@link Object}[][][], tableau à trois dimensions d'objet
+     * @return Le string affichable du tableau
+     */
     private String ecrireTab(int i, Object[][][] tabValeur) {
         String s = "";
         if ( i == 1 ){
@@ -244,7 +277,12 @@ public class Console {
         return s;
     }
 
-    public String afficherListeNomVar(ArrayList<String> lst){
+    /**
+     * affiche la liste des variables quand l'utilisateur rentre "addvar"
+     * @param lst ArrayList&#60String&#62 la liste de toutes les variable
+     * @return toutes les variables sous forme: 1) var1 2) var2
+     */
+    private String afficherListeNomVar(ArrayList<String> lst){
         String liste = "";
         String ligne = "";
         int numVar = 1;
@@ -261,7 +299,10 @@ public class Console {
         return  liste;
     }
 
-    public static void majConsole(){
+    /**
+     * clear la console (le comportement du clear dépend de quand vous utiliser (clear/cls) dans votre console)
+     */
+    private static void majConsole(){
         try{
             String operatingSystem = System.getProperty("os.name").toLowerCase();
 
@@ -280,6 +321,10 @@ public class Console {
         }
     }
 
+    /**
+     * get les variables du programme
+     * @return ArrayList&#60String&#62, l'ensemble des variables du programme
+     */
     private ArrayList<String> getVariables(){
         ArrayList<String> lstNomVar = new ArrayList<>();
         HashMap<String , Variable<Object>> lstVar = Main.getInstance().getVariables();
@@ -288,7 +333,10 @@ public class Console {
         return lstNomVar;
     }
 
-    public void demandeVars(){
+    /**
+     * gere la demande des variables à afficher
+     */
+    private void demandeVars(){
         System.out.println(String.format("%-"+ TAILLE_LARGEUR +"s","| Quelles variables voulez vous suivre? ( q pour quitter )" ) + "|");
         ArrayList<String> lstNomVar = getVariables();
         HashMap<String , Variable<Object>> lstVar = Main.getInstance().getVariables();
@@ -323,14 +371,21 @@ public class Console {
 
     }
 
+    /**
+     * affiche un trait de séparation de la taille de l'IHM
+     */
     private void trait(){
         System.out.print(ansi().fgRgb(NOR_TEXT).bgRgb(NOR_FOND).a("+"));
         for (int cpt=0; cpt<TAILLE_LARGEUR-1; cpt++)
             System.out.print("-");
         System.out.println("+");
     }
-
-    public void afficher(EtatLigne e){
+  
+    /**
+     * Affiche l'entiereté du code, tu tableau de variable et de la console
+     * @param e {@link EtatLigne}, l'état de la ligne en cours
+     */
+    private void afficher(EtatLigne e){
         Console.majConsole();
         trait();
         tabVar.maj(e.getLstVariables());
@@ -414,9 +469,15 @@ public class Console {
 
     }
 
-    public String  coloration(String s,ArrayList<String> lstVar){
+    /**
+     * colorise les mots demandés à la couleur de l'xml
+     * @param s String, la ligne à coloré
+     * @param lstVar ArrayList&#60String&#62, liste des variables en cours
+     * @return String, la ligne coloré
+     */
+    private String coloration(String s,ArrayList<String> lstVar){
         if (s.contains("//")){return  coloration(s.substring(0,s.indexOf("//")),lstVar)+ansi().fgRgb(COM_TEXT).a(s.substring(s.indexOf("//"))).reset().fgRgb(NOR_TEXT).bgRgb(NOR_FOND);}
-        String[] tabFonct = {"plancher","plafond","enChaine13","enReel","enEntier","car","ord"};
+        String[] tabFonct = {"plancher","plafond","enChaine13","enReel","enEntier","car","ord","jour","mois","annee","aujourdhui","arrondi"};
         String[] tabCond = {"si", "alors","sinon","fsi","tq","ftq","faire"};
         String sRep = s;
         sRep = sRep.replaceAll("\\blire\\b",ansi().fgRgb(LIRE_TEXT).a("lire").fgRgb(NOR_TEXT).toString());
@@ -435,6 +496,11 @@ public class Console {
         return sRep;
     }
 
+    /**
+     * detecte si la ligne à été skippé par le code
+     * @param cpt int, numéro de la ligne en cours
+     * @return un boolean si la ligne à été skipp
+     */
     private boolean ligneSkipper(int cpt) {
         for(EtatLigne e : parcours.getLecteur() ){
             if(e.getNumLigne() == cpt){
@@ -446,6 +512,10 @@ public class Console {
         return false;
     }
 
+    /**
+     * affiche la liste des fichiers récupérer par afficherOption
+     * @return {@link File}, le fichier choisit
+     */
     public static File getAdresse() {
         Console.majConsole();
         File files = afficherOption();
@@ -453,7 +523,11 @@ public class Console {
         return files;
     }
 
-    public static File afficherOption() {
+    /**
+     *donne la liste des fichiers du repertoire en cours
+     * @return {@link File}, le fichier choisit
+     */
+    private static File afficherOption() {
         ArrayList<File> file = new ArrayList<>();
         File[] dir = Objects.requireNonNull((new File("../../src/main/resources")).listFiles());
         for (File item : dir)
