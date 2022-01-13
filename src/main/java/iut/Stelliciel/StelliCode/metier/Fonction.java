@@ -200,7 +200,7 @@ public class Fonction {
     private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
 
     /**
-     * arrondi le reel
+     * arrondi le reel en parametre
      * @param str, le reel
      * @return String, le nombre arrondi
      */
