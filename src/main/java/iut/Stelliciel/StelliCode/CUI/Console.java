@@ -7,14 +7,14 @@ import iut.Stelliciel.StelliCode.metier.Parcours;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.*;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class Console {
-    private final Main ctrl;
-
     private Scanner sc;
     private ArrayList<String> code;
     private Parcours parcours;
@@ -41,14 +41,13 @@ public class Console {
     private ArrayList<Integer> lstPointArret;
 
 
-    public Console(Main ctrl){
-        this.ctrl = ctrl;
+    public Console(){
         this.sc   = new Scanner(System.in);
-        this.code = ctrl.getCode();
-        this.parcours = ctrl.getParcours();
+        this.code = Main.getInstance().getCode();
+        this.parcours = Main.getInstance().getParcours();
         saisie = " ";
-        this.tabVar = new AfficheTab(ctrl);
-        this.lstPointArret = new ArrayList<Integer>();
+        this.tabVar = new AfficheTab();
+        this.lstPointArret = new ArrayList<>();
 
         ihm();
     }
@@ -119,10 +118,11 @@ public class Console {
                 demandeVars();
             }
             else if ( saisie.startsWith("TRACE") ){
-                ctrl.traceVariable( tabVar.getLstVar() );
+                Main.getInstance().traceVariable( tabVar.getLstVar() );
             }
             else if (saisie.startsWith("DET var")){
-                String nomVal = saisie.substring(saisie.indexOf("<")+1, saisie.indexOf(">") );
+                String[] tab = saisie.split(" ");
+                String nomVal = tab[2];
                 if ( e.getLstVariables().containsKey(nomVal) )
                     detailler(e, nomVal);
             }
@@ -132,12 +132,12 @@ public class Console {
             if ( e.isLecture() ){
                 System.out.print("| Saisir la valeur de " + e.getNomALire() + " : ");
                 saisie = sc.nextLine();
-                while (saisie.equals("") ){
+                while (saisie.equals("")){
                     System.out.print("| Erreur saisie de " + e.getNomALire() + " : ");
                     saisie = sc.nextLine();
                 }
 
-                ctrl.rajoutLecture(e, saisie);
+                Main.getInstance().rajoutLecture(e, saisie);
 
                 if (parcours.hasNext() ){
                     e = parcours.next();
@@ -154,23 +154,41 @@ public class Console {
 
     private void detailler(EtatLigne e, String nomVal) {
         Console.majConsole();
+        String aff = "";
         if ( e.getLstVariables().get(nomVal).estTableau() ) {
             Object[][][] tabValeur = e.getLstVariables().get(nomVal).getTabValeur();
             System.out.println(nomVal);
 
-            if (tabValeur[0][0].length > 1)
-                System.out.println(ecrireTab(3, tabValeur));
-            else if (tabValeur[0].length > 1)
-                System.out.println(ecrireTab(2, tabValeur));
-            else
-                System.out.println(ecrireTab(1, tabValeur));
+            if (tabValeur[0][0].length > 1){
+                aff = ecrireTab(3, tabValeur);
+            }
+            else if (tabValeur[0].length > 1){
+                aff = ecrireTab(2, tabValeur);
+            }
+            else{
+                aff = ecrireTab(1, tabValeur);
+            }
+
 
 
         }
         else{
-            System.out.println(nomVal + " = " + e.getLstVariables().get(nomVal).getVal());
+            aff = nomVal + " = " + e.getLstVariables().get(nomVal).getVal();
         }
+        System.out.println( aff );
+
         saisie = sc.nextLine();
+        while ( !saisie.equals("") ){
+            if ( saisie.equals("PP") ){
+                try
+                {
+                    StringSelection ss = new StringSelection(aff);
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss,null);
+                }
+                catch( Exception ex) { ex.printStackTrace(); }
+            }
+            saisie = sc.nextLine();
+        }
     }
 
     private String ecrireTab(int i, Object[][][] tabValeur) {
@@ -262,7 +280,7 @@ public class Console {
 
     private ArrayList<String> getVariables(){
         ArrayList<String> lstNomVar = new ArrayList<>();
-        HashMap<String , Variable<Object>> lstVar = ctrl.getVariables();
+        HashMap<String , Variable<Object>> lstVar = Main.getInstance().getVariables();
 
         lstVar.forEach( (k,v) ->lstNomVar.add(k));
         return lstNomVar;
@@ -271,7 +289,7 @@ public class Console {
     public void demandeVars(){
         System.out.println(String.format("%-"+ TAILLE_LARGEUR +"s","| Quelles variables voulez vous suivre? ( q pour quitter )" ) + "|");
         ArrayList<String> lstNomVar = getVariables();
-        HashMap<String , Variable<Object>> lstVar = ctrl.getVariables();
+        HashMap<String , Variable<Object>> lstVar = Main.getInstance().getVariables();
 
         saisie = "";
 
@@ -326,13 +344,13 @@ public class Console {
         }
 
         for (int cpt = departNumLigne;  cpt < departNumLigne+40 && cpt < code.size(); cpt++){
-            String num =  String.format("%"+ctrl.getNbChiffre()+"s", (cpt+1));
+            String num =  String.format("%"+Main.getInstance().getNbChiffre()+"s", (cpt+1));
             for ( Integer i : lstPointArret )
                 if ( i == cpt+1 ){
                     num =  colorie(num, BK_TEXT, -1).toString() ;
                 }
 
-            num = "|" + String.format("%"+ctrl.getNbChiffre()+"s", num) + " ";
+            num = "|" + String.format("%"+Main.getInstance().getNbChiffre()+"s", num) + " ";
 
             String ligne =  String.format("%-60s", code.get(cpt) );
             String ligneVar;
