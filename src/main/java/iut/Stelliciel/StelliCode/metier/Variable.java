@@ -47,6 +47,8 @@ public class Variable<V>
     public Variable (String nom, int taille, int taille2, int taille3, String type) {
         this.nom = nom;
         this.type = type;
+        if ( taille2 == 0 ) taille2++;
+        if ( taille3 == 0 ) taille3++;
         this.tabValeur = new Object[taille][taille2][taille3];
     }
 
@@ -139,8 +141,10 @@ public class Variable<V>
     }
 
     public static Variable<Object> copy(Variable<Object> v){
-
-        return new Variable<>(v.getNom(), v.getType(), v.getVal());
+        if ( v.estTableau() )
+            return new Variable<>(v.getNom(), v.getType(), v.getTabValeur());
+        else
+            return new Variable<>(v.getNom(), v.getType(), v.getVal());
     }
 
     @Override

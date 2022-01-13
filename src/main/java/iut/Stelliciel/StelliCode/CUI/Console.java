@@ -158,9 +158,9 @@ public class Console {
             Object[][][] tabValeur = e.getLstVariables().get(nomVal).getTabValeur();
             System.out.println(nomVal);
 
-            if (tabValeur[0][0].length > 0)
+            if (tabValeur[0][0].length > 1)
                 System.out.println(ecrireTab(3, tabValeur));
-            else if (tabValeur[0].length > 0)
+            else if (tabValeur[0].length > 1)
                 System.out.println(ecrireTab(2, tabValeur));
             else
                 System.out.println(ecrireTab(1, tabValeur));
@@ -181,9 +181,11 @@ public class Console {
             return s;
         }
         if (i == 2) {
+            s+= " ";
             for (int cpt = 0; cpt < tabValeur[0].length; cpt++){
-                s+= String.format("%-10s", cpt) +"|";
+                s+= "|" +String.format("%-10s", cpt);
             }
+            s+= "|\n";
 
             for(int cpt1 = 0 ; cpt1 < tabValeur.length; cpt1++ ){
                 s+= cpt1+"|";
@@ -201,15 +203,16 @@ public class Console {
 
             for(int cpt1 = 0 ; cpt1 < tabValeur.length; cpt1++ )
             {
-                s+= "tab["+cpt1+"][?][?]\n";
+                s+= "tab["+cpt1+"][?][?]\n ";
                 for (int cpt = 0; cpt < tabValeur[0][0].length; cpt++){
-                    s+= String.format("%-10s", cpt) +"|";
+                    s+= "|" +String.format("%-10s", cpt) ;
                 }
+                s+= "|\n";
                 for(int cpt2 = 0 ; cpt2 < tabValeur[0].length; cpt2++ )
                 {
                     s+= cpt2+"|";
                     for(int cpt3=0; cpt3 < tabValeur[0][0].length; cpt3++){
-                        s += String.format("%-10s", tabValeur[cpt1][cpt2][cpt3])+"|";
+                        s += String.format("%-10s", tabValeur[cpt1][cpt2][cpt3] ) + "|";
                     }
                     s+= "\n";
                 }
@@ -308,7 +311,7 @@ public class Console {
     }
 
     public void afficher(EtatLigne e){
-        Console.majConsole();
+        //Console.majConsole();
         trait();
         tabVar.maj(e.getLstVariables());
         ArrayList<String> tab = tabVar.getTabVar();
