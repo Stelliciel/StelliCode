@@ -202,6 +202,7 @@ public class Fonction {
 
 
     public static void main(String[] args) {
+        System.out.println( Fonction.jour(Fonction.aujourdhui()));
     }
 
     public static String concatener(String s) {

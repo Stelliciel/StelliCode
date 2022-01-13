@@ -6,12 +6,18 @@ import org.jdom2.input.*;
 
 import java.util.*;
 
+/**
+ * @author Stelliciel
+ * @version 1
+ */
 public class LectureCouleur {
-    private int valR,valG,valB;
 
     private Element racine;
     private static List<Couleur> lstCouleur;
 
+    /**
+     * constructeur de lecture couleur
+     */
     public LectureCouleur()
     {
         Document document;
@@ -29,6 +35,9 @@ public class LectureCouleur {
         }
     }
 
+    /**
+     * creer une couleur pour chaque element dans coloration.xml
+     */
     public void chargerCouleur()
     {
         List<Element> lstElement = racine.getChildren("element");
@@ -42,17 +51,20 @@ public class LectureCouleur {
             List<Element> lstCouleurFond  = e.getChildren("couleurFond" );
 
             for (Element t : lstCouleurTexte) {
-                lstCouleur.get(lstCouleur.size()-1).setCoulTxt (t.getAttributeValue("nom"));
                 lstCouleur.get(lstCouleur.size()-1).setCouleurText(Integer.parseInt(t.getAttributeValue("couleur")));
             }
 
             for (Element f : lstCouleurFond) {
-                lstCouleur.get(lstCouleur.size()-1).setCoulFond(f.getAttributeValue("nom"));
                 lstCouleur.get(lstCouleur.size()-1).setCouleurFond(Integer.parseInt(f.getAttributeValue("couleur")));
             }
         }
     }
 
+    /**
+     * get la couleur selon le nom
+     * @param nom String, lenom de la couleur
+     * @return la {@link Couleur} demandé
+     */
     public static Couleur getCouleur (String nom){
 
         for(Couleur c : lstCouleur)
@@ -62,9 +74,5 @@ public class LectureCouleur {
         }
 
         return null;
-    }
-
-    public static void main(String[] args) {
-        new LectureCouleur();
     }
 }

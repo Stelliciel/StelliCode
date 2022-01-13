@@ -8,21 +8,33 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Stelliciel
+ * @version 1
+ */
 public class Expression {
-
     public static void main(String[] args) {
-        System.out.println(Expression.calculLogique("5.8>=6 ou 5!=5"));
+        System.out.println(Expression.calculLogique("5.8>=6 ou 5=+/=5"));
     }
-
+    /**
+     * retourne si la String est une expression logique
+     * @param expression String
+     * @return boolean, vrai si la String est une expression logique
+     */
     public static boolean estUneExpressionLogique(String expression){
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("((vrai)|(faux)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([\\(\\)])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
         Matcher matcher = pattern.matcher(expression);
 
         return matcher.find();
     }
 
+    /**
+     * retourne si c'est un calcul
+     * @param expression
+     * @return boolean,vrai si c'est un calcul
+     */
     public static boolean estUneExpression(String expression){
         Pattern pattern = Pattern.compile("(([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
         Matcher matcher = pattern.matcher(expression);
@@ -30,6 +42,11 @@ public class Expression {
         return matcher.find();
     }
 
+    /**
+     * calcul les expressions booleenne
+     * @param expression
+     * @return boolean, renvoie le résultat
+     */
     public static boolean calculLogique(String expression) {
         Map<String, Integer> operators = new HashMap<>();
         operators.put("<",  4);
@@ -46,7 +63,7 @@ public class Expression {
 
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([a-z])|([A-Z])|([\\(\\)])|(<=)|(>=)|(<)|(>)|(==)|(!=)|(ou)|(et)|(non))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([\\(\\)])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
         Matcher matcher = pattern.matcher(expression);
 
         int cpt = 0;
@@ -105,7 +122,7 @@ public class Expression {
         Stack<Double> pile = new Stack<>();
         Stack<Boolean> pileSortie = new Stack<>();
         for(String expr : sortie){
-            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+|([a-z])|(vrai)|(faux)|([A-Z])") ){
+            if( !operators.containsKey(expr) && expr.matches("([0-9]*[.])?[0-9]+|(vrai)|(faux)|([a-z])|([A-Z])") ){
                 if ( expr.matches("([a-z])|([A-Z])"))
                     pile.push((int) expr.charAt(0) * 1.0);
                 else if ( expr.matches("(vrai)|(faux)")){
@@ -124,14 +141,18 @@ public class Expression {
                     pileSortie.push(b);
                 }
                 else if(pile.size() > 1){
-                    System.out.println("O :" + expr);
-                    if ( expr.equals("ou") || expr.equals("et") ){
-                        System.out.println("A :" + expr);
+                    if ( expr.equals("ou") || expr.equals("et") || expr.equals("xou") ){
                         if ( expr.equals("et") ){
                             Boolean b1 = pileSortie.pop();
                             Boolean b2 = pileSortie.pop();
 
                             pileSortie.push( b2 && b1 );
+                        }
+                        else if (expr.equals("xou")){
+                            Boolean b1 = pileSortie.pop();
+                            Boolean b2 = pileSortie.pop();
+
+                            pileSortie.push( b2 ^ b1 );
                         }
                         else{
                             Boolean b1 = pileSortie.pop();
@@ -157,10 +178,10 @@ public class Expression {
                             case ">=":
                                 pileSortie.push(op2 >= op1);
                                 break;
-                            case "==":
+                            case "=":
                                 pileSortie.push(op2 == op1);
                                 break;
-                            case "!=":
+                            case "/=":
                                 pileSortie.push(op2 != op1);
                                 break;
                         }
@@ -173,6 +194,11 @@ public class Expression {
         return pileSortie.peek();
     }
 
+    /**
+     * effectue le calcul et renvoie le résultat
+     * @param expression
+     * @return boolean, renvoie le résultat
+     */
     public static double calculer(String expression) {
         Map<String, Integer> operators = new HashMap<>();
         operators.put("-", 0);
