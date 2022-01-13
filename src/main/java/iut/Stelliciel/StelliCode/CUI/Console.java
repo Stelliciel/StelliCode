@@ -27,6 +27,7 @@ public class Console {
     private AfficheTab tabVar;
 
     //liste des couleur selon ce qui va etre à colorisé
+    private final LectureCouleur lectureCouleur = new LectureCouleur();
     private final int NOR_FOND   = LectureCouleur.getCouleur("defaut").getCouleurFond();
     private final int NOR_TEXT   = LectureCouleur.getCouleur("defaut").getCouleurText();
     private final int FON_TEXT   = LectureCouleur.getCouleur("fonction").getCouleurText();
