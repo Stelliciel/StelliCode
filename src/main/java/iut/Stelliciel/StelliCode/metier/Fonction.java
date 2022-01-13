@@ -122,7 +122,7 @@ public class Fonction {
 
     /**
      * convertie en une chaine un réel ou entier
-     * @param str
+     * @param str str
      * @return String, une chaine un réel ou entier
      */
     private static String enChaine(String str)
@@ -134,7 +134,7 @@ public class Fonction {
 
     /**
      * convertie en un entier une chaine
-     * @param str
+     * @param str str
      * @return String, un entier une chaine
      */
     private static String enEntier(String str)
@@ -144,7 +144,7 @@ public class Fonction {
     }
     /**
      * convertie en un réel une chaine
-     * @param str
+     * @param str str
      * @return String, un réel une chaine
      */
     private static String enReel(String str)
@@ -155,7 +155,7 @@ public class Fonction {
 
     /**
      * arrondi au supérieur un réel
-     * @param str
+     * @param str str
      * @return String ,arrondi au supérieur un réel
      */
     private static String plafond(String str)
@@ -164,7 +164,7 @@ public class Fonction {
     }
     /**
      * arrondi a l'inférieur un réel
-     * @param str
+     * @param str str
      * @return String, arrondi a l'inférieur un réel
      */
     private static String plancher(String str)
@@ -219,7 +219,7 @@ public class Fonction {
     }
     /**
      * retourne le contenu entre guillement
-     * @param str
+     * @param str str
      * @return String, contenu entre des parenthèses
      */
     public static String entreGuillemet(String str)
@@ -229,7 +229,7 @@ public class Fonction {
 
     /**
      * permet d'affecter une variable
-     * @param ligne
+     * @param ligne ligne
      * @return String[], partie séparé par <--
      */
     public static String[] affectation(String ligne) {
@@ -255,8 +255,8 @@ public class Fonction {
 
     /**
      * Retourne les index dans les crochets des tableaux
-     * @param ligne
-     * @return
+     * @param ligne ligne
+     * @return tab
      */
     public static String[] separerInd( String ligne ){
         String[] tab = new String[3];
@@ -289,7 +289,7 @@ public class Fonction {
 
     /**
      * Permet de concatener chaines de caractère
-     * @param s
+     * @param s s
      * @return String, chaines de caractère concatener
      */
     public static String concatener(String s) {
