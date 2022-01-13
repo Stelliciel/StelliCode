@@ -146,12 +146,17 @@ public class Fonction {
     }
 
     public static String[] affectation(String ligne) {
-        ligne = ligne.replaceAll(" ", "");
-        if (!ligne.contains("[")) {
-            return ligne.split("<--");
+//        ligne = ligne.replaceAll(" ", "");
+        if (!ligne.split("<--")[0].contains("[")) {
+            String[] tab = ligne.split("<--");
+            tab[0] = tab[0].trim();
+            tab[1] = tab[1].trim();
+            return tab;
         }
         String[] affectation = new String[5];
-        affectation[0] = ligne.substring(0,ligne.indexOf("["));
+        affectation[0] = ligne.substring(0,ligne.indexOf("<")).trim();
+        if ( affectation[0].contains("[") )
+            affectation[0] = affectation[0].substring(0, affectation[0].indexOf("["));
         affectation[1] = ligne.substring(ligne.indexOf("<--")+3 );
         String[] tab = Fonction.separerInd(ligne);
         affectation[2] = tab[0];

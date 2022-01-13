@@ -3,7 +3,7 @@ package iut.Stelliciel.StelliCode.metier;
 /**
  * @author Stelliciel
  * @credit Benjamin Cléon
- * @version 3
+ * @version 1
  */
 public class Variable<V>
 {
@@ -19,18 +19,17 @@ public class Variable<V>
      * @param type le type de primitif de la valeur
      * @param valeur valeur de n'importe quel type primitif (int, double, booléen, caractere, chaine de caractere)
      */
-    public Variable( String nom, String type, V valeur )
-    {
+    public Variable( String nom, String type, V valeur ){
         this.type   = type;
         this.nom    = nom;
         this.valeur = valeur;
-        this.numVar = nbVar++;
     }
 
-    public int getNumVar(){
-        return numVar;
-    }
-
+    /**
+     * constructeur de variable sans valeur
+     * @param nom le nom est un string
+     * @param type le type de primitif de la valeur
+     */
     public Variable(String nom, String type){
         this.nom    = nom;
         this.type   = type;
@@ -57,6 +56,7 @@ public class Variable<V>
      * @param valeur la nouvelle valeur
      */
     public void setIndTab(int ind, int ind2, int ind3, V valeur) {
+        System.out.println(valeur);
         tabValeur[ind][ind2][ind3] = valeur;
     }
 
@@ -72,6 +72,10 @@ public class Variable<V>
         return null;
     }
 
+    /**
+     * transforme une valeur non-tableau en string
+     * @return Le String de la valeur de la variable
+     */
     public String valToString(){
         if (this.valeur == null){return "";}
         String sRep ="";
@@ -79,13 +83,14 @@ public class Variable<V>
             sRep += "[";
 
             StringBuilder sRepBuilder = new StringBuilder(sRep);
-            for(Object[][] o : tabValeur) sRepBuilder.append(o).append(",");
+            for(Object[][] o : tabValeur)
+                sRepBuilder.append(o).append(",");
             sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
             sRep = sRepBuilder.toString();
 
             sRep += "]";
         }
-        return switch (this.getType()){
+        return switch (this.getType()) {
             case "entier"            -> Integer.parseInt(valeur+"") + "";
             case "reel"              -> Double.parseDouble(valeur+"")+"";
             case "caractere"         -> ""+(valeur+"").charAt(1);
@@ -134,12 +139,23 @@ public class Variable<V>
      */
     public void setVal(V val){ this.valeur = val;}
 
+    /**
+     * constructeur d'une variable de tableau
+     * @param nom String, le nom du tableau
+     * @param type String, le type du tableau
+     * @param tabValeur, le tableau
+     */
     private Variable(String nom, String type, V[][][] tabValeur){
         this.nom =nom;
         this.type=type;
         this.tabValeur = tabValeur;
     }
 
+    /**
+     * copie une variable dans une autre
+     * @param v {@link Variable}&#60Object&#62, la variable à copié
+     * @return {@link Variable},la nouvelle variable
+     */
     public static Variable<Object> copy(Variable<Object> v){
         if ( v.estTableau() )
             return new Variable<>(v.getNom(), v.getType(), v.getTabValeur());
