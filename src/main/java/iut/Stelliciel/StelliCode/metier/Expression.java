@@ -46,7 +46,7 @@ public class Expression {
 
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("(((\\d*[.])?\\d+)|(vrai)|(faux)|([<>()])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non)|(\\w))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([a-z])|([A-Z])|([\\(\\)])|(<=)|(>=)|(<)|(>)|(==)|(!=)|(ou)|(et)|(non))");
         Matcher matcher = pattern.matcher(expression);
 
         int cpt = 0;

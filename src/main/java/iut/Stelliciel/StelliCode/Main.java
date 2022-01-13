@@ -20,7 +20,10 @@ import java.util.Scanner;
  * @version 1.0.0
  */
 public class Main {
-    private final Interpreteur metier;
+    private Interpreteur metier;
+    private Console      console;
+    private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
+
     private static Main instance;
 
     /**
@@ -30,8 +33,12 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        metier         = new Interpreteur(Console.getAdresse());
-        new Console();
+        String saisie = "";
+
+        while (true) {
+            this.metier  = new Interpreteur(Console.afficherOption());
+            this.console = new Console(this);
+        }
     }
 
     /**
@@ -119,7 +126,8 @@ public class Main {
         try
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                    new FileOutputStream(metier.getSignature() + ".var"), StandardCharsets.UTF_8));
+                    new FileOutputStream("../../src/main/resources/"+metier.getSignature() + ".var"), "UTF8" ));
+
 
             pw.println( "|" + String.format("%-15s", "Nom")          + "|"
                             + String.format("%-15s", "Valeur")       + "|"

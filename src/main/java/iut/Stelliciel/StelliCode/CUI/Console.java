@@ -87,6 +87,7 @@ public class Console {
         return ansi().bgRgb(couleurFond).fgRgb(couleurLettre).a(ligne).fgRgb(NOR_TEXT).bgRgb(NOR_FOND);
     }
 
+
     /**
      * la méthode qui gere les saisies utilisateur
      */
@@ -171,6 +172,8 @@ public class Console {
 
             trait();
         }
+
+        return "q";
     }
 
     /**
@@ -377,7 +380,7 @@ public class Console {
             System.out.print("-");
         System.out.println("+");
     }
-
+  
     /**
      * Affiche l'entiereté du code, tu tableau de variable et de la console
      * @param e {@link EtatLigne}, l'état de la ligne en cours
@@ -546,10 +549,7 @@ public class Console {
             String inUser = Main.getInstance().saisie();
             if (inUser.matches("^[-+]?\\d+")) {
                 if (Integer.parseInt(inUser) - 1 > file.size()) {
-                    System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a("entrer un nombre valide ou -1 pour quitter").reset());
-                } else if (inUser.equals("-1")) {
-                    System.out.println("Vous avez choisie de quitter le programme");
-                    System.exit(0);
+                    System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a("entrer un nombre valide ou exit pour quitter").reset());
                 } else if (Integer.parseInt(inUser) - 1 == file.size()) {
                     System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a("Donnez le chemin absolue de votre fichier .algo").reset());
                     inUser = Main.getInstance().saisie();
@@ -566,8 +566,12 @@ public class Console {
                         }
                     }
                 }
-            } else {
-                System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a(inUser + " n'est pas valide ,entrer un nombre valide ou -1 pour quitter").reset());
+            } else if (inUser.equals("exit")) {
+                System.out.println( ansi().a("Vous avez choisie de quitter le programme").reset());
+                System.exit(0);
+            }
+            else {
+                System.out.println(ansi().bgRgb(255, 255, 255).fgRgb(0, 0, 0).a(inUser + " n'est pas valide ,entrer un nombre valide ou exit pour quitter").reset());
             }
         }
     }

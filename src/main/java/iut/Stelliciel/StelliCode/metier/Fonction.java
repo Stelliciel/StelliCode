@@ -6,9 +6,6 @@ import java.util.regex.Pattern;
 
 public class Fonction {
 
-
-
-
     public static boolean estUnePrimitive(String s) {
         Pattern pattern = Pattern.compile("(enChaine)|(enEntier)|(enReel)|(plafond)|(plancher)|" +
                 "(hasard)|(ord)|(car)|(arrondi)|(ajourdhui)|(jour)|(mois)|(annee)");
@@ -21,7 +18,7 @@ public class Fonction {
         String prim = "";
         String valeur = Fonction.entreParenthese(s);
         if ( s.contains("enChaine") ){
-            prim = Fonction.enChaine( valeur );
+            prim = valeur;
         }
         else if ( s.contains("enEntier") ) {
             prim = Fonction.enEntier( valeur );
@@ -51,17 +48,17 @@ public class Fonction {
             prim = Fonction.aujourdhui();
         }
         else if ( s.contains("annee") ) {
-            prim = Fonction.ord( valeur );
+            prim = Fonction.annee( valeur );
         }
         else if ( s.contains("mois") ) {
-            prim = Fonction.car( valeur );
+            prim = Fonction.mois( valeur );
         }
         else if ( s.contains("jour") ) {
             prim = Fonction.jour( valeur );
         }
         return prim;
     }
-
+    //fonctionne
     public static String aujourdhui() {
         String date = LocalDate.now()+"";
         String jour = date.substring( date.indexOf("-")+1 );
@@ -72,63 +69,65 @@ public class Fonction {
         date = jour + "/"+mois+"/"+date.substring(0,date.indexOf("-"));
         return "\""+date+"\"";
     }
-
+    //fonctionne pas
     public static String annee (String date){
         String annee = date.substring( date.indexOf("/")+1 );
         annee = annee.substring(annee.indexOf("/")+1);
 
         return annee;
     }
+    //fonctionne pas
     public static String mois (String date){
         String mois = date.substring( date.indexOf("/")+1 );
         mois = mois.substring(0, mois.indexOf("/") );
         return  mois;
     }
+    //fonctionne
     public static String jour (String date){
         return date.substring(0,date.indexOf("/"));
     }
-
+    //fonctionne pas
     private static String enChaine(String str)
     {
         String contenu = entreParenthese(str);
 
         return contenu;
     }
-
+    //fonctionne
     private static String enEntier(String str)
     {
         //Changer type si variable
         return Integer.parseInt(str)+"";
     }
-
+    //fonctionne
     private static String enReel(String str)
     {
         //Changer type si variable
         return Double.parseDouble(str)+"";
     }
-
+    //fonctionne
     private static String plafond(String str)
     {
         return Math.ceil(Double.parseDouble(str))+"";
     }
-
+    //fonctionne
     private static String plancher(String str)
     {
         return Math.floor(Double.parseDouble(str))+"";
     }
-
+    //fonctionne
     private static String hasard(String str)
     {
         return (int)(Math.random()*Integer.parseInt(str))+"";
     }
-
+    //fonctionne
     private static String ord(String str)
     {
-        return Integer.parseInt(str)+"";
+        return (int)(str.charAt(0))+"";
     }
-
+    //fonctionne
     private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
-
+    //fonctionne
     private static String arrondi(String str)
     {
         return Math.round(Double.parseDouble(str)) +"";
@@ -136,6 +135,7 @@ public class Fonction {
 
     public static String entreParenthese(String str)
     {
+        System.out.println("C :" + str);
         return str.substring( str.indexOf("(")+1, str.indexOf(")") );
     }
 
@@ -196,12 +196,6 @@ public class Fonction {
 
 
     public static void main(String[] args) {
-        String date = Fonction.aujourdhui();
-        System.out.println( date );
-        date = date.replaceAll("\"", "");
-        System.out.println( Fonction.jour(date) );
-        System.out.println( Fonction.mois(date) );
-        System.out.println( Fonction.annee(date) );
     }
 
     public static String concatener(String s) {
