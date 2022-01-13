@@ -36,8 +36,8 @@ public class Main {
         String saisie = "";
 
         while (true) {
-            this.metier  = new Interpreteur(Console.afficherOption());
-            this.console = new Console(this);
+            this.metier  = new Interpreteur(Console.getAdresse());
+            this.console = new Console();
         }
     }
 

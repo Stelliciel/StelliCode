@@ -172,8 +172,6 @@ public class Console {
 
             trait();
         }
-
-        return "q";
     }
 
     /**
