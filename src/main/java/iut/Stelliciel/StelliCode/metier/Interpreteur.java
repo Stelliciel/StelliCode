@@ -9,38 +9,42 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * @author "Stelliciel"
+ * @version 1.0.0
+ */
 public class Interpreteur {
-
     private final ArrayList<String> fichier;
     private final ArrayList<String> code;
-
     private String signature;
-    private HashMap<String, Variable<Object>> lstConstantes;
+    private final HashMap<String, Variable<Object>> lstConstantes;
     private HashMap<String, Variable<Object>> lstVariables;
-
     private final Parcours parcours;
     private int   pointeur;
-
     private boolean attenteLecture;
 
-
+    /**
+     * Initialise les variable de l'interpreteur
+     * @param adresseFichier chemin absulu du fichier.algo
+     */
     public Interpreteur(File adresseFichier) {
-        this.fichier        = Interpreteur.lireFichier(adresseFichier);
-        this.code           = Interpreteur.lireCode(adresseFichier);
-        pointeur            = 0;
-        attenteLecture      = false;
-
-        lstConstantes       = new HashMap<>();
-        lstVariables        = new HashMap<>();
-        parcours            = new Parcours();
+        fichier        = Interpreteur.lireFichier(adresseFichier);
+        code           = Interpreteur.lireCode(adresseFichier);
+        pointeur       = 0;
+        attenteLecture = false;
+        lstConstantes  = new HashMap<>();
+        lstVariables   = new HashMap<>();
+        parcours       = new Parcours();
 
         initialisationFichier();
-
         lectureFichier();
     }
 
-    /*--------------------*/
-    /* Lecture du fichier */
+    /**
+     * Permet de commencé l'affichage de ligne en cours à DEBUT<br>
+     * Puis effectue le traitement ligne par ligne jusqu'à la fin du programme ou à lire non initialisé
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
     private void lectureFichier() {
         if (pointeur == 0 ) {
             for (pointeur=0; !fichier.get(pointeur).contains("DEBUT"); pointeur++);
@@ -48,17 +52,19 @@ public class Interpreteur {
             parcours.nouvelleEtat( new EtatLigne(signature, lstConstantes, lstVariables, pointeur++) );
         }
 
-        while( pointeur < fichier.size() &&
-                    !attenteLecture                                          )  {
+        while(pointeur < fichier.size() && !attenteLecture) {
             String ligne = fichier.get(pointeur);
             traiter( ligne );
             pointeur++;
         }
     }
 
+    /**
+     * effecute le traitement de la ligne en cour
+     * @param ligne ligne en cour
+     */
     private void traiter(String ligne){
-        if (ligne.contains("<--"))
-        {
+        if (ligne.contains("<--")) {
             String[] separation = Fonction.affectation(ligne);
 
             separation[1] = remplacerValeurVariable(separation[1]);
@@ -77,9 +83,7 @@ public class Interpreteur {
             }
 
             parcours.nouvelleEtat(nouvelleEtatLigne(pointeur));
-        }
-        else if (ligne.contains("\u00e9crire") || ligne.contains("écrire") )
-        {
+        } else if (ligne.contains("\u00e9crire") || ligne.contains("écrire") ) {
             String s  = this.code.get(pointeur);
             String ecrire = Fonction.entreParenthese(s);
             EtatLigne etatLigne = nouvelleEtatLigne(pointeur);
@@ -122,7 +126,6 @@ public class Interpreteur {
         {
             String condition = ligne.replaceAll("si", "").replaceAll("alors", "").trim();
             condition = condition.replaceAll(" ", "");
-
 
             condition = remplacerValeurVariable(condition);
             String tab = ligne.substring(0, ligne.indexOf("s") );
@@ -211,6 +214,11 @@ public class Interpreteur {
         }
     }
 
+    /**
+     * Permet d'affecter les variable lors de l'instruction lire()
+     * @param e Ligne en cours de lecture
+     * @param valeur saisie de l'utilisateur
+     */
     public void rajoutLecture(EtatLigne e, String valeur){
         attenteLecture = false;
         String nom = e.getNomALire();
@@ -220,17 +228,12 @@ public class Interpreteur {
             traceAlgo.remove( traceAlgo.size()-1);
         e.setTraceAlgo("i"+nom+": "+valeur);
 
+        Variable<Object> v = e.getLstVariables().get(nom);
 
-
-
-        Variable v = e.getLstVariables().get(nom);
-
-        Variable vTemp = get(nom, v.getType(), valeur);
+        Variable<Object> vTemp = get(nom, v.getType(), valeur);
 
         v.setVal(vTemp.getVal());
         setVariable(nom, valeur);
-
-
 
         parcours.reecrire(e);
         lstVariables = e.getLstVariables();
@@ -238,6 +241,11 @@ public class Interpreteur {
         lectureFichier();
     }
 
+    /**
+     *
+     * @param ligne
+     * @return
+     */
     public String remplacerValeurVariable(String ligne){
         for(String v : lstConstantes.keySet() ){
             if ( ligne.contains(v) ){
@@ -250,7 +258,6 @@ public class Interpreteur {
                 ligne = ligne.replaceAll(v, lstVariables.get(v).getVal().toString() );
             }
         }
-
         return ligne;
     }
 
@@ -267,6 +274,10 @@ public class Interpreteur {
         return new EtatLigne(signature, lstConstantes, lstVariables, numLigne);
     }
 
+    /**
+     * test
+     * @return parcours
+     */
     public Parcours getParcours() { return parcours; }
     /* Fin lecture fichier*/
     /*--------------------*/
