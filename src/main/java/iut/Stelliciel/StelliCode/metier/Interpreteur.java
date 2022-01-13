@@ -393,26 +393,26 @@ public class Interpreteur {
 
     /**
      * Rajoute une constante dans la liste de constantes
-     * @param nom
-     * @param type
-     * @param valeur
+     * @param nom nom
+     * @param type type
+     * @param valeur valeur
      */
     public void addConstante(String nom, String type, String valeur){ lstConstantes.put(nom, get(nom, type, valeur) ); }
 
     /**
      * Rajoute une variable dans la liste de variables
-     * @param nom
-     * @param type
+     * @param nom nom
+     * @param type type
      */
     public void addVariable (String nom, String type)               { lstVariables .put(nom, new Variable<>(nom, type) ); }
 
     /**
      * Rajoute un tableau dans la liste de variables
-     * @param nom
-     * @param type
-     * @param taille
-     * @param taille2
-     * @param taille3
+     * @param nom nom
+     * @param type type
+     * @param taille taille1
+     * @param taille2 taille2
+     * @param taille3 taille3
      */
     public void addTableau (String nom, String type, String taille, String taille2, String taille3) {
         lstVariables.put(nom,
@@ -425,25 +425,25 @@ public class Interpreteur {
 
     /**
      * Recupere une constante selon le nom
-     * @param nom
-     * @return
+     * @param nom nom
+     * @return constante
      */
     public Object getConstante (String nom) { return  lstConstantes.get(nom).getVal(); }
 
     /**
      * Recupere une variable
-     * @param nom
-     * @return
+     * @param nom nom
+     * @return variable
      */
     public Object getVariable  (String nom) { return  lstVariables .get(nom).getVal(); }
 
     /**
      * Recupere la valeur d'un tableau selon les index
-     * @param nom
-     * @param ind
-     * @param ind2
-     * @param ind3
-     * @return
+     * @param nom nom
+     * @param ind ind
+     * @param ind2 ind2
+     * @param ind3 ind3
+     * @return valeur
      */
     public Object getIndTableau(String nom, int ind, int ind2, int ind3) {
         return lstVariables.get(nom).getIndTab(ind, ind2, ind3);
@@ -451,8 +451,8 @@ public class Interpreteur {
 
     /**
      * Change la variable
-     * @param nom
-     * @param valeur
+     * @param nom nom
+     * @param valeur valeur
      */
     public void setVariable(String nom, String valeur) {
         valeur = traitementValeur(valeur);
@@ -461,11 +461,11 @@ public class Interpreteur {
 
     /**
      * Change la valeur d'un tableau
-     * @param nom
-     * @param ind
-     * @param ind2
-     * @param ind3
-     * @param valeur
+     * @param nom nom
+     * @param ind ind
+     * @param ind2 ind2
+     * @param ind3 ind3
+     * @param valeur valeur
      */
     public void setTableau (String nom, int ind, int ind2, int ind3, String valeur) {
         valeur = traitementValeur(valeur);
@@ -509,8 +509,8 @@ public class Interpreteur {
 
     /**
      * Change la valeur d'une variable en fonction de son type
-     * @param var
-     * @param valeur
+     * @param var var
+     * @param valeur valeur
      */
     public static void set(Variable<Object> var, String valeur)   {
         switch (var.getType()){
@@ -541,9 +541,9 @@ public class Interpreteur {
 
     /**
      * Créer une variable
-     * @param nom
-     * @param type
-     * @param valeur
+     * @param nom nom
+     * @param type type
+     * @param valeur valeur
      * @return Variable
      */
     public static Variable<Object> get(String nom, String type, String valeur){
@@ -585,7 +585,7 @@ public class Interpreteur {
 
     /**
      * Lit le fichier .algo sans encodage UTF-8
-     * @param adresse
+     * @param adresse adresse
      * @return ArrayList<String>
      */
     public static ArrayList<String> lireFichier(File adresse) {
@@ -607,8 +607,8 @@ public class Interpreteur {
 
     /**
      * Lit le fichier .algo avec encodage UTF8
-     * @param adresse
-     * @return
+     * @param adresse adresse
+     * @return arraylist
      */
     public static ArrayList<String> lireCode(File adresse) {
         ArrayList<String> fichier = new ArrayList<>();
