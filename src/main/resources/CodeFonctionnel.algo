@@ -1,0 +1,50 @@
+ALGORITHME ExempleIndentation
+constante:
+    MAXIMUM <-- 5
+variable:
+    tabConst: tableau[MAXIMUM] de caractere
+    tabVar: tableau[3] de boolean
+    unEntier : entier
+    unReel : reel
+    unCaractere : caractere
+    uneChaine : chaine
+    unBooleen : boolean
+DEBUT
+    écrire("Début des affectations")
+    unEntier <-- 5+6/3
+    écrire ("résultat doit être 7 : ",unEntier)
+
+    unReel <-- 5 + 0.2
+    écrire (unReel)
+
+    unCaractere <-- 'c'
+    écrire (unCaractere)
+
+    uneChaine <-- "une chaine"
+    écrire (uneChaine)
+
+    unBooleen <-- true
+
+    écrire("true : ",unBooleen)
+    écrire(unReel)
+
+    unBooleen <-- unReel >= 6 ou 5 /= 5
+    écrire("false : ",unBooleen)
+
+    unBooleen <-- unReel >= 5.2 et 5 /= 5
+    écrire("false : ",unBooleen)
+
+    unBooleen <-- unReel >= 5.2 et 5 /= 5+1
+    écrire("true : ",unBooleen)
+
+
+
+
+
+
+
+
+
+
+
+FIN
