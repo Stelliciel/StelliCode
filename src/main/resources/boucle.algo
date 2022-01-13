@@ -1,0 +1,72 @@
+ALGORITHME ExempleIndentation
+constante:
+    MAXIMUM <-- 5
+variable:
+    age: entier
+    cpt: entier
+    unEntier1,unEntier2,unEntier3: entier
+    uneChaine : chaine
+    verif : boolean
+DEBUT
+    unEntier1 <-- 5
+    unEntier2 <-- 6
+
+    si unEntier2 > unEntier1 alors
+        écrire("est passé")
+    fsi
+
+    verif <-- unEntier2 == 6
+    si verif alors
+        écrire("est passé")
+    fsi
+
+    si unEntier1 >= 5 alors
+        écrire("est passé")
+    fsi
+    lire(age)
+    si age < 18 alors
+        si age > 12 alors
+            uneChaine <-- "jeune"
+        sinon
+            uneChaine <-- " vraiment jeune"
+        fsi
+    sinon
+        si age > 60 alors
+            uneChaine <-- " plus toutes jeune"
+        sinon
+            uneChaine <-- " majeur"
+        fsi
+    fsi
+
+    écrire("Vous êtes une personne ",uneChaine)
+
+    écrire ("Boucle de 0 à 3:")
+    cpt <-- 0
+    tq cpt < 3 alors
+        écrire (cpt)
+        cpt <-- cpt+1
+    ftq
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FIN
