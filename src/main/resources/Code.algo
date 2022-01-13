@@ -2,7 +2,7 @@ ALGORITHME ExempleIndentation
 constante:
     MAXIMUM <-- 5
 variable:
-    tabConst: tableau[MAXIMUM] de caractere
+    tabConst: tableau[MAXIMUM] de entier
     tabVar: tableau[3] de boolean
     age: entier
     message: chaine
@@ -23,8 +23,8 @@ DEBUT
         écrire("futur")
     fsi
 
-
-    age <-- 5+5
+    tabConst[3] <-- 6
+    age <-- tabConst[3] + 5
 
     écrire (age)
 

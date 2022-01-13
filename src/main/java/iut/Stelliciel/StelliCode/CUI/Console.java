@@ -453,7 +453,7 @@ public class Console {
         return files;
     }
 
-    public static File afficherOption() {
+    private static File afficherOption() {
         ArrayList<File> file = new ArrayList<>();
         File[] dir = Objects.requireNonNull((new File("../../src/main/resources")).listFiles());
         for (File item : dir)

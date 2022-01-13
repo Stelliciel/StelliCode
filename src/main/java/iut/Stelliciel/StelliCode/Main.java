@@ -10,7 +10,6 @@ import org.fusesource.jansi.AnsiConsole;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -21,9 +20,6 @@ import java.util.Scanner;
  */
 public class Main {
     private Interpreteur metier;
-    private Console      console;
-    private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
-
     private static Main instance;
 
     /**
@@ -36,8 +32,8 @@ public class Main {
         String saisie = "";
 
         while (true) {
-            this.metier  = new Interpreteur(Console.afficherOption());
-            this.console = new Console(this);
+            metier  = new Interpreteur(Console.getAdresse());
+            new Console();
         }
     }
 
@@ -68,8 +64,9 @@ public class Main {
     }
 
     /**
-     *
-     * @return HashMap
+     * Récupère toute les variables du programme
+     * @return HashMap&#60;String, Variable&#60;Objet&#62;&#62;
+     * @see Interpreteur#getLstVariables()
      */
     public HashMap<String, Variable<Object>> getVariables()  { return metier.getLstVariables(); }
 
@@ -107,10 +104,9 @@ public class Main {
         metier.rajoutLecture(e, saisie);
     }
 
-    /* Créer le fichier .var */
-
     /**
-     * Permet de créer le fichier .var
+     * Permet de créer le fichier .var<br>
+     * Contient la trace des affectation de variable suivie grace à la commande ADDVAR
      * @param lstVar continent la liste du nom des variable
      */
     public void traceVariable(ArrayList<String> lstVar) {
@@ -156,11 +152,16 @@ public class Main {
         catch (Exception e){ e.printStackTrace(); }
     }
 
+    /**
+     * Format la ligne pour affichage dans le .var
+     * @param nom de la variable
+     * @param valeur de la variable
+     * @param numLigne de la variable
+     * @return String
+     */
     private String traceVar( String nom, String valeur, String numLigne ){
-        String trace = "|" + String.format("%-15s", nom) + "|"
+        return "|" + String.format("%-15s", nom) + "|"
                          + String.format("%-15s", valeur)+ "|" + String.format("%-12s", numLigne) + "|";
-
-        return trace;
     }
 
     /**

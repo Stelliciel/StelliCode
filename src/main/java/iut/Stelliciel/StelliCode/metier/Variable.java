@@ -57,6 +57,7 @@ public class Variable<V>
      * @param valeur la nouvelle valeur
      */
     public void setIndTab(int ind, int ind2, int ind3, V valeur) {
+        System.out.println(valeur);
         tabValeur[ind][ind2][ind3] = valeur;
     }
 
@@ -79,13 +80,14 @@ public class Variable<V>
             sRep += "[";
 
             StringBuilder sRepBuilder = new StringBuilder(sRep);
-            for(Object[][] o : tabValeur) sRepBuilder.append(o).append(",");
+            for(Object[][] o : tabValeur)
+                sRepBuilder.append(o).append(",");
             sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
             sRep = sRepBuilder.toString();
 
             sRep += "]";
         }
-        return switch (this.getType()){
+        return switch (this.getType()) {
             case "entier"            -> Integer.parseInt(valeur+"") + "";
             case "reel"              -> Double.parseDouble(valeur+"")+"";
             case "caractere"         -> ""+(valeur+"").charAt(1);
