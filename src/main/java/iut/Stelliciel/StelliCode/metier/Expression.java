@@ -24,7 +24,7 @@ public class Expression {
     public static boolean estUneExpressionLogique(String expression){
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([\\(\\)])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
+        Pattern pattern = Pattern.compile("((vrai)|(faux)|([\\(\\)])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
         Matcher matcher = pattern.matcher(expression);
 
         return matcher.find();
@@ -53,8 +53,9 @@ public class Expression {
         operators.put(">",  4);
         operators.put("<=", 4);
         operators.put(">=", 4);
-        operators.put("==", 4);
-        operators.put("!=", 4);
+        operators.put("=", 4);
+        operators.put("/=", 4);
+        operators.put("xou",3);
         operators.put("ou", 3);
         operators.put("et", 2);
         operators.put("non",1);
