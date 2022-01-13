@@ -21,7 +21,7 @@ public class Expression {
     public static boolean estUneExpressionLogique(String expression){
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("((vrai)|(faux)|([\\(\\)])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
+        Pattern pattern = Pattern.compile("((vrai)|(faux)|([()])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
         Matcher matcher = pattern.matcher(expression);
 
         return matcher.find();
@@ -33,7 +33,7 @@ public class Expression {
      * @return boolean,vrai si c'est un calcul
      */
     public static boolean estUneExpression(String expression){
-        Pattern pattern = Pattern.compile("(([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
+        Pattern pattern = Pattern.compile("(([+\\-×/()^])|(mod)|(div)|(\\\\/¯))");
         Matcher matcher = pattern.matcher(expression);
 
         return matcher.find();
@@ -61,17 +61,13 @@ public class Expression {
 
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([\\(\\)])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([()])|(<=)|(>=)|(<)|(>)|(/=)|(=)|(xou)|(ou)|(et)|(non)|([a-z])|([A-Z]))");
         Matcher matcher = pattern.matcher(expression);
 
-        int cpt = 0;
         List<String> file = new ArrayList<>();
         while(matcher.find()){
             file.add(matcher.group().trim());
-            cpt += file.get(file.size() - 1 ).length();
         }
-
-
 
         Stack<String> pileOp = new Stack<>(); //pile pour operateur
         List<String> sortie = new ArrayList<>(); //sortie queue
@@ -161,24 +157,12 @@ public class Expression {
                         double op1 = pile.pop();
                         double op2 = pile.pop();
                         switch (expr) {
-                            case ">":
-                                pileSortie.push(op2 > op1);
-                                break;
-                            case "<":
-                                pileSortie.push(op2 < op1);
-                                break;
-                            case "<=":
-                                pileSortie.push(op2 <= op1);
-                                break;
-                            case ">=":
-                                pileSortie.push(op2 >= op1);
-                                break;
-                            case "=":
-                                pileSortie.push(op2 == op1);
-                                break;
-                            case "/=":
-                                pileSortie.push(op2 != op1);
-                                break;
+                            case ">"  -> pileSortie.push(op2 > op1);
+                            case "<"  -> pileSortie.push(op2 < op1);
+                            case "<=" -> pileSortie.push(op2 <= op1);
+                            case ">=" -> pileSortie.push(op2 >= op1);
+                            case "="  -> pileSortie.push(op2 == op1);
+                            case "/=" -> pileSortie.push(op2 != op1);
                         }
 
                     }
@@ -212,14 +196,12 @@ public class Expression {
             expression = "0" + expression;
         }
 
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([\\+\\-\\×\\/\\(\\)\\^])|(mod)|(div)|(\\\\/¯))");
+        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|([+\\-×/()^])|(mod)|(div)|(\\\\/¯))");
         Matcher matcher = pattern.matcher(expression);
 
-        int cpt = 0;
         List<String> file = new ArrayList<>();
         while(matcher.find()){
             file.add(matcher.group().trim());
-            cpt += file.get(file.size() - 1 ).length();
         }
 
         Stack<String> pileOp = new Stack<>(); //pile pour operateur
@@ -271,31 +253,17 @@ public class Expression {
                     pile.push(Math.sqrt(op));
                 }
                 else if(pile.size() > 1){
-                        double op1 = pile.pop();
-                        double op2 = pile.pop();
-                        switch (expr) {
-                            case "div":
-                                pile.push((double)((int)(op2 / op1)));
-                                break;
-                            case "+":
-                                pile.push(op2 + op1);
-                                break;
-                            case "-":
-                                pile.push(op2 - op1);
-                                break;
-                            case "mod":
-                                pile.push(op2 % op1);
-                                break;
-                            case "×":
-                                pile.push(op2 * op1);
-                                break;
-                            case "/":
-                                pile.push(op2 / op1);
-                                break;
-                            case "^":
-                                pile.push(Math.pow(op2, op1));
-                                break;
-                        }
+                    double op1 = pile.pop();
+                    double op2 = pile.pop();
+                    switch (expr) {
+                        case "div" -> pile.push((double) ((int) (op2 / op1)));
+                        case "+" -> pile.push(op2 + op1);
+                        case "-" -> pile.push(op2 - op1);
+                        case "mod" -> pile.push(op2 % op1);
+                        case "×" -> pile.push(op2 * op1);
+                        case "/" -> pile.push(op2 / op1);
+                        case "^" -> pile.push(Math.pow(op2, op1));
+                    }
                 }
             }
         }

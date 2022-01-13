@@ -294,10 +294,10 @@ public class Fonction {
      */
     public static String concatener(String s) {
         String[] tab = s.split("(©)|(\\(c\\))");
-        String chaine = "";
+        StringBuilder chaine = new StringBuilder();
 
         for(String t : tab ) {
-            chaine += Fonction.entreGuillemet(t.trim());
+            chaine.append(Fonction.entreGuillemet(t.trim()));
         }
         return "\"" + chaine + "\"";
     }

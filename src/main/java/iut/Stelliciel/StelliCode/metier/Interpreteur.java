@@ -117,7 +117,6 @@ public class Interpreteur {
         }
         else if (ligne.contains("lire") )
         {
-            String l = ligne.replaceAll("lire| ", "");
             String var = Fonction.entreParenthese(ligne);
 
             EtatLigne eL = nouvelleEtatLigne(pointeur);
@@ -139,8 +138,8 @@ public class Interpreteur {
             eL.setCondition(b);
 
             parcours.nouvelleEtat(eL);
+            pointeur++;
             if( b ) {
-                pointeur++;
                 while(!(this.fichier.get(pointeur).startsWith( tab + "sinon") ||
                                        this.fichier.get(pointeur).startsWith(tab + "fsi"))) {
 
@@ -158,7 +157,6 @@ public class Interpreteur {
                     parcours.nouvelleEtat(nouvelleEtatLigne(pointeur));
             }
             else {
-                pointeur++;
                 while(  !( this.fichier.get(pointeur).startsWith( tab + "sinon") ||
                            this.fichier.get(pointeur).startsWith(tab + "fsi")       )       ) {
                     EtatLigne eTmp = nouvelleEtatLigne( pointeur );
@@ -580,7 +578,6 @@ public class Interpreteur {
         try {
             Scanner sc = new Scanner(new FileInputStream(adresse));
 
-            char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
                 String ligne = sc.nextLine();
 
@@ -602,7 +599,6 @@ public class Interpreteur {
         try {
             Scanner sc = new Scanner(new FileInputStream(adresse), StandardCharsets.UTF_8);
 
-            char charPrecedent =' ';
             while ( sc.hasNextLine() ) {
                 String ligne = sc.nextLine();
 
