@@ -11,12 +11,7 @@ import java.util.regex.Pattern;
 public class Expression {
 
     public static void main(String[] args) {
-        System.out.println(Expression.calculLogique("2<6 et A != a"));
-        System.out.println(Expression.calculLogique("A == A"));
-        System.out.println(Expression.calculLogique("vrai == 2<6"));
-        System.out.println(Expression.calculer("11 div 5"));
-        System.out.println(Expression.calculer("11 / 5"));
-        System.out.println(Expression.calculer("11 mod 5"));
+        System.out.println(Expression.calculLogique("5.8>=6 ou 5!=5"));
     }
 
     public static boolean estUneExpressionLogique(String expression){
@@ -51,7 +46,7 @@ public class Expression {
 
         expression = expression.replaceAll("false", "faux");
         expression = expression.replaceAll("true", "vrai");
-        Pattern pattern = Pattern.compile("((([0-9]*[.])?[0-9]+)|(vrai)|(faux)|([a-z])|([A-Z])|([\\<\\>\\(\\)])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non))");
+        Pattern pattern = Pattern.compile("(((\\d*[.])?\\d+)|(vrai)|(faux)|([<>()])|(<=)|(>=)|(==)|(!=)|(ou)|(et)|(non)|(\\w))");
         Matcher matcher = pattern.matcher(expression);
 
         int cpt = 0;
@@ -102,6 +97,9 @@ public class Expression {
             sortie.add(pileOp.pop());
         }
 
+        for(String s: sortie){
+            System.out.println(s);
+        }
 
 
         Stack<Double> pile = new Stack<>();
@@ -126,7 +124,9 @@ public class Expression {
                     pileSortie.push(b);
                 }
                 else if(pile.size() > 1){
+                    System.out.println("O :" + expr);
                     if ( expr.equals("ou") || expr.equals("et") ){
+                        System.out.println("A :" + expr);
                         if ( expr.equals("et") ){
                             Boolean b1 = pileSortie.pop();
                             Boolean b2 = pileSortie.pop();

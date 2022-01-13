@@ -7,6 +7,8 @@ import iut.Stelliciel.StelliCode.metier.Parcours;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.Ansi;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.util.*;
 
@@ -122,7 +124,8 @@ public class Console {
                 ctrl.traceVariable( tabVar.getLstVar() );
             }
             else if (saisie.startsWith("DET var")){
-                String nomVal = saisie.substring(saisie.indexOf("<")+1, saisie.indexOf(">") );
+                String[] tab = saisie.split(" ");
+                String nomVal = tab[2];
                 if ( e.getLstVariables().containsKey(nomVal) )
                     detailler(e, nomVal);
             }
@@ -154,23 +157,40 @@ public class Console {
 
     private void detailler(EtatLigne e, String nomVal) {
         Console.majConsole();
+        String aff = "";
         if ( e.getLstVariables().get(nomVal).estTableau() ) {
             Object[][][] tabValeur = e.getLstVariables().get(nomVal).getTabValeur();
             System.out.println(nomVal);
 
-            if (tabValeur[0][0].length > 1)
-                System.out.println(ecrireTab(3, tabValeur));
-            else if (tabValeur[0].length > 1)
-                System.out.println(ecrireTab(2, tabValeur));
-            else
-                System.out.println(ecrireTab(1, tabValeur));
+            if (tabValeur[0][0].length > 1){
+                aff = ecrireTab(3, tabValeur);
+            }
+            else if (tabValeur[0].length > 1){
+                aff = ecrireTab(2, tabValeur);
+            }
+            else{
+                aff = ecrireTab(1, tabValeur);
+            }
 
 
         }
         else{
-            System.out.println(nomVal + " = " + e.getLstVariables().get(nomVal).getVal());
+            aff = nomVal + " = " + e.getLstVariables().get(nomVal).getVal();
         }
+        System.out.println( aff );
+
         saisie = sc.nextLine();
+        while ( !saisie.equals("") ){
+            if ( saisie.equals("PP") ){
+                try
+                {
+                    StringSelection ss = new StringSelection(aff);
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss,null);
+                }
+                catch( Exception ex) { ex.printStackTrace(); }
+            }
+            saisie = sc.nextLine();
+        }
     }
 
     private String ecrireTab(int i, Object[][][] tabValeur) {

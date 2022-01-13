@@ -157,12 +157,14 @@ public class Fonction {
         affectation[3] = tab[1];
         affectation[4] = tab[2];
 
-        if (ligne.matches("^*\\[*]\\[*]*")) {
+        /*if (ligne.matches("^*\\[*]\\[*]*")) {
             affectation[3] = ligne.substring(ligne.indexOf("[", ligne.indexOf("[")) + 1, ligne.indexOf("]", ligne.indexOf("]")));
         }
         if (ligne.matches("^*\\[*]\\[*]\\[*]*")) {
             affectation[4] = ligne.substring(ligne.indexOf("[", ligne.indexOf(ligne.indexOf("[")))+1, ligne.indexOf("]",ligne.indexOf(ligne.indexOf("]"))));
-        }return affectation;
+        }*/
+
+        return affectation;
     }
 
     public static String[] separerInd( String ligne ){
@@ -197,6 +199,7 @@ public class Fonction {
     public static void main(String[] args) {
         String date = Fonction.aujourdhui();
         System.out.println( date );
+        date = date.replaceAll("\"", "");
         System.out.println( Fonction.jour(date) );
         System.out.println( Fonction.mois(date) );
         System.out.println( Fonction.annee(date) );
