@@ -18,7 +18,7 @@ public class Fonction {
         String prim = "";
         String valeur = Fonction.entreParenthese(s);
         if ( s.contains("enChaine") ){
-            prim = Fonction.enChaine( valeur );
+            prim = valeur;
         }
         else if ( s.contains("enEntier") ) {
             prim = Fonction.enEntier( valeur );
@@ -48,10 +48,10 @@ public class Fonction {
             prim = Fonction.aujourdhui();
         }
         else if ( s.contains("annee") ) {
-            prim = Fonction.ord( valeur );
+            prim = Fonction.annee( valeur );
         }
         else if ( s.contains("mois") ) {
-            prim = Fonction.car( valeur );
+            prim = Fonction.mois( valeur );
         }
         else if ( s.contains("jour") ) {
             prim = Fonction.jour( valeur );
@@ -120,12 +120,12 @@ public class Fonction {
     {
         return (int)(Math.random()*Integer.parseInt(str))+"";
     }
-    //fonctionne pas
+    //fonctionne
     private static String ord(String str)
     {
         return (int)(str.charAt(0))+"";
     }
-    //fonctionne pas
+    //fonctionne
     private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
     //fonctionne
     private static String arrondi(String str)
@@ -135,6 +135,7 @@ public class Fonction {
 
     public static String entreParenthese(String str)
     {
+        System.out.println("C :" + str);
         return str.substring( str.indexOf("(")+1, str.indexOf(")") );
     }
 
