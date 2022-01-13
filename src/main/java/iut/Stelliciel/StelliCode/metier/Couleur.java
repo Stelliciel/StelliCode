@@ -1,9 +1,11 @@
 package iut.Stelliciel.StelliCode.metier;
 
+/**
+ * @author Stelliciel
+ * @version 1
+ */
 public class Couleur {
     private String  nom;
-    private String  coulTxt,coulFond;
-    private boolean gras;
     private int couleurFond,couleurText;
 
     /**
@@ -31,18 +33,6 @@ public class Couleur {
      * @param nom String, nom
      */
     public void setNom     (String  nom ) { this.nom      = nom;  }
-
-    /**
-     * set la couleur du texte
-     * @param coul String, la couleur du texte
-     */
-    public void setCoulTxt (String  coul) { this.coulTxt  = coul; }
-
-    /**
-     * set la couleur du fond
-     * @param coul String, la couleur du fond
-     */
-    public void setCoulFond(String  coul) { this.coulFond = coul; }
 
     /**
      * set la couleur du fond
