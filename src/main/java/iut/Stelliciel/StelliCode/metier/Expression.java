@@ -29,7 +29,7 @@ public class Expression {
 
     /**
      * retourne si c'est un calcul
-     * @param expression
+     * @param expression String
      * @return boolean,vrai si c'est un calcul
      */
     public static boolean estUneExpression(String expression){
@@ -41,7 +41,7 @@ public class Expression {
 
     /**
      * calcul les expressions booleenne
-     * @param expression
+     * @param expression String
      * @return boolean, renvoie le résultat
      */
     public static boolean calculLogique(String expression) {
@@ -194,7 +194,7 @@ public class Expression {
 
     /**
      * effectue le calcul et renvoie le résultat
-     * @param expression
+     * @param expression String
      * @return boolean, renvoie le résultat
      */
     public static double calculer(String expression) {
