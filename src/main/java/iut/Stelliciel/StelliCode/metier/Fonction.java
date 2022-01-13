@@ -58,7 +58,7 @@ public class Fonction {
         }
         return prim;
     }
-
+    //fonctionne
     public static String aujourdhui() {
         String date = LocalDate.now()+"";
         String jour = date.substring( date.indexOf("-")+1 );
@@ -69,63 +69,65 @@ public class Fonction {
         date = jour + "/"+mois+"/"+date.substring(0,date.indexOf("-"));
         return "\""+date+"\"";
     }
-
+    //fonctionne pas
     public static String annee (String date){
         String annee = date.substring( date.indexOf("/")+1 );
         annee = annee.substring(annee.indexOf("/")+1);
 
         return annee;
     }
+    //fonctionne pas
     public static String mois (String date){
         String mois = date.substring( date.indexOf("/")+1 );
         mois = mois.substring(0, mois.indexOf("/") );
         return  mois;
     }
+    //fonctionne
     public static String jour (String date){
         return date.substring(0,date.indexOf("/"));
     }
-
+    //fonctionne pas
     private static String enChaine(String str)
     {
         String contenu = entreParenthese(str);
 
         return contenu;
     }
-
+    //fonctionne
     private static String enEntier(String str)
     {
         //Changer type si variable
         return Integer.parseInt(str)+"";
     }
-
+    //fonctionne
     private static String enReel(String str)
     {
         //Changer type si variable
         return Double.parseDouble(str)+"";
     }
-
+    //fonctionne
     private static String plafond(String str)
     {
         return Math.ceil(Double.parseDouble(str))+"";
     }
-
+    //fonctionne
     private static String plancher(String str)
     {
         return Math.floor(Double.parseDouble(str))+"";
     }
-
+    //fonctionne
     private static String hasard(String str)
     {
         return (int)(Math.random()*Integer.parseInt(str))+"";
     }
-
+    //fonctionne pas
     private static String ord(String str)
     {
         return (int)(str.charAt(0))+"";
     }
-
+    //fonctionne pas
     private static String car(String str) { return (char)Integer.parseInt(str) + ""; }
-
+    //fonctionne
     private static String arrondi(String str)
     {
         return Math.round(Double.parseDouble(str)) +"";
@@ -160,7 +162,6 @@ public class Fonction {
         if (ligne.matches("^*\\[*]\\[*]\\[*]*")) {
             affectation[4] = ligne.substring(ligne.indexOf("[", ligne.indexOf(ligne.indexOf("[")))+1, ligne.indexOf("]",ligne.indexOf(ligne.indexOf("]"))));
         }*/
-
         return affectation;
     }
 

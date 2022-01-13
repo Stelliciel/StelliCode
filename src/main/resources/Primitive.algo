@@ -1,0 +1,82 @@
+ALGORITHME ExempleIndentation
+constante:
+    MAXIMUM <-- 5
+variable:
+    cpt: entier
+    unEntier: entier
+    unReel : reel
+    date: chaine
+    jour1,mois1: entier
+    uneChaine: chaine
+    unCaractere: caractere
+DEBUT
+    cpt <-- 0
+    unEntier <-- hasard(6)
+    tq cpt < 10 alors
+        unEntier <-- hasard(6)
+        écrire (unEntier)
+        cpt <-- cpt+1
+    ftq
+    unReel <-- 5.4
+    cpt <-- plafond(unReel)
+    écrire (cpt)
+    cpt <-- plancher(unReel)
+    écrire(cpt)
+    cpt <-- arrondi(unReel)
+    écrire(cpt)
+
+    date <-- aujourdhui()
+    écrire (date)
+    jour1 <-- jour(date)
+    écrire (jour1)
+
+
+    unEntier <-- 8
+    unCaractere <-- car(unEntier)
+    écrire(unCaractere)
+
+    unEntier<---1
+    écrire(unEntier)
+    uneChaine <-- "8"
+    unEntier <-- enEntier(uneChaine)
+    écrire(unEntier)
+
+    unReel <---10
+    écrire(unReel)
+    uneChaine <-- "8.2"
+    unReel <-- enReel(uneChaine)
+    écrire(unReel)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FIN
