@@ -7,59 +7,105 @@ import iut.Stelliciel.StelliCode.metier.Parcours;
 import iut.Stelliciel.StelliCode.metier.Variable;
 import org.fusesource.jansi.AnsiConsole;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+/**
+ * @author "Stelliciel"
+ * @version 1.0.0
+ */
 public class Main {
     private final Interpreteur metier;
-    private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static Main instance;
 
-    public static void main(String[] args) {
-        new Main();
-    }
-
+    /**
+     * Main inititialse tout l'interpreteur de Pseudo-Code.
+     * active les couleur pour l'entierté du programme
+     */
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        metier         = new Interpreteur( Console.afficherOption() );
-
-        Console console = new Console(this);
+        metier         = new Interpreteur(Console.getAdresse());
+        new Console();
     }
 
+    /**
+     * Récupère le parcours de metier.
+     * @return Parcours
+     * @see Interpreteur#getParcours()
+     */
+    public Parcours getParcours(){ return metier.getParcours(); }
+
+    /**
+     * Récupère le "this" de la classe Main.<br>
+     * Permet d'être appelé depuis n'importe qu'elle classe,
+     * évite d'envoyer en paramètre le Main.
+     * @return instance
+     */
     public static Main getInstance() {
         return instance;
     }
 
-
-    public Parcours getParcours(){ return  metier.getParcours(); }
-
+    /**
+     * Récupère le fichier .algo ligne par ligne.
+     * @return ArrayList&#60;String&#62; de getCode()
+     * @see Interpreteur#getCode()
+     */
     public ArrayList<String> getCode(){
         return metier.getCode();
     }
-    public HashMap<String, Variable<Object>> getConstantes() { return metier.getLstConstantes(); }
+
+    /**
+     *
+     * @return HashMap
+     */
     public HashMap<String, Variable<Object>> getVariables()  { return metier.getLstVariables(); }
 
+    /**
+     * Permet de récupérer la longueur du nombre de ligne.<br>
+     * Exemple :
+     * <ul>
+     *     <li>  9 lignes retourne 1</li>
+     *     <li> 15 lignes retourne 2</li>
+     *     <li>238 lignes retourne 3</li>
+     * </ul>
+     * @return int de getNbChiffre()
+     * @see Interpreteur#getNbChiffre()
+     */
     public int getNbChiffre() {
         return  metier.getNbChiffre();
     }
 
+    /**
+     * Retourne la ligne saisie par l'utilisateur
+     * @return String
+     */
+    public String saisie() {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+
+    /**
+     * Permet d'affecter les variable lors de l'instruction lire()
+     * @param e Ligne en cours de lecture
+     * @param saisie saisie de l'utilisateur
+     * @see Interpreteur#rajoutLecture(EtatLigne, String)
+     */
     public void rajoutLecture(EtatLigne e, String saisie) {
         metier.rajoutLecture(e, saisie);
     }
 
-    public String saisie() {
-        Scanner sc = new Scanner(System.in);
-
-        return sc.nextLine();
-    }
-
     /* Créer le fichier .var */
+
+    /**
+     * Permet de créer le fichier .var
+     * @param lstVar continent la liste du nom des variable
+     */
     public void traceVariable(ArrayList<String> lstVar) {
         HashMap<String, Variable<Object>> lst = new HashMap<>();
         ArrayList<EtatLigne> lecteur = getParcours().getLecteur();
@@ -73,7 +119,7 @@ public class Main {
         try
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                    new FileOutputStream(metier.getSignature() + ".var"), "UTF8" ));
+                    new FileOutputStream(metier.getSignature() + ".var"), StandardCharsets.UTF_8));
 
             pw.println( "|" + String.format("%-15s", "Nom")          + "|"
                             + String.format("%-15s", "Valeur")       + "|"
@@ -107,6 +153,14 @@ public class Main {
                          + String.format("%-15s", valeur)+ "|" + String.format("%-12s", numLigne) + "|";
 
         return trace;
+    }
+
+    /**
+     * Le main ne require aucun argument lors de l'execution
+     * @param args aucun argument
+     */
+    public static void main(String[] args) {
+        new Main();
     }
 }
 

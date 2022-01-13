@@ -1,6 +1,5 @@
 package iut.Stelliciel.StelliCode.CUI;
 
-import iut.Stelliciel.StelliCode.Main;
 import iut.Stelliciel.StelliCode.metier.Variable;
 
 import java.util.ArrayList;
@@ -9,13 +8,11 @@ import java.util.HashMap;
 public class AfficheTab {
 
     private final HashMap<String, String> listeVar;
-    private final Main ctrl;
 
     /** constructeur d'un tableau de variable vide
      */
-    public AfficheTab(Main ctrl){
-        this.ctrl = ctrl;
-        this.listeVar = new HashMap<String, String>();
+    public AfficheTab(){
+        this.listeVar = new HashMap<>();
     }
 
     /**verifie si la variable est dans la liste si c'est le cas modifie la valeur

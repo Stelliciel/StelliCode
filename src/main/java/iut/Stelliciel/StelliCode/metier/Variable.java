@@ -79,23 +79,23 @@ public class Variable<V>
             sRep += "[";
 
             StringBuilder sRepBuilder = new StringBuilder(sRep);
-            for(Object o : tabValeur) sRepBuilder.append(o).append(",");
+            for(Object[][] o : tabValeur) sRepBuilder.append(o).append(",");
             sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
             sRep = sRepBuilder.toString();
 
             sRep += "]";
         }
         return switch (this.getType()){
-            case "entier"    -> Integer.parseInt(valeur+"") + "";
-            case "reel"      -> Double.parseDouble(valeur+"")+"";
-            case "caractere" -> ""+(valeur+"").charAt(0);
+            case "entier"            -> Integer.parseInt(valeur+"") + "";
+            case "reel"              -> Double.parseDouble(valeur+"")+"";
+            case "caractere"         -> ""+(valeur+"").charAt(1);
             case "chaine", "booleen" -> valeur+"";
-            default          -> "erreur imposible";
+            default                  -> "erreur imposible";
         };
     }
 
     /**
-     * @return Return si la variable est un tableau
+     * @return Return si la variable est un tableau non null
      */
     public boolean estTableau() {
         return this.tabValeur != null;
