@@ -72,7 +72,6 @@ public class LectureCouleur {
             if (c.getNom().equals(nom))
                 return  c;
         }
-
         return null;
     }
 }
