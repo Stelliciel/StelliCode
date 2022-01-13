@@ -252,12 +252,6 @@ public class Fonction {
         affectation[3] = tab[1];
         affectation[4] = tab[2];
 
-        /*if (ligne.matches("^*\\[*]\\[*]*")) {
-            affectation[3] = ligne.substring(ligne.indexOf("[", ligne.indexOf("[")) + 1, ligne.indexOf("]", ligne.indexOf("]")));
-        }
-        if (ligne.matches("^*\\[*]\\[*]\\[*]*")) {
-            affectation[4] = ligne.substring(ligne.indexOf("[", ligne.indexOf(ligne.indexOf("[")))+1, ligne.indexOf("]",ligne.indexOf(ligne.indexOf("]"))));
-        }*/
         return affectation;
     }
 
@@ -294,10 +288,6 @@ public class Fonction {
         return tab;
     }
 
-
-    public static void main(String[] args) {
-        System.out.println( Fonction.jour(Fonction.aujourdhui()));
-    }
 
     /**
      * Permet de concatener chaines de caractère

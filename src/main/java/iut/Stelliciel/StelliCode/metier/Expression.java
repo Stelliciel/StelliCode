@@ -13,9 +13,6 @@ import java.util.regex.Pattern;
  * @version 1
  */
 public class Expression {
-    public static void main(String[] args) {
-        System.out.println(Expression.calculLogique("5.8>=6 ou 5=+/=5"));
-    }
     /**
      * retourne si la String est une expression logique
      * @param expression String
