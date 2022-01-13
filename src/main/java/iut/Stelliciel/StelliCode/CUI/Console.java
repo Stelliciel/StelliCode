@@ -19,12 +19,12 @@ import static org.fusesource.jansi.Ansi.ansi;
  * @version 1.0.0
  */
 public class Console {
-    private Scanner sc;
-    private ArrayList<String> code;
-    private Parcours parcours;
+    private final Scanner sc;
+    private final ArrayList<String> code;
+    private final Parcours parcours;
 
     private String saisie;
-    private AfficheTab tabVar;
+    private final AfficheTab tabVar;
 
     //liste des couleur selon ce qui va etre à colorisé
     private final LectureCouleur lectureCouleur = new LectureCouleur();
@@ -43,7 +43,7 @@ public class Console {
 
     private static final int TAILLE_LARGEUR = 84;
 
-    private ArrayList<Integer> lstPointArret;
+    private final ArrayList<Integer> lstPointArret;
 
     /**
      * constructeur de la classe console
@@ -92,6 +92,7 @@ public class Console {
     /**
      * la méthode qui gere les saisies utilisateur
      */
+    @SuppressWarnings("all")
     private void ihm(){
         EtatLigne e = parcours.next();
         afficher(e);
@@ -182,7 +183,7 @@ public class Console {
      */
     private void detailler(EtatLigne e, String nomVal) {
         Console.majConsole();
-        String aff = "";
+        String aff;
         if ( e.getLstVariables().get(nomVal).estTableau() ) {
             Object[][][] tabValeur = e.getLstVariables().get(nomVal).getTabValeur();
             System.out.println(nomVal);
@@ -226,54 +227,54 @@ public class Console {
      * @return Le string affichable du tableau
      */
     private String ecrireTab(int i, Object[][][] tabValeur) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if ( i == 1 ){
             for(int cpt = 0 ; cpt < tabValeur.length; cpt++ )
-                s += "["+cpt+"]="+tabValeur[cpt][0][0]+"\n";
-            return s;
+                s.append("[").append(cpt).append("]=").append(tabValeur[cpt][0][0]).append("\n");
+            return s.toString();
         }
         if (i == 2) {
-            s+= " ";
+            s.append(" ");
             for (int cpt = 0; cpt < tabValeur[0].length; cpt++){
-                s+= "|" +String.format("%-10s", cpt);
+                s.append("|").append(String.format("%-10s", cpt));
             }
-            s+= "|\n";
+            s.append("|\n");
 
             for(int cpt1 = 0 ; cpt1 < tabValeur.length; cpt1++ ){
-                s+= cpt1+"|";
+                s.append(cpt1).append("|");
                 for(int cpt2 = 0 ; cpt2 < tabValeur[0].length; cpt2++ ){
-                    s += String.format("%-10s", tabValeur[cpt1][cpt2])+"|";
+                    s.append(String.format("%-10s", tabValeur[cpt1][cpt2])).append("|");
                 }
 
-                s+= "\n";
+                s.append("\n");
             }
 
-            return s;
+            return s.toString();
         }
         if (i == 3) {
 
 
             for(int cpt1 = 0 ; cpt1 < tabValeur.length; cpt1++ )
             {
-                s+= "tab["+cpt1+"][?][?]\n ";
+                s.append("tab[").append(cpt1).append("][?][?]\n ");
                 for (int cpt = 0; cpt < tabValeur[0][0].length; cpt++){
-                    s+= "|" +String.format("%-10s", cpt) ;
+                    s.append("|").append(String.format("%-10s", cpt));
                 }
-                s+= "|\n";
+                s.append("|\n");
                 for(int cpt2 = 0 ; cpt2 < tabValeur[0].length; cpt2++ )
                 {
-                    s+= cpt2+"|";
+                    s.append(cpt2).append("|");
                     for(int cpt3=0; cpt3 < tabValeur[0][0].length; cpt3++){
-                        s += String.format("%-10s", tabValeur[cpt1][cpt2][cpt3] ) + "|";
+                        s.append(String.format("%-10s", tabValeur[cpt1][cpt2][cpt3])).append("|");
                     }
-                    s+= "\n";
+                    s.append("\n");
                 }
             }
 
-            return s;
+            return s.toString();
         }
 
-        return s;
+        return s.toString();
     }
 
     /**
@@ -282,20 +283,20 @@ public class Console {
      * @return toutes les variables sous forme: 1) var1 2) var2
      */
     private String afficherListeNomVar(ArrayList<String> lst){
-        String liste = "";
-        String ligne = "";
+        StringBuilder liste = new StringBuilder();
+        StringBuilder ligne = new StringBuilder();
         int numVar = 1;
         for(String nom : lst){
-            ligne += numVar+")"+Console.adaptTxt(nom)+"  ";
+            ligne.append(numVar).append(")").append(Console.adaptTxt(nom)).append("  ");
             numVar ++;
             if(numVar % 5 == 1 ){
-                liste += String.format("%-"+ TAILLE_LARGEUR +"s","|"+ ligne) + "|\n";
-                ligne = "";
+                liste.append(String.format("%-" + TAILLE_LARGEUR + "s", "|" + ligne)).append("|\n");
+                ligne = new StringBuilder();
             }
         }
         if ( numVar % 5 != 1 )
-            liste += String.format("%-"+ TAILLE_LARGEUR +"s","|"+ ligne) + "|\n";
-        return  liste;
+            liste.append(String.format("%-" + TAILLE_LARGEUR + "s", "|" + ligne)).append("|\n");
+        return liste.toString();
     }
 
     /**

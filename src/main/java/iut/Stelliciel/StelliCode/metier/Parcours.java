@@ -1,6 +1,5 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 
 public class Parcours {
@@ -125,7 +124,6 @@ public class Parcours {
      * @param e l'{@link EtatLigne} de la ligne avec le "lire"
      */
     public void reecrire(EtatLigne e) {
-
         ArrayList<EtatLigne> nouvLecteur = new ArrayList<>();
         boolean limite = true;
         for (EtatLigne eTmp: lecteur){
@@ -135,8 +133,6 @@ public class Parcours {
             if (limite){
                 nouvLecteur.add(eTmp);
             }
-
-
         }
         EtatLigne eTmp = new EtatLigne(e.getSignature(), e.getLstConstantes(), e.getLstVariables(),e.getNumLigne());
 

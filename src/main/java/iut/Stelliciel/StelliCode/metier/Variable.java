@@ -1,16 +1,15 @@
 package iut.Stelliciel.StelliCode.metier;
 
+import java.util.Arrays;
+
 /**
  * @author Stelliciel
- * @credit Benjamin Cléon
+ * @author Benjamin Cléon
  * @version 1
  */
-public class Variable<V>
-{
+public class Variable<V> {
     private final String nom;
     private final String type;
-    private static int nbVar = 0;
-    private int numVar;
     private V valeur;
     private Object[][][] tabValeur;
 
@@ -19,7 +18,7 @@ public class Variable<V>
      * @param type le type de primitif de la valeur
      * @param valeur valeur de n'importe quel type primitif (int, double, booléen, caractere, chaine de caractere)
      */
-    public Variable( String nom, String type, V valeur ){
+    public Variable( String nom, String type, V valeur ) {
         this.type   = type;
         this.nom    = nom;
         this.valeur = valeur;
@@ -35,8 +34,8 @@ public class Variable<V>
         this.type   = type;
     }
 
-
-    /**constructeur d'une variable
+    /**
+     * constructeur d'une variable
      * @param nom le nom est un string
      * @param type le type de primitif du tableau
      * @param taille taille du tableau première dimension
@@ -59,9 +58,11 @@ public class Variable<V>
         tabValeur[ind][ind2][ind3] = valeur;
     }
 
-    /** Recupere la valeur de l'indice entrée
+    /**
+     * Recupere la valeur de l'indice entrée
      * @param ind indice
      */
+    @SuppressWarnings("unchecked")
     public V getIndTab(int ind, int ind2, int ind3){
         if (ind < tabValeur.length)
             if (ind2 < tabValeur[ind].length)
@@ -83,11 +84,11 @@ public class Variable<V>
 
             StringBuilder sRepBuilder = new StringBuilder(sRep);
             for(Object[][] o : tabValeur)
-                sRepBuilder.append(o).append(",");
+                sRepBuilder.append(Arrays.deepToString(o)).append(",");
             sRepBuilder.deleteCharAt(sRepBuilder.length()-1);
             sRep = sRepBuilder.toString();
 
-            sRep += "]";
+            return sRep + "]";
         }
         return switch (this.getType()) {
             case "entier"            -> Integer.parseInt(valeur+"") + "";
@@ -133,7 +134,8 @@ public class Variable<V>
             return valeur;
     }
 
-    /** change la valeur
+    /**
+     * change la valeur
      * @param val nouvelle valeur de la variable
      */
     public void setVal(V val){ this.valeur = val;}

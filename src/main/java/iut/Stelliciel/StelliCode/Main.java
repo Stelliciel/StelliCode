@@ -10,6 +10,7 @@ import org.fusesource.jansi.AnsiConsole;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -29,7 +30,6 @@ public class Main {
     public Main() {
         instance = this;
         AnsiConsole.systemInstall();
-        String saisie = "";
 
         while (true) {
             metier  = new Interpreteur(Console.getAdresse());
@@ -42,7 +42,7 @@ public class Main {
      * @return Parcours
      * @see Interpreteur#getParcours()
      */
-    public Parcours getParcours(){ return metier.getParcours(); }
+    public Parcours getParcours() { return metier.getParcours(); }
 
     /**
      * Récupère le "this" de la classe Main.<br>
@@ -59,7 +59,7 @@ public class Main {
      * @return ArrayList&#60;String&#62; de getCode()
      * @see Interpreteur#getCode()
      */
-    public ArrayList<String> getCode(){
+    public ArrayList<String> getCode() {
         return metier.getCode();
     }
 
@@ -68,7 +68,7 @@ public class Main {
      * @return HashMap&#60;String, Variable&#60;Objet&#62;&#62;
      * @see Interpreteur#getLstVariables()
      */
-    public HashMap<String, Variable<Object>> getVariables()  { return metier.getLstVariables(); }
+    public HashMap<String, Variable<Object>> getVariables() { return metier.getLstVariables(); }
 
     /**
      * Permet de récupérer la longueur du nombre de ligne.<br>
@@ -122,7 +122,7 @@ public class Main {
         try
         {
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(
-                    new FileOutputStream("../../src/main/resources/"+metier.getSignature() + ".var"), "UTF8" ));
+                    new FileOutputStream("../../src/main/resources/"+metier.getSignature() + ".var"), StandardCharsets.UTF_8));
 
 
             pw.println( "|" + String.format("%-15s", "Nom")          + "|"
@@ -143,7 +143,6 @@ public class Main {
                             lst.replace(nom, lstTmp.get(nom));
                             pw.println( traceVar(nom, valeur, numLigne+"")  );
                         }
-
                     }
                 }
             }

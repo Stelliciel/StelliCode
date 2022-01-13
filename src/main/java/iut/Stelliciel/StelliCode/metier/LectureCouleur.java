@@ -1,26 +1,24 @@
 package iut.Stelliciel.StelliCode.metier;
 
-import java.io.*;
-import org.jdom2.*;
-import org.jdom2.input.*;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
 
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Stelliciel
  * @version 1
  */
 public class LectureCouleur {
-
     private Element racine;
     private static List<Couleur> lstCouleur;
 
     /**
      * constructeur de lecture couleur
      */
-    public LectureCouleur()
-    {
-        Document document;
+    public LectureCouleur() {
         File fichierXML = new File("../../src/main/resources/coloration.xml");
         SAXBuilder sxb  = new SAXBuilder();
         lstCouleur      = new ArrayList<>();
