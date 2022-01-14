@@ -3,7 +3,9 @@ constante:
     MAXIMUM <-- 5
 variable:
     tabConst: tableau[MAXIMUM] de entier
-    tabVar: tableau[3] de boolean
+    tabVarB: tableau[3] de boolean
+    tabVarI: tableau[2][2] de entier
+    tabVarR: tableau[2][2][2] de reel
     age: entier
     message: chaine
     cpt: entier
@@ -13,6 +15,17 @@ variable:
     j2: entier
     date: chaine
 DEBUT
+    tabVarI[0][0] <-- 1
+    tabVarI[0][1] <-- 2
+    tabVarI[1][0] <-- 3
+    tabVarI[1][1] <-- 4
+
+    tabVarR[0][0][0] <-- 1.21
+    tabVarR[0][0][1] <-- 2.12
+    tabVarR[0][1][0] <-- 3.35
+    tabVarR[0][1][1] <-- 4.65
+
+
     lire (j1)
     date <-- aujourdhui()
     j2   <-- jour(date)
