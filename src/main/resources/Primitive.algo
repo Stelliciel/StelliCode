@@ -17,15 +17,18 @@ DEBUT
         écrire (unEntier)
         cpt <-- cpt+1
     ftq
+    écrire("Primitive date")
     date <-- aujourdhui()
     écrire(date)
     jour1 <-- jour(date)
-    écrire(date)
+    écrire(jour1)
     annee1 <-- annee(date)
-    écrire(date)
+    écrire(annee1)
     mois1 <-- mois(date)
-    écrire(date)
+    écrire(mois1)
 
+
+    écrire("Primitive arrondi")
     unReel <-- 5.4
     cpt <-- plafond(unReel)
     écrire (cpt)
@@ -33,11 +36,10 @@ DEBUT
     écrire(cpt)
     cpt <-- arrondi(unReel)
     écrire(cpt)
-
-    date <-- aujourdhui()
-    écrire (date)
-    jour1 <-- jour(date)
-    écrire (jour1)
+    unReel <-- 5.6
+    écrire(unReel)
+    cpt <-- arrondi(unReel)
+    écrire(cpt)
 
     unEntier <-- 8
     uneChaine <-- enChaine(unEntier)
